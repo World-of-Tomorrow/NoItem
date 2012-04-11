@@ -1,0 +1,33 @@
+# %n = player name
+# %i = item id
+# %x = X location
+# %y = Y location
+# %z = Z location
+# %w = world
+
+Notify:
+    Player: true
+    PlayerMessage: "This item (%i) is not allowed."
+    Admins: true
+    AdminMessage: "Player %n tried to get item %i @ %x, %y, %z in the world %w."
+
+DisallowedItems: [
+    1230,
+    1231,
+    1232,
+    1233,
+    1234,
+    ]
+
+StopCrafting: true
+StopItemPickup: true
+#This means that the player CAN NOT craft/pickup the item
+#if they HAVE the permission node:
+# noitem.nocraft.<item#> or
+# noitem.nopickup.<item#>
+#This option overrides the DisallowedItems list.
+# noitem.allitems overrides ALL (DisallowedItems and PerItemPermissions)
+
+PerItemPermissions: true
+
+Debugging: false
