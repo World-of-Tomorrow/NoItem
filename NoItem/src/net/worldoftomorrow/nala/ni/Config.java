@@ -14,6 +14,20 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
 	private static String plugin = "NoItem";
+	
+	public static enum ConfigFile {
+		CONFIG("config.yml");
+
+		private String file;
+
+		private ConfigFile(String file) {
+			this.file = file;
+		}
+
+		public String getFile() {
+			return this.file;
+		}
+	}
 
 	private static Map<ConfigFile, YamlConfiguration> config = new EnumMap<ConfigFile, YamlConfiguration>(
 			ConfigFile.class);
@@ -95,20 +109,6 @@ public class Config {
 			}
 			if (fos != null)
 				fos.close();
-		}
-	}
-
-	public static enum ConfigFile {
-		CONFIG("config.yml");
-
-		private String file;
-
-		private ConfigFile(String file) {
-			this.file = file;
-		}
-
-		public String getFile() {
-			return this.file;
 		}
 	}
 }

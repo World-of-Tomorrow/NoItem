@@ -11,20 +11,21 @@ Notify:
     Admins: true
     AdminMessage: "Player %n tried to get item %i @ %x, %y, %z in the world %w."
 
-DisallowedItems: [
-    1230,
-    1231,
-    1232,
-    1233,
-    1234,
-    ]
+DisallowedItems:
+    - '5'
+    - '5:1'
+    - '5:2'
+
+#Potions do not actually work yet. Sorry :)
+DisallowedPotions:
+    - 'weakness long'
 
 StopCrafting: true
 StopItemPickup: true
 #This means that the player CAN NOT craft/pickup the item
 #if they HAVE the permission node:
-# noitem.nocraft.<item#> or
-# noitem.nopickup.<item#>
+# noitem.nocraft.<item#>[.datavalue] or
+# noitem.nopickup.<item#>[.datavalue]
 #This option overrides the DisallowedItems list.
 # noitem.allitems overrides ALL (DisallowedItems and PerItemPermissions)
 
