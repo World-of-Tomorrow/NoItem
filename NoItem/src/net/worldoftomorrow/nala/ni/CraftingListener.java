@@ -58,7 +58,7 @@ public class CraftingListener implements Listener {
 		}
 
 		if (debug) {
-			Bukkit.getServer().broadcastMessage(
+			log.log(
 					"CraftItemEvent fired. Crafted: "
 							+ event.getCurrentItem().getType().name());
 		}

@@ -58,7 +58,7 @@ public class PickupListener implements Listener {
 		}
 
 		if (debug) {
-			Bukkit.getServer().broadcastMessage(
+			log.log(
 					"PlayerPickupItemEvent fired. picked up: "
 							+ event.getItem().getItemStack().getTypeId());
 		}

@@ -16,17 +16,53 @@ DisallowedItems:
     - '5:1'
     - '5:2'
 
-#Potions do not actually work yet. Sorry :)
-DisallowedPotions:
-    - 'weakness long'
+# To block a potion, you must enter the damage value of the potion and ingredient needed.
+# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing
+# Here are a few potions:
+#
+# Water Bottle - 0
+# Awkward Potion - 16
+# Thick Potion - 32
+# Mundane Potion (Extended) - 64
+# Mundane Potion - 8192
+# Potion of Regeneration (2:00) - 8193
+# Potion of Regeneration (8:00) - 8257
+# Potion of Regeneration II - 8225
+# Potion of Swiftness(3:00) - 8194
+# Potion of Swiftness (8:00) - 8258
+# Potion of Swiftness II - 8226
+# Potion of Fire Resistance (3:00) - 8195
+# Potion of Fire Resistance (8:00) - 8259
+# Potion of Fire Resistance (reverted) - 8227
+#
+# The rest can be found here: http://www.minecraftwiki.net/wiki/Potions#Base_Potions
+
+# Here are are the Ingredients:
+#
+# Nether Wart - 372
+# Glowstone Dust - 348
+# Redstone Dust - 331
+# Fermented Spider Eye - 376
+# Magma Cream - 378
+# Sugar - 353
+# Glistering Melon - 382
+# Spider Eye - 375
+# Ghast Tear - 370
+# Blaze Powder - 377
+# Gun Powder - 289
+
+# Default example is 0:372 which would block the Awkward Potion
+DisallowedPotionRecipes:
+    - '0:372'
 
 StopCrafting: true
 StopItemPickup: true
-#This means that the player CAN NOT craft/pickup the item
+StopPotionBrew: true
+#This means that the player CAN NOT craft/pickup/brew the item
 #if they HAVE the permission node:
 # noitem.nocraft.<item#>[.datavalue] or
-# noitem.nopickup.<item#>[.datavalue]
-#This option overrides the DisallowedItems list.
+# noitem.nopickup.<item#>[.datavalue] or
+# noitem.nobrew.<potionDV>.<IngredientID>
 # noitem.allitems overrides ALL (DisallowedItems and PerItemPermissions)
 
 PerItemPermissions: true

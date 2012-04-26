@@ -3,10 +3,9 @@ package net.worldoftomorrow.nala.ni;
 import org.bukkit.entity.Player;
 
 public enum Permissions {
-	ADMIN("noitem.admin"),
-	ALLITEMS("noitem.allitems"),
-	NOCRAFT("noitem.nocraft."),
-	NOPICKUP("noitem.nopickup.");
+	ADMIN("noitem.admin"), ALLITEMS("noitem.allitems"), NOCRAFT(
+			"noitem.nocraft."), NOPICKUP("noitem.nopickup."), NOBREW(
+			"noitem.nobrew.");
 
 	private String perm;
 
@@ -39,10 +38,21 @@ public enum Permissions {
 	}
 
 	public boolean has(Player p, int iid) {
-		if ( perm == NOCRAFT.getPerm() || perm == NOPICKUP.getPerm()) {
+		if (perm == NOCRAFT.getPerm() || perm == NOPICKUP.getPerm()) {
 			return p.hasPermission(this.perm + iid);
 		}
 		return p.hasPermission(this.perm); // If the permission does not need an
 											// item id.
+	}
+
+	public boolean has(Player p, int potion, int ingredient,
+			boolean letsMakeMeDifferent) {
+		if (perm == NOBREW.getPerm()) {
+			return p.hasPermission(this.perm
+					.concat(Integer.toString(potion)
+					.concat(".")
+					.concat(Integer.toString(ingredient))));
+		} else
+			return false;
 	}
 }
