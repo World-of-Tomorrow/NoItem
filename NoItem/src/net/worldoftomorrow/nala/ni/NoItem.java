@@ -1,17 +1,16 @@
 package net.worldoftomorrow.nala.ni;
 
-import net.worldoftomorrow.nala.ni.Config.ConfigFile;
-
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class NoItem extends JavaPlugin {
 	private Log log = new Log();
 	
-	private ConfigFile conf = Config.ConfigFile.CONFIG;
-
+	public Configuration config = new Configuration(this);
+	
 	public void onEnable() {
-		Config.loadConfigs();
+		
+		config.load();
 		
 		Updater updater = new Updater(this.getDescription().getVersion());
 		if(!updater.isLatest()){
@@ -23,12 +22,9 @@ public class NoItem extends JavaPlugin {
 		
 		PluginManager pm = getServer().getPluginManager();
 		
-		boolean craftListen = Config.getConfig(conf)
-				.getBoolean("StopCrafting");
-		boolean pickupListen = Config.getConfig(conf)
-				.getBoolean("StopItemPickup");
-		boolean brewListen = Config.getConfig(conf)
-			.getBoolean("StopPotionBrew");
+		boolean craftListen = Configuration.stopCrafting();
+		boolean pickupListen = Configuration.stopItemPickup();
+		boolean brewListen = Configuration.stopPotionBrew();
 		
 		if (craftListen) {
 			pm.registerEvents(new CraftingListener(), this);
@@ -38,7 +34,7 @@ public class NoItem extends JavaPlugin {
 		}
 		if (brewListen) {
 			pm.registerEvents(new BrewingListener(), this);
-		}
+	}
 		this.log.log("[NoItem] Configs loaded, events registered, and cake baked.");
 		
 		if ((!craftListen) && (!pickupListen) && (!brewListen)) {

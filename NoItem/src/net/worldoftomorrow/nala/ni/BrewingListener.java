@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 
-import net.worldoftomorrow.nala.ni.Config.ConfigFile;
-
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,16 +15,16 @@ import org.bukkit.inventory.ItemStack;
 public class BrewingListener implements Listener {
 
 	private static Log log = new Log();
-	private ConfigFile conf = Config.ConfigFile.CONFIG;
 
-	private boolean perItemPerms = Config.getConfig(conf).getBoolean(
-			"PerItemPermissions");
-	private List<String> recipes = Config.getConfig(conf).getStringList(
-			"DisallowedPotionRecipes");
+	private boolean perItemPerms = Configuration.perItemPerms();
+
+	private boolean debug = Configuration.debugging();
+	
+	private List<String> recipes = Configuration.disallowedPotions();
+	
 	private List<String> dPotions = new ArrayList<String>();
 	
 	private boolean checked = false;
-	private boolean debug = Config.getConfig(conf).getBoolean("Debugging");
 
 	// This method is just to check the configuration
 	private void checkRecipes() {

@@ -3,8 +3,6 @@ package net.worldoftomorrow.nala.ni;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.worldoftomorrow.nala.ni.Config.ConfigFile;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,11 +11,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
 public class PickupListener implements Listener {
+	
 	private static Log log = new Log();
-	private ConfigFile conf = Config.ConfigFile.CONFIG;
 
-	private List<String> rawItems = Config.getConfig(conf).getStringList(
-			"DisallowedItems");
+	private List<String> rawItems = Configuration.disallowedItems();
 
 	private List<String> dItems = new ArrayList<String>();
 
@@ -34,21 +31,17 @@ public class PickupListener implements Listener {
 		}
 	}
 
-	private boolean notifyPlayer = Config.getConfig(conf).getBoolean(
-			"Notify.Player");
+	private boolean notifyPlayer = Configuration.notifyPlayer();
 
-	private boolean notifyAdmin = Config.getConfig(conf).getBoolean(
-			"Notify.Admins");
+	private boolean notifyAdmin = Configuration.notifyAdmins();
 
-	private boolean perItemPerms = Config.getConfig(conf).getBoolean(
-			"PerItemPermissions");
+	private boolean perItemPerms = Configuration.perItemPerms();
 
-	private boolean debug = Config.getConfig(conf).getBoolean("Debugging");
+	private boolean debug = Configuration.debugging();
 
-	private String pm = Config.getConfig(conf)
-			.getString("Notify.PlayerMessage");
+	private String pm = Configuration.playerMessage();
 
-	private String am = Config.getConfig(conf).getString("Notify.AdminMessage");
+	private String am = Configuration.adminMessage();
 
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
