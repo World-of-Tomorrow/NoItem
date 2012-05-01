@@ -25,6 +25,7 @@ public class NoItem extends JavaPlugin {
 		boolean craftListen = Configuration.stopCrafting();
 		boolean pickupListen = Configuration.stopItemPickup();
 		boolean brewListen = Configuration.stopPotionBrew();
+		boolean toolListen = Configuration.stopToolUse();
 		
 		if (craftListen) {
 			pm.registerEvents(new CraftingListener(), this);
@@ -34,10 +35,13 @@ public class NoItem extends JavaPlugin {
 		}
 		if (brewListen) {
 			pm.registerEvents(new BrewingListener(), this);
-	}
+		}
+		if(toolListen){
+			pm.registerEvents(new ToolListener(), this);
+		}
 		this.log.log("[NoItem] Configs loaded, events registered, and cake baked.");
 		
-		if ((!craftListen) && (!pickupListen) && (!brewListen)) {
+		if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen)) {
 			this.log.log("[NoItem] No listeners active! Shutting down plugin.");
 			getPluginLoader().disablePlugin(this);
 		}

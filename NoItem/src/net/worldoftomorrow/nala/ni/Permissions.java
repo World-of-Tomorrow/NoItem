@@ -3,9 +3,12 @@ package net.worldoftomorrow.nala.ni;
 import org.bukkit.entity.Player;
 
 public enum Permissions {
-	ADMIN("noitem.admin"), ALLITEMS("noitem.allitems"), NOCRAFT(
-			"noitem.nocraft."), NOPICKUP("noitem.nopickup."), NOBREW(
-			"noitem.nobrew.");
+	ADMIN("noitem.admin"),
+	ALLITEMS("noitem.allitems"),
+	NOCRAFT("noitem.nocraft."),
+	NOPICKUP("noitem.nopickup."),
+	NOBREW("noitem.nobrew."),
+	NOUSE("noitem.nouse.");
 
 	private String perm;
 
@@ -32,7 +35,15 @@ public enum Permissions {
 			} else {
 				return p.hasPermission(this.perm.concat(Integer.toString(iid)));
 			}
-		} else {
+		}
+		if (perm == NOBREW.getPerm()) {
+			return p.hasPermission(this.perm
+					.concat(Integer.toString(iid)
+					.concat(".")
+					.concat(Integer.toString(dv))));
+		}
+		
+		else {
 			return p.hasPermission(this.perm);
 		}
 	}
@@ -41,18 +52,21 @@ public enum Permissions {
 		if (perm == NOCRAFT.getPerm() || perm == NOPICKUP.getPerm()) {
 			return p.hasPermission(this.perm + iid);
 		}
-		return p.hasPermission(this.perm); // If the permission does not need an
+		if(perm == NOUSE.getPerm()){
+			if(p.hasPermission(this.perm + iid)){
+				return true;
+			}
+			if (Tools.tools.containsKey(iid)) {
+				if (p.hasPermission(this.perm + Tools.getTool(iid).getName())) {
+					return true;
+				}
+				return false;
+			} else {
+				return false;
+			}
+		} else {
+			return p.hasPermission(this.perm); // If the permission does not need an
+		}
 											// item id.
-	}
-
-	public boolean has(Player p, int potion, int ingredient,
-			boolean letsMakeMeDifferent) {
-		if (perm == NOBREW.getPerm()) {
-			return p.hasPermission(this.perm
-					.concat(Integer.toString(potion)
-					.concat(".")
-					.concat(Integer.toString(ingredient))));
-		} else
-			return false;
 	}
 }

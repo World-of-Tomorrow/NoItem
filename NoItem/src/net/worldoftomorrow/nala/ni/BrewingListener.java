@@ -103,7 +103,7 @@ public class BrewingListener implements Listener {
 				// This check currently is not useful because it compares the
 				// ingredient ID to Item DV. But it should still work.
 				if (i != ingredient) {
-					if (Permissions.NOBREW.has(p, i, ingredient, true) && !Permissions.ALLITEMS.has(p)) {
+					if (Permissions.NOBREW.has(p, i, ingredient) && !Permissions.ALLITEMS.has(p)) {
 						event.setCancelled(true);
 					}
 				}
