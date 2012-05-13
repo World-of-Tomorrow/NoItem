@@ -77,7 +77,7 @@ public class BrewingListener implements Listener {
 	@EventHandler 
 	public void onBrewerInvEvent(InventoryClickEvent event){
 		if(debug){
-			log.log("InventoryClick event fired. " + event.getSlot() + " " + event.getInventory().getType().name());
+			log.log("InventoryClick event fired. " + event.getRawSlot() + " " + event.getInventory().getType().name());
 		}
 		
 		if(event.getInventory().getType().equals(InventoryType.BREWING)){
@@ -87,28 +87,29 @@ public class BrewingListener implements Listener {
 			
 			//Get the player this way now.
 			Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-			int slot = event.getSlot();
+			int slot = event.getRawSlot();
 			
 			//If it is not the ingredient slot
 			if (slot != 3) {
 				if (event.getInventory().getItem(3) != null) {
 					int dv = p.getItemOnCursor().getDurability();
 					int ingredient = event.getInventory().getItem(3).getTypeId();
-					
-					if (!perItemPerms) {
-						if (dPotions.contains(dv + ":" + ingredient)) {
-							event.setCancelled(true);
-							if (Configuration.notifyNoBrew()) {
-								p.sendMessage(Configuration.noBrewMessage());
+					if(event.getRawSlot() < 3){
+						if (!perItemPerms) {
+							if (dPotions.contains(dv + ":" + ingredient)) {
+								event.setCancelled(true);
+								if (Configuration.notifyNoBrew()) {
+									p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+								}
 							}
-						}
-					} else {
-						if (Permissions.NOBREW.has(p, dv, ingredient)) {
-							event.setCancelled(true);
-							if (Configuration.notifyNoBrew()) {
-								p.sendMessage(Configuration.noBrewMessage());
+						} else {
+							if (Permissions.NOBREW.has(p, dv, ingredient) || !p.isOp()) {
+								event.setCancelled(true);
+								if (Configuration.notifyNoBrew()) {
+									p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+								}
 							}
-						}
+						}	
 					}
 				}
 			//INGREDIENT SLOT CLICKED
@@ -126,10 +127,10 @@ public class BrewingListener implements Listener {
 					}
 				} else {
 					for (Integer dv : dvs) {
-						if (Permissions.NOBREW.has(p, dv, ingredient)) {
+						if (Permissions.NOBREW.has(p, dv, ingredient) || !p.isOp()) {
 							event.setCancelled(true);
 							if (Configuration.notifyNoBrew()) {
-								p.sendMessage(Configuration.noBrewMessage());
+								p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
 							}
 							break;
 						}
