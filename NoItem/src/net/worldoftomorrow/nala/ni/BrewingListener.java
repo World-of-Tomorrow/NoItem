@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.inventory.BrewerInventory;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class BrewingListener implements Listener {
@@ -42,7 +44,7 @@ public class BrewingListener implements Listener {
 		checked = true;
 	}
 
-	private int[] ItemStackDV(BrewerInventory inv) {
+	private int[] ItemStackDV(Inventory inv) {
 		
 		List<Integer> notEmpty = new ArrayList<Integer>();
 		List<Integer> durability = new ArrayList<Integer>();
@@ -71,40 +73,66 @@ public class BrewingListener implements Listener {
 		
 		return dvs;
 	}
-
-	@EventHandler
-	public void onPotionBrew(BrewEvent event) {
+	
+	@EventHandler 
+	public void onBrewerInvEvent(InventoryClickEvent event){
 		if(debug){
-			log.log("Potion brew event fired.");
-		}
-		if (!checked) {
-			checkRecipes();
+			log.log("InventoryClick event fired. " + event.getSlot() + " " + event.getInventory().getType().name());
 		}
 		
-		int ingredient = event.getContents().getIngredient().getTypeId();
-		int[] dvs = ItemStackDV(event.getContents());
-		
-		// Really complicated, has to be an easier way.
-		Player p = Bukkit.getServer().getPlayer(
-				event.getContents().getViewers().get(0).getName());
-		
-		if (!perItemPerms) {
-			for (int i : dvs) {
-				// This check currently is not useful because it compares the
-				// ingredient ID to Item DV. But it should still work.
-				if (i != ingredient) {
-					if (dPotions.contains(i + ":" + ingredient)) {
-						event.setCancelled(true);
+		if(event.getInventory().getType().equals(InventoryType.BREWING)){
+			if (!checked) {
+				checkRecipes();
+			}
+			
+			//Get the player this way now.
+			Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
+			int slot = event.getSlot();
+			
+			//If it is not the ingredient slot
+			if (slot != 3) {
+				if (event.getInventory().getItem(3) != null) {
+					int dv = p.getItemOnCursor().getDurability();
+					int ingredient = event.getInventory().getItem(3).getTypeId();
+					
+					if (!perItemPerms) {
+						if (dPotions.contains(dv + ":" + ingredient)) {
+							event.setCancelled(true);
+							if (Configuration.notifyNoBrew()) {
+								p.sendMessage(Configuration.noBrewMessage());
+							}
+						}
+					} else {
+						if (Permissions.NOBREW.has(p, dv, ingredient)) {
+							event.setCancelled(true);
+							if (Configuration.notifyNoBrew()) {
+								p.sendMessage(Configuration.noBrewMessage());
+							}
+						}
 					}
 				}
-			}
-		} else {
-			for (int i : dvs) {
-				// This check currently is not useful because it compares the
-				// ingredient ID to Item DV. But it should still work.
-				if (i != ingredient) {
-					if (Permissions.NOBREW.has(p, i, ingredient) && !Permissions.ALLITEMS.has(p)) {
-						event.setCancelled(true);
+			//INGREDIENT SLOT CLICKED
+			} else {
+				int ingredient = p.getItemOnCursor().getTypeId();
+				int[] dvs = this.ItemStackDV(event.getInventory());
+				if(!perItemPerms){
+					for(Integer dv : dvs){
+						if(dPotions.contains(dv + ":" + ingredient)){
+							event.setCancelled(true);
+							if (Configuration.notifyNoBrew()) {
+								p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+							}
+						}	
+					}
+				} else {
+					for (Integer dv : dvs) {
+						if (Permissions.NOBREW.has(p, dv, ingredient)) {
+							event.setCancelled(true);
+							if (Configuration.notifyNoBrew()) {
+								p.sendMessage(Configuration.noBrewMessage());
+							}
+							break;
+						}
 					}
 				}
 			}
