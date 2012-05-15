@@ -62,7 +62,7 @@ public class PickupListener implements Listener {
 
 		if (!this.perItemPerms) { // If you the list should be used
 			if (dItems.contains(iid + ":" + dv)) {
-				if ((!Permissions.ALLITEMS.has(p)) || (!p.isOp())) {
+				if ((!VaultPerms.Permissions.ALLITEMS.has(p)) || (!p.isOp())) {
 					event.setCancelled(true);
 					// Set the pickup delay to prevent chat overload.
 					event.getItem().setPickupDelay(100);
@@ -79,8 +79,8 @@ public class PickupListener implements Listener {
 			/*--Per Item Permissions--*/
 		} else {
 			// If there is no data value
-			if (dv == 0 && Permissions.NOPICKUP.has(p, iid)
-					&& !Permissions.ALLITEMS.has(p)) {
+			if (dv == 0 && VaultPerms.Permissions.NOPICKUP.has(p, iid)
+					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
 				event.setCancelled(true);
 				event.getItem().setPickupDelay(100);
 				if (notifyPlayer) {
@@ -91,8 +91,8 @@ public class PickupListener implements Listener {
 				}
 			}
 			//If there IS a data value
-			if (dv != 0 && Permissions.NOPICKUP.has(p, iid, dv)
-					&& !Permissions.ALLITEMS.has(p)) {
+			if (dv != 0 && VaultPerms.Permissions.NOPICKUP.has(p, iid, dv)
+					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
 				event.setCancelled(true);
 				event.getItem().setPickupDelay(100);
 				if (notifyPlayer) {
@@ -135,7 +135,7 @@ public class PickupListener implements Listener {
 		log.log(formatedMessage);
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players)
-			if ((player.isOp()) || (Permissions.ADMIN.has(player)))
+			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
 				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 						+ formatedMessage);
 	}

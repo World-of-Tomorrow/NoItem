@@ -16,4 +16,18 @@ public class StringHelper
     msg = msg.replace("%i", id);
     return msg;
   }
+  
+  public static String replaceVars(String msg, String n, String w, int ix, int iy, int iz, String recipe)
+  {
+    String x = Integer.toString(ix);
+    String y = Integer.toString(iy);
+    String z = Integer.toString(iz);
+    msg = msg.replace("%n", n);
+    msg = msg.replace("%w", w);
+    msg = msg.replace("%x", x);
+    msg = msg.replace("%y", y);
+    msg = msg.replace("%z", z);
+    msg = msg.replace("%i", recipe);
+    return msg;
+  }
 }

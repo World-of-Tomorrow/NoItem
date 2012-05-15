@@ -62,7 +62,7 @@ public class CraftingListener implements Listener {
 
 		if (!this.perItemPerms) { // If you the list should be used
 			if (dItems.contains(iid + ":" + dv)) {
-				if ((!Permissions.ALLITEMS.has(p)) || (!p.isOp())) {
+				if ((!VaultPerms.Permissions.ALLITEMS.has(p)) || (!p.isOp())) {
 					event.setCancelled(true);
 					if (this.notifyPlayer) {
 						notifyPlayer(p, iid);
@@ -79,8 +79,8 @@ public class CraftingListener implements Listener {
 			/*--Per Item Permissions--*/
 		} else {
 			// If there is no data value
-			if (dv == 0 && Permissions.NOCRAFT.has(p, iid)
-					&& !Permissions.ALLITEMS.has(p)) {
+			if (dv == 0 && VaultPerms.Permissions.NOCRAFT.has(p, iid)
+					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
 				event.setCancelled(true);
 				if (notifyPlayer) {
 					notifyPlayer(p, iid);
@@ -90,8 +90,8 @@ public class CraftingListener implements Listener {
 				}
 			}
 			//If there IS a data value
-			if (dv != 0 && Permissions.NOCRAFT.has(p, iid, dv)
-					&& !Permissions.ALLITEMS.has(p)) {
+			if (dv != 0 && VaultPerms.Permissions.NOCRAFT.has(p, iid, dv)
+					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
 				event.setCancelled(true);
 				if (notifyPlayer) {
 					notifyPlayer(p, iid);

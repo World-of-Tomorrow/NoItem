@@ -77,7 +77,7 @@ public class BrewingListener implements Listener {
 	@EventHandler 
 	public void onBrewerInvEvent(InventoryClickEvent event){
 		if(debug){
-			log.log("InventoryClick event fired. " + event.getRawSlot() + " " + event.getInventory().getType().name());
+			log.log("InventoryClick event fired. " + event.getRawSlot() + " " + event.getInventory().getType().name() + " " + event.getSlotType().name());
 		}
 		
 		if(event.getInventory().getType().equals(InventoryType.BREWING)){
@@ -99,20 +99,26 @@ public class BrewingListener implements Listener {
 							if (dPotions.contains(dv + ":" + ingredient)) {
 								event.setCancelled(true);
 								if (Configuration.notifyNoBrew()) {
-									p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+									notifyPlayer(p, dv + ":" + ingredient);
+								}
+								if(Configuration.notifyAdmins()){
+									notifyAdmin(p, dv + ":" + ingredient);
 								}
 							}
 						} else {
-							if (Permissions.NOBREW.has(p, dv, ingredient) || !p.isOp()) {
+							if (VaultPerms.Permissions.NOBREW.has(p, dv, ingredient) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)) {
 								event.setCancelled(true);
 								if (Configuration.notifyNoBrew()) {
-									p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+									notifyPlayer(p, dv + ":" + ingredient);
+								}
+								if(Configuration.notifyAdmins()){
+									notifyAdmin(p, dv + ":" + ingredient);
 								}
 							}
 						}	
 					}
 				}
-			//INGREDIENT SLOT CLICKED
+			//Ingredient slot
 			} else {
 				int ingredient = p.getItemOnCursor().getTypeId();
 				int[] dvs = this.ItemStackDV(event.getInventory());
@@ -121,16 +127,22 @@ public class BrewingListener implements Listener {
 						if(dPotions.contains(dv + ":" + ingredient)){
 							event.setCancelled(true);
 							if (Configuration.notifyNoBrew()) {
-								p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+								notifyPlayer(p, dv + ":" + ingredient);
+							}
+							if(Configuration.notifyAdmins()){
+								notifyAdmin(p, dv + ":" + ingredient);
 							}
 						}	
 					}
 				} else {
 					for (Integer dv : dvs) {
-						if (Permissions.NOBREW.has(p, dv, ingredient) || !p.isOp()) {
+						if (VaultPerms.Permissions.NOBREW.has(p, dv, ingredient) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)) {
 							event.setCancelled(true);
 							if (Configuration.notifyNoBrew()) {
-								p.sendMessage(ChatColor.BLUE + Configuration.noBrewMessage());
+								notifyPlayer(p, dv + ":" + ingredient);
+							}
+							if(Configuration.notifyAdmins()){
+								notifyAdmin(p, dv + ":" + ingredient);
 							}
 							break;
 						}
@@ -138,5 +150,35 @@ public class BrewingListener implements Listener {
 				}
 			}
 		}
+	}
+	
+	private void notifyPlayer(Player p, String recipe) {
+		String dn = p.getDisplayName();
+		String w = p.getWorld().getName();
+
+		int x = p.getLocation().getBlockX();
+		int y = p.getLocation().getBlockY();
+		int z = p.getLocation().getBlockZ();
+
+		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
+				+ StringHelper.replaceVars(Configuration.noBrewMessage(), dn, w, x, y, z, recipe));
+	}
+
+	private void notifyAdmin(Player p, String recipe) {
+		String dn = p.getDisplayName();
+		String w = p.getWorld().getName();
+
+		int x = p.getLocation().getBlockX();
+		int y = p.getLocation().getBlockY();
+		int z = p.getLocation().getBlockZ();
+		String formatedMessage = StringHelper.replaceVars(Configuration.adminMessage(), dn, w, x, y,
+				z, recipe);
+
+		log.log(formatedMessage);
+		Player[] players = Bukkit.getOnlinePlayers();
+		for (Player player : players)
+			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
+				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
+						+ formatedMessage);
 	}
 }

@@ -1,5 +1,6 @@
 package net.worldoftomorrow.nala.ni;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -13,6 +14,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 public class ToolListener implements Listener{
 	
 	private Log log = new Log();
+
+	private boolean notifyAdmin = Configuration.notifyAdmins();
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
@@ -23,10 +26,13 @@ public class ToolListener implements Listener{
 		if(Configuration.debugging()){
 			log.log("Block Break event fired. \nUsed: " + id);
 		}
-		if(Permissions.NOUSE.has(p, id) && !p.isOp() && !Permissions.ALLITEMS.has(p)){
+		if(VaultPerms.Permissions.NOUSE.has(p, id) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)){
 			event.setCancelled(true);
-			if(Configuration.notifyNoUse()){
-				p.sendMessage(ChatColor.BLUE + Configuration.noUseMessage());
+			if (Configuration.notifyNoUse()) {
+				notifyPlayer(p, id);
+			}
+			if (notifyAdmin) {
+				notifyAdmin(p, id);
 			}
 		}
 	}
@@ -39,14 +45,47 @@ public class ToolListener implements Listener{
 				int inHand = event.getPlayer().getItemInHand().getTypeId();
 				Player p = event.getPlayer();
 				if(inHand >= 290 && inHand <= 294){
-					if(Permissions.NOUSE.has(p, inHand) && !p.isOp() && !Permissions.ALLITEMS.has(p)){
+					if(VaultPerms.Permissions.NOUSE.has(p, inHand) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)){
 						event.setCancelled(true);
-						if(Configuration.notifyNoUse()){
-							p.sendMessage(ChatColor.BLUE + Configuration.noUseMessage());
+						if (Configuration.notifyNoUse()) {
+							notifyPlayer(p, inHand);
+						}
+						if (notifyAdmin) {
+							notifyAdmin(p, inHand);
 						}
 					}
 				}
 			}
 		}
+	}
+	
+	private void notifyPlayer(Player p, int iid) {
+		String dn = p.getDisplayName();
+		String w = p.getWorld().getName();
+
+		int x = p.getLocation().getBlockX();
+		int y = p.getLocation().getBlockY();
+		int z = p.getLocation().getBlockZ();
+
+		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
+				+ StringHelper.replaceVars(Configuration.playerMessage(), dn, w, x, y, z, iid));
+	}
+
+	private void notifyAdmin(Player p, int iid) {
+		String dn = p.getDisplayName();
+		String w = p.getWorld().getName();
+
+		int x = p.getLocation().getBlockX();
+		int y = p.getLocation().getBlockY();
+		int z = p.getLocation().getBlockZ();
+		String formatedMessage = StringHelper.replaceVars(Configuration.adminMessage(), dn, w, x, y,
+				z, iid);
+
+		log.log(formatedMessage);
+		Player[] players = Bukkit.getOnlinePlayers();
+		for (Player player : players)
+			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
+				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
+						+ formatedMessage);
 	}
 }

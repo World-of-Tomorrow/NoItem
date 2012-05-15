@@ -43,7 +43,7 @@ public class Updater {
 	}
 	
 	public boolean isLatest(){
-		if(currentMajor == latestMajor && currentMinor == latestMinor){
+		if(currentMajor >= latestMajor && currentMinor >= latestMinor){
 			return true;
 		} else {
 			return false;

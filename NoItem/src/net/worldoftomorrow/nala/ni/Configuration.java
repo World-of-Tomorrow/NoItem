@@ -37,21 +37,24 @@ public class Configuration {
 	private boolean eStopCrafting = true;
 	private boolean eStopItemPickup = true;
 	private boolean eStopPotionBrew = true;
+	private boolean eStopItemHold = true;
 	private boolean ePerItemPermissions = true;
 	private boolean eDebugging = false;
 	private boolean eStopToolUse = true;
 	private boolean eNotifyNoUse = true;
 	private boolean eNotifyNoBrew = true;
+	private boolean eNotifyNoHold = true;
 	
 	private String ePlayerMessage = "This item (%i) is not allowed.";
 	private String eAdminMessage = "Player %n tried to get item %i @ %x, %y, %z in the world %w.";
 	private String eNoUseMessage = "You are not allowed to use this tool!";
 	private String eNoBrewMessage = "You are not allowed to brew that potion!";
+	private String eNoHoldMessage = "You are not allowed to hold that!";
 	
 	private List<String> eDisallowedItems = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
-	private int configVersion = 2;
+	private int configVersion = 3;
 	
 	//----METHODS----//
 	public void load(){
@@ -129,6 +132,8 @@ public class Configuration {
 			writer.println("    NoUseMessage: " + eNoUseMessage);
 			writer.println("    NoBrew: " + eNotifyNoBrew);
 			writer.println("    NoBrewMessage: " + eNoBrewMessage);
+			writer.println("    NoHold: " + eNotifyNoHold);
+			writer.println("    NoHoldMessage: " + eNoHoldMessage);
 			writer.println("");
 			writer.println("# Blocked items list ( itemID:DamageValue )    ");
 			writer.println("DisallowedItems:");
@@ -192,6 +197,7 @@ public class Configuration {
 			writer.println("StopItemPickup: " + eStopItemPickup);
 			writer.println("StopPotionBrew: " + eStopPotionBrew);
 			writer.println("StopToolUse: " + eStopToolUse);
+			writer.println("StopItemHold: " + eStopItemHold);
 			writer.println("");
 			writer.println("# Permissions:");
 			writer.println("# 'noitem.nocraft.<item#>[.datavalue]' or");
@@ -222,10 +228,11 @@ public class Configuration {
 		this.eDebugging = conf.getBoolean("Debugging");
 		this.eStopToolUse = conf.getBoolean("StopToolUse");
 		this.eNotifyNoUse = conf.getBoolean("Notify.NoUse");
+		this.eNotifyNoBrew = conf.getBoolean("Notify.NoBrew");
+		this.eNoBrewMessage = conf.getString("Notify.NoBrewMessage");
 		
 		//Blocked until next update so it is not set to null
-		//this.eNotifyNoBrew = conf.getBoolean("Notify.NoBrew");
-		//this.eNoBrewMessage = conf.getString("Notify.NoBrewMessage");
+		//this.eStopItemHold = conf.getBoolean("StopItemHold");
 		
 		this.ePlayerMessage = conf.getString("Notify.PlayerMessage");
 		this.eAdminMessage = conf.getString("Notify.AdminMessage");
@@ -248,6 +255,10 @@ public class Configuration {
 	public static boolean notifyNoBrew(){
 		return Configuration.conf.getBoolean("Notify.NoBrew");
 	}
+	public static boolean notifyNoHold(){
+		return Configuration.conf.getBoolean("Notify.NoHold");
+	}
+	
 	public static boolean stopCrafting(){
 		return Configuration.conf.getBoolean("StopCrafting");
 	}
@@ -266,6 +277,10 @@ public class Configuration {
 	public static boolean stopToolUse(){
 		return Configuration.conf.getBoolean("StopToolUse");
 	}
+	public static boolean stopItemHold(){
+		return Configuration.conf.getBoolean("StopItemHold");
+	}
+	
 	public static String playerMessage(){
 		return Configuration.conf.getString("Notify.PlayerMessage");
 	}
@@ -277,6 +292,9 @@ public class Configuration {
 	}
 	public static String noBrewMessage(){
 		return Configuration.conf.getString("Notify.NoBrewMessage");
+	}
+	public static String noHoldMessage(){
+		return Configuration.conf.getString("Notify.NoHoldMessage");
 	}
 	public static List<String> disallowedItems(){
 		return Configuration.conf.getStringList("DisallowedItems");

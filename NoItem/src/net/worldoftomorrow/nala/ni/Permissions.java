@@ -9,7 +9,7 @@ public enum Permissions {
 	NOPICKUP("noitem.nopickup."),
 	NOBREW("noitem.nobrew."),
 	NOUSE("noitem.nouse."),
-	NOWIELD("noitem.nowield.");
+	NOHOLD("noitem.nohold.");
 
 	private String perm;
 
@@ -37,7 +37,7 @@ public enum Permissions {
 				return p.hasPermission(this.perm.concat(Integer.toString(iid)));
 			}
 		}
-		if (perm == NOBREW.getPerm()) {
+		if (perm.equals(NOBREW.getPerm())) {
 			return p.hasPermission(this.perm
 					.concat(Integer.toString(iid)
 					.concat(".")
@@ -53,7 +53,7 @@ public enum Permissions {
 		if (perm == NOCRAFT.getPerm() || perm == NOPICKUP.getPerm()) {
 			return p.hasPermission(this.perm + iid);
 		}
-		if(perm == NOUSE.getPerm() || perm == NOWIELD.getPerm()){
+		if(perm == NOUSE.getPerm() || perm == NOHOLD.getPerm()){
 			if(p.hasPermission(this.perm + iid)){
 				return true;
 			}

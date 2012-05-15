@@ -7,10 +7,13 @@ public class NoItem extends JavaPlugin {
 	private Log log = new Log();
 	
 	public Configuration config = new Configuration(this);
+	VaultPerms perms;
 	
 	public void onEnable() {
 		
 		config.load();
+		//Load this on enable, since a new instance is created before enable and doesn't load vault
+		perms = new VaultPerms(this);
 		
 		Updater updater = new Updater(this.getDescription().getVersion());
 		if(!updater.isLatest()){
@@ -26,6 +29,7 @@ public class NoItem extends JavaPlugin {
 		boolean pickupListen = Configuration.stopItemPickup();
 		boolean brewListen = Configuration.stopPotionBrew();
 		boolean toolListen = Configuration.stopToolUse();
+		boolean holdListen = Configuration.stopItemHold();
 		
 		if (craftListen) {
 			pm.registerEvents(new CraftingListener(), this);
@@ -39,9 +43,12 @@ public class NoItem extends JavaPlugin {
 		if(toolListen){
 			pm.registerEvents(new ToolListener(), this);
 		}
+		if(holdListen){
+			pm.registerEvents(new InHandListener(), this);
+		}
 		this.log.log("[NoItem] Configs loaded, events registered, and cake baked.");
 		
-		if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen)) {
+		if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen) && (!holdListen)) {
 			this.log.log("[NoItem] No listeners active! Shutting down plugin.");
 			getPluginLoader().disablePlugin(this);
 		}
