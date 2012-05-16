@@ -12,7 +12,6 @@ public class NoItem extends JavaPlugin {
 	public void onEnable() {
 		
 		config.load();
-		//Load this on enable, since a new instance is created before enable and doesn't load vault
 		perms = new VaultPerms(this);
 		
 		Updater updater = new Updater(this.getDescription().getVersion());
