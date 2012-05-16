@@ -12,7 +12,7 @@ public class VaultPerms {
 	private static boolean useVault = false;
 	public VaultPerms(NoItem plugin){
 		this.plugin = plugin;
-		this.setupPerms();
+		useVault = this.setupPerms();
 	}
 	
 	public static Permission permission = null;
@@ -22,7 +22,6 @@ public class VaultPerms {
 			RegisteredServiceProvider<Permission> permProvider = plugin.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
 			if(permProvider != null){
 				permission = permProvider.getProvider();
-				useVault = true;
 				log.log("[NoItem] Hooked into vault for permissions.");
 			}
 		} catch (NoClassDefFoundError e){
@@ -48,7 +47,7 @@ public class VaultPerms {
 
 		public boolean has(Player p) {
 			if(useVault){
-				return permission.has(p, this.perm);
+				return permission.playerHas(p, this.perm);
 			} else {
 				return p.hasPermission(this.perm);
 			}
@@ -66,13 +65,13 @@ public class VaultPerms {
 							.concat(".")
 							.concat(Integer.toString(dv));
 					if(useVault){
-						return permission.has(p, perm);
+						return permission.playerHas(p, perm);
 					} else {
 						return p.hasPermission(perm);
 					} // If data value != 0
 				} else {
 					if(useVault){
-						return permission.has(p, this.perm.concat(Integer.toString(iid)));
+						return permission.playerHas(p, this.perm.concat(Integer.toString(iid)));
 					} else {
 						return p.hasPermission(this.perm.concat(Integer.toString(iid)));
 					}
@@ -84,7 +83,7 @@ public class VaultPerms {
 						.concat(".")
 						.concat(Integer.toString(dv)));
 				if(useVault){
-					return permission.has(p, perm);
+					return permission.playerHas(p, perm);
 				} else {
 					return p.hasPermission(perm);
 				}
@@ -92,7 +91,7 @@ public class VaultPerms {
 			
 			else {
 				if(useVault){
-					return permission.has(p, this.perm);
+					return permission.playerHas(p, this.perm);
 				} else {
 					return p.hasPermission(this.perm);
 				}
@@ -102,7 +101,7 @@ public class VaultPerms {
 		public boolean has(Player p, int iid) {
 			if (perm == NOCRAFT.getPerm() || perm == NOPICKUP.getPerm()) {
 				if(useVault){
-					return permission.has(p, this.perm + iid);
+					return permission.playerHas(p, this.perm + iid);
 				} else {
 					return p.hasPermission(this.perm + iid);
 				}
@@ -110,11 +109,11 @@ public class VaultPerms {
 			if(perm == NOUSE.getPerm() || perm == NOHOLD.getPerm()){
 				if(useVault){
 					//This is to check for tools aliases
-					if(permission.has(p, this.perm + iid)){
+					if(permission.playerHas(p, this.perm + iid)){
 						return true;
 					}
 					if (Tools.tools.containsKey(iid)) {
-						return permission.has(p, this.perm + Tools.getTool(iid).getName());
+						return permission.playerHas(p, this.perm + Tools.getTool(iid).getName());
 					} else {
 						return false;
 					}
@@ -131,7 +130,7 @@ public class VaultPerms {
 				
 			} else {
 				if(useVault){
-					return permission.has(p, this.perm);
+					return permission.playerHas(p, this.perm);
 				} else {
 					return p.hasPermission(this.perm); // If the permission does not need an
 				}
