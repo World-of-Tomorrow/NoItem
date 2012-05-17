@@ -14,6 +14,9 @@
   		<id>Bukkit</id>
   		<url>http://repo.bukkit.org/content/groups/public</url>
   	</repository>
+  	<repository>
+  		<id>Milkbowl</id>
+  		<url>http://ci.milkbowl.net/plugin/repository/everything/</url></repository>
   </repositories>
   <dependencies>
   	<dependency>
@@ -21,13 +24,15 @@
   		<artifactId>bukkit</artifactId>
   		<version>1.2.5-R1.3-SNAPSHOT</version>
   		<type>jar</type>
-  		<scope>compile</scope></dependency>
+  		<scope>compile</scope>
+  		<optional>false</optional></dependency>
   	<dependency>
   		<artifactId>Vault</artifactId>
   		<groupId>net.milkbowl.vault</groupId>
   		<scope>compile</scope>
   		<version>1.2.16</version>
-  		<type>jar</type></dependency></dependencies>
+  		<type>jar</type>
+  		<optional>false</optional></dependency></dependencies>
   <build>
   	<defaultGoal>clean install</defaultGoal>
   	<sourceDirectory>${basedir}/src/</sourceDirectory></build>
