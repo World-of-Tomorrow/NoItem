@@ -34,6 +34,6 @@
   		<type>jar</type>
   		<optional>false</optional></dependency></dependencies>
   <build>
-  	<defaultGoal>clean install</defaultGoal>
+  	<defaultGoal>compile package</defaultGoal>
   	<sourceDirectory>${basedir}/src/</sourceDirectory></build>
 </project>
