@@ -21,7 +21,13 @@
   		<artifactId>bukkit</artifactId>
   		<version>1.2.5-R1.3-SNAPSHOT</version>
   		<type>jar</type>
-  		<scope>compile</scope></dependency></dependencies>
+  		<scope>compile</scope></dependency>
+  	<dependency>
+  		<artifactId>Vault</artifactId>
+  		<groupId>net.milkbowl.vault</groupId>
+  		<scope>compile</scope>
+  		<version>1.2.16</version>
+  		<type>jar</type></dependency></dependencies>
   <build>
   	<defaultGoal>clean install</defaultGoal>
   	<sourceDirectory>${basedir}/src/</sourceDirectory></build>
