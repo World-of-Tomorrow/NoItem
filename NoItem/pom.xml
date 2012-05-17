@@ -26,14 +26,16 @@
   		<version>1.2.5-R1.3-SNAPSHOT</version>
   		<type>jar</type>
   		<scope>compile</scope>
-  		<optional>false</optional></dependency>
+  		<optional>false</optional>
+  	</dependency>
   	<dependency>
   		<artifactId>Vault</artifactId>
   		<groupId>net.milkbowl.vault</groupId>
   		<scope>compile</scope>
   		<version>1.2.16-SNAPSHOT</version>
   		<type>jar</type>
-  		<optional>false</optional></dependency>
+  		<optional>false</optional>
+  	</dependency>
   </dependencies>
   <build>
   	<defaultGoal>compile package</defaultGoal>
@@ -41,7 +43,10 @@
   	<resources>
   		<resource>
   			<includes>
-  				<include>plugin.yml</include></includes></resource></resources>
+  				<include>plugin.yml</include>
+  			</includes>
+  		</resource>
+  	</resources>
 
   </build>
   <properties>
