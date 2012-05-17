@@ -133,7 +133,7 @@ public class CraftingListener implements Listener {
 		log.log(formatedMessage);
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players)
-			if ((player.isOp()) || (Permissions.ADMIN.has(player)))
+			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
 				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 						+ formatedMessage);
 	}

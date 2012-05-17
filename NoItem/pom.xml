@@ -1,0 +1,16 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>NoItem</groupId>
+  <artifactId>NoItem</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>NoItem</name>
+  <description>Item control plugin for Bukkit</description>
+  <organization>
+  	<name>World of Tomorrow</name>
+  	<url>http://www.worldoftomorrow.net</url>
+  </organization>
+  <repositories>
+  	<repository>
+  		<id>Bukkit</id>
+  		<url>http://repo.bukkit.org/content/groups/public/org/bukkit/bukkit/</url></repository></repositories>
+</project>
