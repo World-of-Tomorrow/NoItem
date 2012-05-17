@@ -1,9 +1,0 @@
-name: NoItem
-version: 1.9
-website: http://dev.bukkit.org/server-mods/noitem/
-description: Stops certain items from being crafted/picked up, effectivally removing them on the server.
-author: nala3
-
-main: net.worldoftomorrow.nala.ni.NoItem
-database: false
-softdepend: [Vault]
