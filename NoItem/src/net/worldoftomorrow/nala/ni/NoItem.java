@@ -19,6 +19,9 @@ public class NoItem extends JavaPlugin {
 			log.log("--------------------No Item--------------------");
 			log.log("There is a new version ( " + updater.getLatest() + " ) available.");
 			log.log("Download it at: " + this.getDescription().getWebsite());
+			if(Configuration.pluginChannel().equalsIgnoreCase("dev")){
+				log.log("You are using the development version channel!");
+			}
 			log.log("-----------------------------------------------");
 		}
 		

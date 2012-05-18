@@ -44,6 +44,7 @@ public class Configuration {
 	private boolean eNotifyNoUse = true;
 	private boolean eNotifyNoBrew = true;
 	private boolean eNotifyNoHold = true;
+	private String ePluginChannel = "main";
 	
 	private String ePlayerMessage = "This item (%i) is not allowed.";
 	private String eAdminMessage = "Player %n tried to get item %i @ %x, %y, %z in the world %w.";
@@ -54,7 +55,7 @@ public class Configuration {
 	private List<String> eDisallowedItems = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
-	private int configVersion = 3;
+	private int configVersion = 4;
 	
 	//----METHODS----//
 	public void load(){
@@ -210,6 +211,10 @@ public class Configuration {
 			writer.println("#Don't turn this on unless you like getting spammed with messages!");
 			writer.println("Debugging: " + eDebugging);
 			writer.println("");
+			writer.println("# This is to change whether you recieve update notifications");
+			writer.println("# for recommended builds or for development builds. (main/dev)");
+			writer.println("PluginChannel: " + ePluginChannel);
+			writer.println("");
 			writer.println("ConfigurationVersion: " + configVersion);
 			writer.close();
 		}
@@ -224,6 +229,7 @@ public class Configuration {
 		this.eStopCrafting = conf.getBoolean("StopCrafting");
 		this.eStopItemPickup = conf.getBoolean("StopItemPickup");
 		this.eStopPotionBrew = conf.getBoolean("StopPotionBrew");
+		this.eStopItemHold = conf.getBoolean("StopItemHold");
 		this.ePerItemPermissions = conf.getBoolean("PerItemPermissions");
 		this.eDebugging = conf.getBoolean("Debugging");
 		this.eStopToolUse = conf.getBoolean("StopToolUse");
@@ -232,7 +238,7 @@ public class Configuration {
 		this.eNoBrewMessage = conf.getString("Notify.NoBrewMessage");
 		
 		//Blocked until next update so it is not set to null
-		//this.eStopItemHold = conf.getBoolean("StopItemHold");
+		//this.ePluginChannel = conf.getString("PluginChannel");
 		
 		this.ePlayerMessage = conf.getString("Notify.PlayerMessage");
 		this.eAdminMessage = conf.getString("Notify.AdminMessage");
@@ -295,6 +301,9 @@ public class Configuration {
 	}
 	public static String noHoldMessage(){
 		return Configuration.conf.getString("Notify.NoHoldMessage");
+	}
+	public static String pluginChannel(){
+		return Configuration.conf.getString("PluginChannel");
 	}
 	public static List<String> disallowedItems(){
 		return Configuration.conf.getStringList("DisallowedItems");
