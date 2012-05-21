@@ -2,9 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.worldoftomorrow.ni</groupId>
   <artifactId>NoItem</artifactId>
-  <version>2.0.1</version>
+  <version>2.0.2-SNAPSHOT</version>
   <name>NoItem</name>
-  <description>Item control plugin for Bukkit</description>
   <organization>
   	<name>World of Tomorrow</name>
   	<url>http://www.worldoftomorrow.net</url>
@@ -54,4 +53,5 @@
   	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   <url>http://dev.bukkit.org/server-mods/noitem/</url>
+  <description>Advanced item control plugin for the Bukkit Minecraft server. NoItem provides an effective way of controlling who can use and make what on a server.</description>
 </project>
