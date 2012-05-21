@@ -13,10 +13,10 @@ public class StringHelper
     msg = msg.replace("%y", y);
     msg = msg.replace("%z", z);
     if(Tools.getTool(iid) != null){
-    	msg = msg.replace("%i", Tools.getTool(iid).getName());
+    	msg = msg.replace("%i", Tools.getTool(iid).getRealName());
     }
     if(Armour.getArmour(iid) != null){
-    	msg = msg.replace("%i", Armour.getArmour(iid).getName());
+    	msg = msg.replace("%i", Armour.getArmour(iid).getRealName());
     } else {
         String id = Integer.toString(iid);
     	msg = msg.replace("%i", id);
