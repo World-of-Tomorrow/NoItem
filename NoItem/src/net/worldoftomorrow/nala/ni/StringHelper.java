@@ -15,7 +15,7 @@ public class StringHelper
     if(Tools.getTool(iid) != null){
     	msg = msg.replace("%i", Tools.getTool(iid).getRealName());
     }
-    if(Armour.getArmour(iid) != null){
+    else if(Armour.getArmour(iid) != null){
     	msg = msg.replace("%i", Armour.getArmour(iid).getRealName());
     } else {
         String id = Integer.toString(iid);
