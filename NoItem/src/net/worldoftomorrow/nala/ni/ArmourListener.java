@@ -36,22 +36,20 @@ public class ArmourListener implements Listener {
 				}
 				//Shift click checking
 			} else {
-				if(event.getSlotType().equals(SlotType.ARMOR)){
-					if(VaultPerms.Permissions.NOWEAR.has(p, iid)
-							&& !p.isOp()
-							&& !VaultPerms.Permissions.ALLITEMS.has(p)
-							){
-						if(Configuration.notifyNoHold()){
-							notifyPlayer(p, iid);
-						}
-						if(Configuration.notifyAdmins()){
-							notifyAdmin(p, iid);
-						}
-						//event.setCancelled(true);
-						ItemStack armour = event.getCursor();
-						if(armour != null){
-							p.getInventory().setItem(event.getRawSlot(), null);
-							p.setItemOnCursor(armour);
+				if (event.getSlotType().equals(SlotType.ARMOR)) {
+					if (event.getCursor() != null) {
+						iid = event.getCursor().getTypeId();
+						
+						if (VaultPerms.Permissions.NOWEAR.has(p, iid)
+								&& !p.isOp()
+								&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
+							if (Configuration.notifyNoHold()) {
+								notifyPlayer(p, iid);
+							}
+							if (Configuration.notifyAdmins()) {
+								notifyAdmin(p, iid);
+							}
+							event.setCancelled(true);
 						}
 					}
 				}
