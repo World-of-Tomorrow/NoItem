@@ -1,5 +1,8 @@
 package net.worldoftomorrow.nala.ni;
 
+import net.milkbowl.vault.item.ItemInfo;
+import net.milkbowl.vault.item.Items;
+
 public class StringHelper
 {
   public static String replaceVars(String msg, String n, String w, int ix, int iy, int iz, int iid)
@@ -17,6 +20,9 @@ public class StringHelper
     }
     else if(Armour.getArmour(iid) != null){
     	msg = msg.replace("%i", Armour.getArmour(iid).getRealName());
+    } else if(VaultPerms.useVault){
+    	ItemInfo info = Items.itemById(iid);
+    	msg = msg.replace("%i", info.getName());
     } else {
         String id = Integer.toString(iid);
     	msg = msg.replace("%i", id);

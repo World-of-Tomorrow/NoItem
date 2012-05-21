@@ -9,7 +9,7 @@ public class VaultPerms {
 	
 	private Log log = new Log();
 	private NoItem plugin;
-	private static boolean useVault = false;
+	protected static boolean useVault = false;
 	public VaultPerms(NoItem plugin){
 		this.plugin = plugin;
 		useVault = this.setupPerms();
