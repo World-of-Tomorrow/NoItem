@@ -1,8 +1,5 @@
 package net.worldoftomorrow.nala.ni;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,43 +10,19 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 public class PickupListener implements Listener {
 	
 	private static Log log = new Log();
-
-	private List<String> rawItems = Configuration.disallowedItems();
-
-	private List<String> dItems = new ArrayList<String>();
-
-	private boolean itemsAdded = false;
-
-	private void addItems() {
-		for (String raw : rawItems) {
-			if (raw.contains(":")) {
-				dItems.add(raw);
-			} else {
-				String n = raw.concat(":0");
-				dItems.add(n);
-			}
-		}
-	}
-
-	private boolean notifyPlayer = Configuration.notifyPlayer();
+	
+	private boolean notifyNoPickup = Configuration.notifyNoPickup();
 
 	private boolean notifyAdmin = Configuration.notifyAdmins();
 
-	private boolean perItemPerms = Configuration.perItemPerms();
-
 	private boolean debug = Configuration.debugging();
 
-	private String pm = Configuration.playerMessage();
+	private String pm = Configuration.noPickupMessage();
 
 	private String am = Configuration.adminMessage();
 
 	@EventHandler
 	public void onPickup(PlayerPickupItemEvent event) {
-		if (!itemsAdded) {
-			addItems();
-			itemsAdded = true;
-		}
-
 		if (debug) {
 			log.log(
 					"PlayerPickupItemEvent fired. picked up: "
@@ -59,52 +32,32 @@ public class PickupListener implements Listener {
 		Player p = event.getPlayer();
 		int iid = event.getItem().getItemStack().getTypeId();
 		int dv = (short) event.getItem().getItemStack().getDurability();
-
-		if (!this.perItemPerms) { // If you the list should be used
-			if (dItems.contains(iid + ":" + dv)) {
-				if ((!VaultPerms.Permissions.ALLITEMS.has(p)) || (!p.isOp())) {
-					event.setCancelled(true);
-					// Set the pickup delay to prevent chat overload.
-					event.getItem().setPickupDelay(100);
-					if (this.notifyPlayer) {
-						notifyPlayer(p, iid);
-					}
-					if (this.notifyAdmin)
-						notifyAdmin(p, iid);
-				}
-			} else if (debug) {
-				p.sendMessage("This item can be picked up.");
+		// If there is no data value
+		if (dv == 0 && VaultPerms.Permissions.NOPICKUP.has(p, iid)
+				&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
+			event.setCancelled(true);
+			event.getItem().setPickupDelay(100);
+			if (notifyNoPickup) {
+				notifyPlayer(p, iid);
 			}
-			
-			/*--Per Item Permissions--*/
+			if (notifyAdmin) {
+				notifyAdmin(p, iid);
+			}
+		}
+		// If there IS a data value
+		if (dv != 0 && VaultPerms.Permissions.NOPICKUP.has(p, iid, dv)
+				&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
+			event.setCancelled(true);
+			event.getItem().setPickupDelay(100);
+			if (notifyNoPickup) {
+				notifyPlayer(p, iid);
+			}
+			if (notifyAdmin) {
+				notifyAdmin(p, iid);
+			}
 		} else {
-			// If there is no data value
-			if (dv == 0 && VaultPerms.Permissions.NOPICKUP.has(p, iid)
-					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
-				event.setCancelled(true);
-				event.getItem().setPickupDelay(100);
-				if (notifyPlayer) {
-					notifyPlayer(p, iid);
-				}
-				if (notifyAdmin) {
-					notifyAdmin(p, iid);
-				}
-			}
-			//If there IS a data value
-			if (dv != 0 && VaultPerms.Permissions.NOPICKUP.has(p, iid, dv)
-					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
-				event.setCancelled(true);
-				event.getItem().setPickupDelay(100);
-				if (notifyPlayer) {
-					notifyPlayer(p, iid);
-				}
-				if (notifyAdmin) {
-					notifyAdmin(p, iid);
-				}
-			} else {
-				if (debug) {
-					p.sendMessage("This item can be picked up.");
-				}
+			if (debug) {
+				p.sendMessage("This item can be picked up.");
 			}
 		}
 	}

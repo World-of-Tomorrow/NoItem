@@ -32,13 +32,14 @@ public class Configuration {
 	private boolean loaded = false;
 	
 	//--------CONFIG DEFAULTS--------//
-	private boolean eNotifyPlayer = true;
 	private boolean eNotifyAdmins = true;
 	private boolean eStopToolUse = true;
 	private boolean eNotifyNoUse = true;
 	private boolean eNotifyNoBrew = true;
 	private boolean eNotifyNoHold = true;
 	private boolean eNotifyNoWear = true;
+	private boolean eNotifyNoCraft = true;
+	private boolean eNotifyNoPickup = true;
 	
 	private boolean eStopCrafting = true;
 	private boolean eStopItemPickup = true;
@@ -50,14 +51,15 @@ public class Configuration {
 	private boolean eDebugging = false;
 	private String ePluginChannel = "main";
 	
-	private String ePlayerMessage = "This item (%i) is not allowed.";
 	private String eAdminMessage = "Player %n tried to get item %i @ %x, %y, %z in the world %w.";
 	private String eNoUseMessage = "You are not allowed to use this tool!";
 	private String eNoBrewMessage = "You are not allowed to brew that potion!";
 	private String eNoHoldMessage = "You are not allowed to hold that!";
 	private String eNoWearMessage = "You are not allowed to wear that!";
+	private String eNoCraftMessage = "You are not allowed to craft %i.";
+	private String eNoPickupMessage = "You are not allowed to pick that up! (%i)";
 	
-	private List<String> eDisallowedItems = new ArrayList<String>();
+	private List<String> eDisallowedCrafting = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
 	private int configVersion = 5;
@@ -130,8 +132,6 @@ public class Configuration {
 			writer.println("# %z = Z location");
 			writer.println("# %w = world");
 			writer.println("Notify:");
-			writer.println("    Player: " + eNotifyPlayer);
-			writer.println("    PlayerMessage: " + ePlayerMessage);
 			writer.println("    Admins: " + eNotifyAdmins);
 			writer.println("    AdminMessage: " + eAdminMessage);
 			writer.println("    NoUse: " + eNotifyNoUse);
@@ -142,15 +142,19 @@ public class Configuration {
 			writer.println("    NoHoldMessage: " + eNoHoldMessage);
 			writer.println("    NoWear: " + eNotifyNoWear);
 			writer.println("    NoWearMessage: " + eNoWearMessage);
+			writer.println("    NoCraft: " + eNotifyNoCraft);
+			writer.println("    NoCraftMessage: " + eNoCraftMessage);
+			writer.println("    NoPickup: " + eNotifyNoPickup);
+			writer.println("    NoPickupMessage: " + eNoPickupMessage);
 			writer.println("");
 			writer.println("# Blocked items list ( itemID:DamageValue )    ");
-			writer.println("DisallowedItems:");
-			if(eDisallowedItems.isEmpty()){
+			writer.println("DisallowedCraftingRecipes:");
+			if(eDisallowedCrafting.isEmpty()){
 				writer.println("    - '5'");
 				writer.println("    - '5:1'");
 				writer.println("    - '5:2'");
 			} else {
-				for(String item : eDisallowedItems){
+				for(String item : eDisallowedCrafting){
 					writer.println("    - '" + item + "'");
 				}
 			}
@@ -213,7 +217,7 @@ public class Configuration {
 			writer.println("# 'noitem.nopickup.<item#>[.datavalue]' or");
 			writer.println("# 'noitem.nobrew.<potionDV>.<IngredientID>'");
 			writer.println("# 'noitem.nouse.<tool# OR toolname>' (i.e. noitem.nouse.diamondaxe)");
-			writer.println("# 'noitem.allitems' overrides ALL ( DisallowedItems and PerItemPermissions )");
+			writer.println("# 'noitem.allitems' overrides ALL Permissions.");
 			writer.println("PerItemPermissions: " + ePerItemPermissions);
 			writer.println("");
 			writer.println("#Don't turn this on unless you like getting spammed with messages!");
@@ -232,7 +236,6 @@ public class Configuration {
 		configFile = new File(plugin.getDataFolder(), config);
 		conf = YamlConfiguration.loadConfiguration(configFile);
 		//--------SET CONFIG OPTIONS TO WHAT SERVER HAS SELECTED--------//
-		this.eNotifyPlayer = conf.getBoolean("Notify.Player");
 		this.eNotifyAdmins = conf.getBoolean("Notify.Admins");
 		this.eStopCrafting = conf.getBoolean("StopCrafting");
 		this.eStopItemPickup = conf.getBoolean("StopItemPickup");
@@ -245,29 +248,29 @@ public class Configuration {
 		this.eNotifyNoBrew = conf.getBoolean("Notify.NoBrew");
 		this.eNoBrewMessage = conf.getString("Notify.NoBrewMessage");
 		
-		if(configVersion >= 4){
+		if(configVersion <= 4){
 			this.ePluginChannel = conf.getString("PluginChannel");
 		}
 		
-		if(configVersion >= 5){
+		if(configVersion <= 5){
 			this.eStopWear = conf.getBoolean("StopArmourWear");
 			this.eNoWearMessage = conf.getString("Notify.NoWearMessage");
 			this.eNotifyNoWear = conf.getBoolean("Notify.NoWear");
+			this.eNotifyNoCraft = conf.getBoolean("Notify.NoCraft");
+			this.eNoCraftMessage = conf.getString("Notify.NoCraftMessage");
+			this.eNoPickupMessage = conf.getString("Notify.NoPickupMessage");
+			this.eNotifyNoPickup = conf.getBoolean("Notfy.NoPickup");
 		}
 		
-		this.ePlayerMessage = conf.getString("Notify.PlayerMessage");
 		this.eAdminMessage = conf.getString("Notify.AdminMessage");
 		this.eNoUseMessage = conf.getString("Notify.NoUseMessage");
 		
-		this.eDisallowedItems = conf.getStringList("DisallowedItems");
+		this.eDisallowedCrafting = conf.getStringList("DisallowedCraftingRecipes");
 		this.eDisallowedPotionRecipes = conf.getStringList("DisallowedPotionRecipes");
 	}
 	
 	//----GETTERS----//
 	//Notify//
-	public static boolean notifyPlayer(){
-		return Configuration.conf.getBoolean("Notify.Player");
-	}
 	public static boolean notifyAdmins(){
 		return Configuration.conf.getBoolean("Notify.Admins");
 	}
@@ -282,6 +285,12 @@ public class Configuration {
 	}
 	public static boolean notfiyNoWear(){
 		return Configuration.conf.getBoolean("Notify.NoWear");
+	}
+	public static boolean notifyNoCraft(){
+		return Configuration.conf.getBoolean("Notify.NoCraft");
+	}
+	public static boolean notifyNoPickup(){
+		return Configuration.conf.getBoolean("Notify.NoPickup");
 	}
 	//Stop//
 	public static boolean stopCrafting(){
@@ -313,9 +322,6 @@ public class Configuration {
 		return Configuration.conf.getString("PluginChannel");
 	}
 	//Message//
-	public static String playerMessage(){
-		return Configuration.conf.getString("Notify.PlayerMessage");
-	}
 	public static String adminMessage(){
 		return Configuration.conf.getString("Notify.AdminMessage");
 	}
@@ -331,10 +337,15 @@ public class Configuration {
 	public static String noWearMessage(){
 		return Configuration.conf.getString("Notify.NoWearMessage");
 	}
-	
+	public static String noCraftMessage(){
+		return Configuration.conf.getString("Notify.NoCraftMessage");
+	}
+	public static String noPickupMessage(){
+		return Configuration.conf.getString("Notify.NoPickupMessage");
+	}
 	//Lists//
-	public static List<String> disallowedItems(){
-		return Configuration.conf.getStringList("DisallowedItems");
+	public static List<String> disallowedCrafting(){
+		return Configuration.conf.getStringList("DisallowedCraftingRecipes");
 	}
 	public static List<String> disallowedPotions(){
 		return Configuration.conf.getStringList("DisallowedPotionRecipes");

@@ -14,7 +14,7 @@ public class CraftingListener implements Listener {
 	
 	private static Log log = new Log();
 
-	private List<String> rawItems = Configuration.disallowedItems();
+	private List<String> rawItems = Configuration.disallowedCrafting();
 
 	private List<String> dItems = new ArrayList<String>();
 
@@ -31,15 +31,13 @@ public class CraftingListener implements Listener {
 		}
 	}
 
-	private boolean notifyPlayer = Configuration.notifyPlayer();
+	private boolean notifyPlayer = Configuration.notifyNoCraft();
 
 	private boolean notifyAdmin = Configuration.notifyAdmins();
 
 	private boolean perItemPerms = Configuration.perItemPerms();
 
 	private boolean debug = Configuration.debugging();
-
-	private String pm = Configuration.playerMessage();
 
 	private String am = Configuration.adminMessage();
 
@@ -117,7 +115,7 @@ public class CraftingListener implements Listener {
 		int z = p.getLocation().getBlockZ();
 
 		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-				+ StringHelper.replaceVars(this.pm, dn, w, x, y, z, iid));
+				+ StringHelper.replaceVars(Configuration.noCraftMessage(), dn, w, x, y, z, iid));
 	}
 
 	private void notifyAdmin(Player p, int iid) {
