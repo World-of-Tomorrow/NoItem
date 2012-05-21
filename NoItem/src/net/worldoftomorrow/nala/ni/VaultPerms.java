@@ -37,7 +37,8 @@ public class VaultPerms {
 		NOPICKUP("noitem.nopickup."),
 		NOBREW("noitem.nobrew."),
 		NOUSE("noitem.nouse."),
-		NOHOLD("noitem.nohold.");
+		NOHOLD("noitem.nohold."),
+		NOWEAR("noitem.nowear.");
 
 		private String perm;
 
@@ -56,9 +57,10 @@ public class VaultPerms {
 		public String getPerm() {
 			return this.perm;
 		}
-
+		
+		//TODO: Clean this up, it can be done better
 		public boolean has(Player p, int iid, int dv) {
-			if (this.perm == NOCRAFT.getPerm() || this.perm == NOPICKUP.getPerm()) {
+			if (perm.equalsIgnoreCase(NOCRAFT.getPerm()) || perm.equalsIgnoreCase(NOPICKUP.getPerm())) {
 				if (dv != 0) {
 					String perm = this.perm
 							.concat(Integer.toString(iid))
@@ -77,7 +79,7 @@ public class VaultPerms {
 					}
 				}
 			}
-			if (perm.equals(NOBREW.getPerm())) {
+			if (perm.equalsIgnoreCase(NOBREW.getPerm())) {
 				String perm = this.perm
 						.concat(Integer.toString(iid)
 						.concat(".")
@@ -99,14 +101,14 @@ public class VaultPerms {
 		}
 
 		public boolean has(Player p, int iid) {
-			if (perm == NOCRAFT.getPerm() || perm == NOPICKUP.getPerm()) {
+			if (perm.equalsIgnoreCase(NOCRAFT.getPerm()) || perm.equalsIgnoreCase(NOPICKUP.getPerm())) {
 				if(useVault){
 					return permission.playerHas(p, this.perm + iid);
 				} else {
 					return p.hasPermission(this.perm + iid);
 				}
 			}
-			if(perm == NOUSE.getPerm() || perm == NOHOLD.getPerm()){
+			if(perm.equalsIgnoreCase(NOUSE.getPerm()) || perm.equalsIgnoreCase(NOHOLD.getPerm())){
 				if(useVault){
 					//This is to check for tools aliases
 					if(permission.playerHas(p, this.perm + iid)){
@@ -128,11 +130,32 @@ public class VaultPerms {
 					}
 				}
 				
+			}
+			if(perm.equalsIgnoreCase(NOWEAR.getPerm())){
+				if(useVault){
+					if(permission.playerHas(p, this.perm + iid)){
+						return true;
+					}
+					if(Armour.armours.containsKey(iid)){
+						return permission.playerHas(p, this.perm + Armour.getArmour(iid).getName());
+					} else {
+						return false;
+					}
+				} else {
+					if(p.hasPermission(this.perm + iid)){
+						return true;
+					}
+					if(Armour.armours.containsKey(iid)){
+						return p.hasPermission(this.perm + Armour.getArmour(iid).getName());
+					} else {
+						return false;
+					}
+				}
 			} else {
 				if(useVault){
 					return permission.playerHas(p, this.perm);
 				} else {
-					return p.hasPermission(this.perm); // If the permission does not need an
+					return p.hasPermission(this.perm); // If the permission does not need a dv
 				}
 			}
 		}

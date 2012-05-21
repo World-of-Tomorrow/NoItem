@@ -1,5 +1,8 @@
 package net.worldoftomorrow.nala.ni;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -13,9 +16,22 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 public class ToolListener implements Listener{
 	
+	public ToolListener(){
+		
+	}
+	
 	private Log log = new Log();
 
 	private boolean notifyAdmin = Configuration.notifyAdmins();
+	
+	private Map<Integer, Tools> blockTools = new HashMap<Integer, Tools>();
+	/*
+	 * I could do it based on permissions, or based off a list...maybe both?
+	 * i.e. noitem.nouse.diamondpick.5 or
+	 * BlockToolDefinitions:
+	 *     - diamondpick:stone
+	 *     - woodaxe:wood:1
+	 */
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
