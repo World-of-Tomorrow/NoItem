@@ -141,7 +141,7 @@ public class Configuration {
 			writer.println("    NoHold: " + eNotifyNoHold);
 			writer.println("    NoHoldMessage: " + eNoHoldMessage);
 			writer.println("    NoWear: " + eNotifyNoWear);
-			writer.println("    NoWearMessage:" + eNoWearMessage);
+			writer.println("    NoWearMessage: " + eNoWearMessage);
 			writer.println("");
 			writer.println("# Blocked items list ( itemID:DamageValue )    ");
 			writer.println("DisallowedItems:");
