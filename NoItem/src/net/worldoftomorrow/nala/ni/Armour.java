@@ -47,7 +47,7 @@ public enum Armour {
 	
 	public static Armour getArmour(int id){
 		if(armours.containsKey(id)){
-			return armours.get(id);	
+			return armours.get(id);
 		} else {
 			return null;
 		}
@@ -55,7 +55,7 @@ public enum Armour {
 	
 	public static Armour getArmour(String name){
 		if(names.containsKey(name)){
-			return names.get(name);	
+			return names.get(name);
 		} else {
 			return null;
 		}

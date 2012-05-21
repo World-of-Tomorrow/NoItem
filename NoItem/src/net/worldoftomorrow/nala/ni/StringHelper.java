@@ -7,18 +7,18 @@ public class StringHelper
     String x = Integer.toString(ix);
     String y = Integer.toString(iy);
     String z = Integer.toString(iz);
-    String id = Integer.toString(iid);
     msg = msg.replace("%n", n);
     msg = msg.replace("%w", w);
     msg = msg.replace("%x", x);
     msg = msg.replace("%y", y);
     msg = msg.replace("%z", z);
-    if(Tools.getTool(id) != null){
-    	msg = msg.replace("%i", Tools.getTool(id).getName());
+    if(Tools.getTool(iid) != null){
+    	msg = msg.replace("%i", Tools.getTool(iid).getName());
     }
-    if(Armour.getArmour(id) != null){
-    	msg = msg.replace("%i", Armour.getArmour(id).getName());
+    if(Armour.getArmour(iid) != null){
+    	msg = msg.replace("%i", Armour.getArmour(iid).getName());
     } else {
+        String id = Integer.toString(iid);
     	msg = msg.replace("%i", id);
     }
     return msg;
