@@ -8,6 +8,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.inventory.ItemStack;
 
 public class ArmourListener implements Listener {
 	
@@ -46,7 +47,12 @@ public class ArmourListener implements Listener {
 						if(Configuration.notifyAdmins()){
 							notifyAdmin(p, iid);
 						}
-						event.setCancelled(true);
+						//event.setCancelled(true);
+						ItemStack armour = event.getCursor();
+						if(armour != null){
+							p.getInventory().setItem(event.getRawSlot(), null);
+							p.setItemOnCursor(armour);
+						}
 					}
 				}
 			}
