@@ -1,7 +1,7 @@
 package net.worldoftomorrow.nala.ni;
 
-import java.util.HashMap;
-import java.util.Map;
+//import java.util.HashMap;
+//import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,7 +24,7 @@ public class ToolListener implements Listener{
 
 	private boolean notifyAdmin = Configuration.notifyAdmins();
 	
-	private Map<Integer, Tools> blockTools = new HashMap<Integer, Tools>();
+	//private Map<Integer, Tools> blockTools = new HashMap<Integer, Tools>();
 	/*
 	 * I could do it based on permissions, or based off a list...maybe both?
 	 * i.e. noitem.nouse.diamondpick.5 or
@@ -84,7 +84,7 @@ public class ToolListener implements Listener{
 		int z = p.getLocation().getBlockZ();
 
 		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-				+ StringHelper.replaceVars(Configuration.playerMessage(), dn, w, x, y, z, iid));
+				+ StringHelper.replaceVars(Configuration.noUseMessage(), dn, w, x, y, z, iid));
 	}
 
 	private void notifyAdmin(Player p, int iid) {
