@@ -34,16 +34,20 @@ public class Configuration {
 	//--------CONFIG DEFAULTS--------//
 	private boolean eNotifyPlayer = true;
 	private boolean eNotifyAdmins = true;
-	private boolean eStopCrafting = true;
-	private boolean eStopItemPickup = true;
-	private boolean eStopPotionBrew = true;
-	private boolean eStopItemHold = true;
-	private boolean ePerItemPermissions = true;
-	private boolean eDebugging = false;
 	private boolean eStopToolUse = true;
 	private boolean eNotifyNoUse = true;
 	private boolean eNotifyNoBrew = true;
 	private boolean eNotifyNoHold = true;
+	private boolean eNotifyNoWear = true;
+	
+	private boolean eStopCrafting = true;
+	private boolean eStopItemPickup = true;
+	private boolean eStopPotionBrew = true;
+	private boolean eStopItemHold = true;
+	private boolean eStopWear = true;
+	
+	private boolean ePerItemPermissions = true;
+	private boolean eDebugging = false;
 	private String ePluginChannel = "main";
 	
 	private String ePlayerMessage = "This item (%i) is not allowed.";
@@ -51,11 +55,12 @@ public class Configuration {
 	private String eNoUseMessage = "You are not allowed to use this tool!";
 	private String eNoBrewMessage = "You are not allowed to brew that potion!";
 	private String eNoHoldMessage = "You are not allowed to hold that!";
+	private String eNoWearMessage = "You are not allowed to wear that!";
 	
 	private List<String> eDisallowedItems = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
-	private int configVersion = 4;
+	private int configVersion = 5;
 	
 	//----METHODS----//
 	public void load(){
@@ -135,6 +140,8 @@ public class Configuration {
 			writer.println("    NoBrewMessage: " + eNoBrewMessage);
 			writer.println("    NoHold: " + eNotifyNoHold);
 			writer.println("    NoHoldMessage: " + eNoHoldMessage);
+			writer.println("    NoWear: " + eNotifyNoWear);
+			writer.println("    NoWearMessage:" + eNoWearMessage);
 			writer.println("");
 			writer.println("# Blocked items list ( itemID:DamageValue )    ");
 			writer.println("DisallowedItems:");
@@ -199,6 +206,7 @@ public class Configuration {
 			writer.println("StopPotionBrew: " + eStopPotionBrew);
 			writer.println("StopToolUse: " + eStopToolUse);
 			writer.println("StopItemHold: " + eStopItemHold);
+			writer.println("StopArmourWear: " + eStopWear);
 			writer.println("");
 			writer.println("# Permissions:");
 			writer.println("# 'noitem.nocraft.<item#>[.datavalue]' or");
@@ -237,8 +245,15 @@ public class Configuration {
 		this.eNotifyNoBrew = conf.getBoolean("Notify.NoBrew");
 		this.eNoBrewMessage = conf.getString("Notify.NoBrewMessage");
 		
-		//Blocked until next update so it is not set to null
-		//this.ePluginChannel = conf.getString("PluginChannel");
+		if(configVersion >= 4){
+			this.ePluginChannel = conf.getString("PluginChannel");
+		}
+		
+		if(configVersion >= 5){
+			this.eStopWear = conf.getBoolean("StopArmourWear");
+			this.eNoWearMessage = conf.getString("Notify.NoWearMessage");
+			this.eNotifyNoWear = conf.getBoolean("Notify.NoWear");
+		}
 		
 		this.ePlayerMessage = conf.getString("Notify.PlayerMessage");
 		this.eAdminMessage = conf.getString("Notify.AdminMessage");
@@ -249,6 +264,7 @@ public class Configuration {
 	}
 	
 	//----GETTERS----//
+	//Notify//
 	public static boolean notifyPlayer(){
 		return Configuration.conf.getBoolean("Notify.Player");
 	}
@@ -264,7 +280,10 @@ public class Configuration {
 	public static boolean notifyNoHold(){
 		return Configuration.conf.getBoolean("Notify.NoHold");
 	}
-	
+	public static boolean notfiyNoWear(){
+		return Configuration.conf.getBoolean("Notify.NoWear");
+	}
+	//Stop//
 	public static boolean stopCrafting(){
 		return Configuration.conf.getBoolean("StopCrafting");
 	}
@@ -274,19 +293,26 @@ public class Configuration {
 	public static boolean stopPotionBrew(){
 		return Configuration.conf.getBoolean("StopPotionBrew");
 	}
-	public static boolean perItemPerms(){
-		return Configuration.conf.getBoolean("PerItemPermissions");
-	}
-	public static boolean debugging(){
-		return Configuration.conf.getBoolean("Debugging");
-	}
 	public static boolean stopToolUse(){
 		return Configuration.conf.getBoolean("StopToolUse");
 	}
 	public static boolean stopItemHold(){
 		return Configuration.conf.getBoolean("StopItemHold");
 	}
-	
+	public static boolean stopArmourWear(){
+		return Configuration.conf.getBoolean("StopArmourWear");
+	}
+	//Misc//
+	public static boolean debugging(){
+		return Configuration.conf.getBoolean("Debugging");
+	}
+	public static boolean perItemPerms(){
+		return Configuration.conf.getBoolean("PerItemPermissions");
+	}
+	public static String pluginChannel(){
+		return Configuration.conf.getString("PluginChannel");
+	}
+	//Message//
 	public static String playerMessage(){
 		return Configuration.conf.getString("Notify.PlayerMessage");
 	}
@@ -302,9 +328,11 @@ public class Configuration {
 	public static String noHoldMessage(){
 		return Configuration.conf.getString("Notify.NoHoldMessage");
 	}
-	public static String pluginChannel(){
-		return Configuration.conf.getString("PluginChannel");
+	public static String noWearMessage(){
+		return Configuration.conf.getString("Notify.NoWearMessage");
 	}
+	
+	//Lists//
 	public static List<String> disallowedItems(){
 		return Configuration.conf.getStringList("DisallowedItems");
 	}
