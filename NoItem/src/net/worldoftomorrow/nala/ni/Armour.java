@@ -46,11 +46,19 @@ public enum Armour {
 	}
 	
 	public static Armour getArmour(int id){
-		return armours.get(id);
+		if(armours.containsKey(id)){
+			return armours.get(id);	
+		} else {
+			return null;
+		}
 	}
 	
 	public static Armour getArmour(String name){
-		return names.get(name);
+		if(names.containsKey(name)){
+			return names.get(name);	
+		} else {
+			return null;
+		}
 	}
 	
 	public static Map<Armour, Integer> ids = new HashMap<Armour, Integer>();

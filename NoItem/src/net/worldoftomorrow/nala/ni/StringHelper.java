@@ -13,7 +13,14 @@ public class StringHelper
     msg = msg.replace("%x", x);
     msg = msg.replace("%y", y);
     msg = msg.replace("%z", z);
-    msg = msg.replace("%i", id);
+    if(Tools.getTool(id) != null){
+    	msg = msg.replace("%i", Tools.getTool(id).getName());
+    }
+    if(Armour.getArmour(id) != null){
+    	msg = msg.replace("%i", Armour.getArmour(id).getName());
+    } else {
+    	msg = msg.replace("%i", id);
+    }
     return msg;
   }
   

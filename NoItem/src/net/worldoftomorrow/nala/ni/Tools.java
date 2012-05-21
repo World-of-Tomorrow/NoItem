@@ -56,11 +56,19 @@ public enum Tools {
 	}
 	
 	public static Tools getTool(int id){
-		return tools.get(id);
+		if(tools.containsKey(id)){
+			return tools.get(id);	
+		} else {
+			return null;
+		}
 	}
 	
 	public static Tools getTool(String name){
-		return names.get(name);
+		if(names.containsKey(name)){
+			return names.get(name);
+		} else {
+			return null;
+		}
 	}
 	
 	public static Map<Tools, Integer> ids = new HashMap<Tools, Integer>();
