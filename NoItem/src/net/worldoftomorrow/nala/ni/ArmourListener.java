@@ -17,27 +17,28 @@ public class ArmourListener implements Listener {
 	public void onArmourEquip(InventoryClickEvent event){
 		if(event.getInventory().getType().equals(InventoryType.CRAFTING)){
 			
-			int iid = event.getCurrentItem().getTypeId();
 			Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 			
 			if(event.isShiftClick() ){
-				if(VaultPerms.Permissions.NOWEAR.has(p, iid)
-						&& !p.isOp()
-						&& !VaultPerms.Permissions.ALLITEMS.has(p)
-						){
-					if(Configuration.notifyNoHold()){
-						notifyPlayer(p, iid);
+				if (event.getCurrentItem() != null) {
+					int iid = event.getCurrentItem().getTypeId();
+
+					if (VaultPerms.Permissions.NOWEAR.has(p, iid) && !p.isOp()
+							&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
+						if (Configuration.notifyNoHold()) {
+							notifyPlayer(p, iid);
+						}
+						if (Configuration.notifyAdmins()) {
+							notifyAdmin(p, iid);
+						}
+						event.setCancelled(true);
 					}
-					if(Configuration.notifyAdmins()){
-						notifyAdmin(p, iid);
-					}
-					event.setCancelled(true);
 				}
 				//Shift click checking
 			} else {
 				if (event.getSlotType().equals(SlotType.ARMOR)) {
 					if (event.getCursor() != null) {
-						iid = event.getCursor().getTypeId();
+						int iid = event.getCursor().getTypeId();
 						
 						if (VaultPerms.Permissions.NOWEAR.has(p, iid)
 								&& !p.isOp()
