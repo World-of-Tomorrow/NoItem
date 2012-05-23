@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -31,16 +30,6 @@ public class CraftingListener implements Listener {
 		}
 	}
 
-	private boolean notifyPlayer = Configuration.notifyNoCraft();
-
-	private boolean notifyAdmin = Configuration.notifyAdmins();
-
-	private boolean perItemPerms = Configuration.perItemPerms();
-
-	private boolean debug = Configuration.debugging();
-
-	private String am = Configuration.adminMessage();
-
 	@EventHandler
 	public void onItemCraft(CraftItemEvent event) {
 		if (!itemsAdded) {
@@ -48,91 +37,45 @@ public class CraftingListener implements Listener {
 			itemsAdded = true;
 		}
 
-		if (debug) {
-			log.log(
-					"CraftItemEvent fired. Crafted: "
-							+ event.getCurrentItem().getType().name());
-		}
+		log.debug("CraftItemEvent Fired");
 
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 		int iid = event.getCurrentItem().getTypeId();
-		int dv = (short) event.getCurrentItem().getDurability();
-
-		if (!this.perItemPerms) { // If you the list should be used
-			if (dItems.contains(iid + ":" + dv)) {
-				if ((!VaultPerms.Permissions.ALLITEMS.has(p)) || (!p.isOp())) {
-					event.setCancelled(true);
-					if (this.notifyPlayer) {
-						notifyPlayer(p, iid);
-					}
-					if (this.notifyAdmin)
-						notifyAdmin(p, iid);
+		int dv = event.getCurrentItem().getDurability();
+		
+		//If the item list should be used//
+		if (!Configuration.perItemPerms()) {
+			if (dItems.contains(iid + ":" + dv) && !Perms.ALLITEMS.has(p)) {
+				
+				event.setCancelled(true);
+				
+				if (Configuration.notifyNoCraft()) {
+					StringHelper.notifyPlayer(p,
+							Configuration.noCraftMessage(), iid);
+				}
+				if (Configuration.notifyAdmins()) {
+					StringHelper.notifyAdmin(p, Configuration.adminMessage(),
+							iid);
 				}
 			} else {
-				if(debug){
-					p.sendMessage("This item can be crafted.");
-				}
+				log.debug("This item can be crafted");
 			}
-			
-			/*--Per Item Permissions--*/
+		//Else use permissions//
 		} else {
-			// If there is no data value
-			if (dv == 0 && VaultPerms.Permissions.NOCRAFT.has(p, iid)
-					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
+			if(Perms.NOCRAFT.has(p, iid, dv)){
+				
 				event.setCancelled(true);
-				if (notifyPlayer) {
-					notifyPlayer(p, iid);
+				
+				if(Configuration.notifyNoCraft()){
+					StringHelper.notifyPlayer(p, Configuration.noCraftMessage(), iid);
 				}
-				if (notifyAdmin) {
-					notifyAdmin(p, iid);
-				}
-			}
-			//If there IS a data value
-			if (dv != 0 && VaultPerms.Permissions.NOCRAFT.has(p, iid, dv)
-					&& !VaultPerms.Permissions.ALLITEMS.has(p)) {
-				event.setCancelled(true);
-				if (notifyPlayer) {
-					notifyPlayer(p, iid);
-				}
-				if (notifyAdmin) {
-					notifyAdmin(p, iid);
+				if (Configuration.notifyAdmins()) {
+					StringHelper.notifyAdmin(p, Configuration.adminMessage(),
+							iid);
 				}
 			} else {
-				if (debug) {
-					p.sendMessage("This item can be crafted.");
-				}
+				log.debug("This item can be crafted");
 			}
 		}
-	}
-
-	
-	private void notifyPlayer(Player p, int iid) {
-		String dn = p.getDisplayName();
-		String w = p.getWorld().getName();
-
-		int x = p.getLocation().getBlockX();
-		int y = p.getLocation().getBlockY();
-		int z = p.getLocation().getBlockZ();
-
-		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-				+ StringHelper.replaceVars(Configuration.noCraftMessage(), dn, w, x, y, z, iid));
-	}
-
-	private void notifyAdmin(Player p, int iid) {
-		String dn = p.getDisplayName();
-		String w = p.getWorld().getName();
-
-		int x = p.getLocation().getBlockX();
-		int y = p.getLocation().getBlockY();
-		int z = p.getLocation().getBlockZ();
-		String formatedMessage = StringHelper.replaceVars(this.am, dn, w, x, y,
-				z, iid);
-
-		log.log(formatedMessage);
-		Player[] players = Bukkit.getOnlinePlayers();
-		for (Player player : players)
-			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
-				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-						+ formatedMessage);
 	}
 }

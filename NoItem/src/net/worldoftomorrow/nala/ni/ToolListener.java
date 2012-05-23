@@ -1,10 +1,5 @@
 package net.worldoftomorrow.nala.ni;
 
-//import java.util.HashMap;
-//import java.util.Map;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -21,34 +16,27 @@ public class ToolListener implements Listener{
 	}
 	
 	private Log log = new Log();
-
-	private boolean notifyAdmin = Configuration.notifyAdmins();
-	
-	//private Map<Integer, Tools> blockTools = new HashMap<Integer, Tools>();
-	/*
-	 * I could do it based on permissions, or based off a list...maybe both?
-	 * i.e. noitem.nouse.diamondpick.5 or
-	 * BlockToolDefinitions:
-	 *     - diamondpick:stone
-	 *     - woodaxe:wood:1
-	 */
 	
 	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event){
 		
 		Player p = event.getPlayer();
 		int id = p.getItemInHand().getTypeId();
-		
-		if(Configuration.debugging()){
-			log.log("Block Break event fired. \nUsed: " + id);
+		int dv = p.getItemInHand().getDurability();
+		//Do this to prevent accidentally using armor or tool damage values
+		if(Tools.tools.containsKey(id) || Armour.armours.containsKey(id)){
+			dv = 0;
 		}
-		if(VaultPerms.Permissions.NOUSE.has(p, id) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)){
+		
+		log.debug("BlockBreakEvent fired. ".concat(Integer.toString(id)));
+		
+		if(Perms.NOUSE.has(p, id, dv)){
 			event.setCancelled(true);
 			if (Configuration.notifyNoUse()) {
-				notifyPlayer(p, id);
+				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), id);
 			}
-			if (notifyAdmin) {
-				notifyAdmin(p, id);
+			if (Configuration.notifyAdmins()) {
+				StringHelper.notifyAdmin(p, Configuration.adminMessage(), id);
 			}
 		}
 	}
@@ -57,51 +45,22 @@ public class ToolListener implements Listener{
 	public void onLandFarm(PlayerInteractEvent event){
 		Block block = event.getClickedBlock();
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
-			if(block.getType() == Material.DIRT || block.getType() == Material.GRASS){
+			if(block.getType().equals(Material.DIRT) || block.getType().equals(Material.GRASS)){
 				int inHand = event.getPlayer().getItemInHand().getTypeId();
 				Player p = event.getPlayer();
 				if(inHand >= 290 && inHand <= 294){
-					if(VaultPerms.Permissions.NOUSE.has(p, inHand) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)){
+					//Use a data value of 0 because it is a tool and is not wanted!
+					if(Perms.NOUSE.has(p, inHand, 0)){
 						event.setCancelled(true);
 						if (Configuration.notifyNoUse()) {
-							notifyPlayer(p, inHand);
+							StringHelper.notifyPlayer(p, Configuration.noUseMessage(), inHand);
 						}
-						if (notifyAdmin) {
-							notifyAdmin(p, inHand);
+						if (Configuration.notifyAdmins()) {
+							StringHelper.notifyAdmin(p, Configuration.adminMessage(), inHand);
 						}
 					}
 				}
 			}
 		}
-	}
-	
-	private void notifyPlayer(Player p, int iid) {
-		String dn = p.getDisplayName();
-		String w = p.getWorld().getName();
-
-		int x = p.getLocation().getBlockX();
-		int y = p.getLocation().getBlockY();
-		int z = p.getLocation().getBlockZ();
-
-		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-				+ StringHelper.replaceVars(Configuration.noUseMessage(), dn, w, x, y, z, iid));
-	}
-
-	private void notifyAdmin(Player p, int iid) {
-		String dn = p.getDisplayName();
-		String w = p.getWorld().getName();
-
-		int x = p.getLocation().getBlockX();
-		int y = p.getLocation().getBlockY();
-		int z = p.getLocation().getBlockZ();
-		String formatedMessage = StringHelper.replaceVars(Configuration.adminMessage(), dn, w, x, y,
-				z, iid);
-
-		log.log(formatedMessage);
-		Player[] players = Bukkit.getOnlinePlayers();
-		for (Player player : players)
-			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
-				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-						+ formatedMessage);
 	}
 }

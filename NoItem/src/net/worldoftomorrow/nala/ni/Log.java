@@ -31,4 +31,10 @@ public class Log {
 	public void log(String s, Exception e) {
 		log.log(Level.SEVERE, s, e);
 	}
+	
+	public void debug(String s){
+		if(Configuration.debugging()){
+			this.log("[DEBUG] ".concat(s));
+		}
+	}
 }

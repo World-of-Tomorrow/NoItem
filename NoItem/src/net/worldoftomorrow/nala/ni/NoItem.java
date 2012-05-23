@@ -7,12 +7,12 @@ public class NoItem extends JavaPlugin {
 	private Log log = new Log();
 	
 	public Configuration config = new Configuration(this);
-	VaultPerms perms;
+	Vault vault;
 	
 	public void onEnable() {
 		
 		config.load();
-		perms = new VaultPerms(this);
+		vault = new Vault(this);
 		
 		Updater updater = new Updater(this.getDescription().getVersion());
 		if(!updater.isLatest()){

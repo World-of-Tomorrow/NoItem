@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,10 +16,6 @@ import org.bukkit.inventory.ItemStack;
 public class BrewingListener implements Listener {
 
 	private static Log log = new Log();
-
-	private boolean perItemPerms = Configuration.perItemPerms();
-
-	private boolean debug = Configuration.debugging();
 	
 	private List<String> recipes = Configuration.disallowedPotions();
 	
@@ -76,73 +71,79 @@ public class BrewingListener implements Listener {
 	
 	@EventHandler 
 	public void onBrewerInvEvent(InventoryClickEvent event){
-		if(debug){
-			log.log("InventoryClick event fired. " + event.getRawSlot() + " " + event.getInventory().getType().name() + " " + event.getSlotType().name());
-		}
+		
+			log.debug("InventoryClick event fired. RawSlot: "
+					.concat(Integer.toString(event.getRawSlot()))
+					.concat(" InvType: ").concat(event.getInventory().getType().name())
+					.concat(" SlotType: ").concat(event.getSlotType().name()));
 		
 		if(event.getInventory().getType().equals(InventoryType.BREWING)){
 			if (!checked) {
 				checkRecipes();
 			}
 			
-			//Get the player this way now.
 			Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 			int slot = event.getRawSlot();
 			
-			//If it is not the ingredient slot
+			//Event does NOT take place in the ingredient slot//
 			if (slot != 3) {
 				if (event.getInventory().getItem(3) != null) {
 					int dv = p.getItemOnCursor().getDurability();
 					int ingredient = event.getInventory().getItem(3).getTypeId();
 					if(event.getRawSlot() < 3){
-						if (!perItemPerms) {
+						if (!Configuration.perItemPerms()) {
 							if (dPotions.contains(dv + ":" + ingredient)) {
 								event.setCancelled(true);
+								String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
 								if (Configuration.notifyNoBrew()) {
-									notifyPlayer(p, dv + ":" + ingredient);
+									StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 								}
 								if(Configuration.notifyAdmins()){
-									notifyAdmin(p, dv + ":" + ingredient);
+									StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);
 								}
 							}
 						} else {
-							if (VaultPerms.Permissions.NOBREW.has(p, dv, ingredient) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)) {
+							if (Perms.NOBREW.has(p, dv, ingredient)) {
 								event.setCancelled(true);
+								String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
 								if (Configuration.notifyNoBrew()) {
-									notifyPlayer(p, dv + ":" + ingredient);
+									StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 								}
 								if(Configuration.notifyAdmins()){
-									notifyAdmin(p, dv + ":" + ingredient);
+									StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);
 								}
 							}
 						}	
 					}
 				}
-			//Ingredient slot
+			//Event DOES take place in the ingredient slot//
 			} else {
 				int ingredient = p.getItemOnCursor().getTypeId();
 				int[] dvs = this.ItemStackDV(event.getInventory());
-				if(!perItemPerms){
+				if(!Configuration.perItemPerms()){
 					for(Integer dv : dvs){
-						if(dPotions.contains(dv + ":" + ingredient)){
+						String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
+						if(dPotions.contains(recipe)){
 							event.setCancelled(true);
 							if (Configuration.notifyNoBrew()) {
-								notifyPlayer(p, dv + ":" + ingredient);
+								StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 							}
 							if(Configuration.notifyAdmins()){
-								notifyAdmin(p, dv + ":" + ingredient);
+								StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);
 							}
+							break;
 						}	
 					}
 				} else {
 					for (Integer dv : dvs) {
-						if (VaultPerms.Permissions.NOBREW.has(p, dv, ingredient) && !p.isOp() && !VaultPerms.Permissions.ALLITEMS.has(p)) {
+						String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
+						if (Perms.NOBREW.has(p, dv, ingredient)) {
 							event.setCancelled(true);
 							if (Configuration.notifyNoBrew()) {
-								notifyPlayer(p, dv + ":" + ingredient);
+								StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 							}
 							if(Configuration.notifyAdmins()){
-								notifyAdmin(p, dv + ":" + ingredient);
+								StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);;
 							}
 							break;
 						}
@@ -150,35 +151,5 @@ public class BrewingListener implements Listener {
 				}
 			}
 		}
-	}
-	
-	private void notifyPlayer(Player p, String recipe) {
-		String dn = p.getDisplayName();
-		String w = p.getWorld().getName();
-
-		int x = p.getLocation().getBlockX();
-		int y = p.getLocation().getBlockY();
-		int z = p.getLocation().getBlockZ();
-
-		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-				+ StringHelper.replaceVars(Configuration.noBrewMessage(), dn, w, x, y, z, recipe));
-	}
-
-	private void notifyAdmin(Player p, String recipe) {
-		String dn = p.getDisplayName();
-		String w = p.getWorld().getName();
-
-		int x = p.getLocation().getBlockX();
-		int y = p.getLocation().getBlockY();
-		int z = p.getLocation().getBlockZ();
-		String formatedMessage = StringHelper.replaceVars(Configuration.adminMessage(), dn, w, x, y,
-				z, recipe);
-
-		log.log(formatedMessage);
-		Player[] players = Bukkit.getOnlinePlayers();
-		for (Player player : players)
-			if ((player.isOp()) || (VaultPerms.Permissions.ADMIN.has(player)))
-				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-						+ formatedMessage);
 	}
 }
