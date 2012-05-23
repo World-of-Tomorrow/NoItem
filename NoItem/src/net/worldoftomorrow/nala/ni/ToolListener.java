@@ -36,7 +36,7 @@ public class ToolListener implements Listener{
 				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), id);
 			}
 			if (Configuration.notifyAdmins()) {
-				StringHelper.notifyAdmin(p, Configuration.adminMessage(), id);
+				StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
 			}
 		}
 	}
@@ -56,11 +56,12 @@ public class ToolListener implements Listener{
 							StringHelper.notifyPlayer(p, Configuration.noUseMessage(), inHand);
 						}
 						if (Configuration.notifyAdmins()) {
-							StringHelper.notifyAdmin(p, Configuration.adminMessage(), inHand);
+							StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
 						}
 					}
 				}
 			}
 		}
 	}
+	//TODO: Add bow support
 }

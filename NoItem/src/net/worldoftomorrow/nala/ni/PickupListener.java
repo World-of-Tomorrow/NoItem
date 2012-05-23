@@ -24,7 +24,7 @@ public class PickupListener implements Listener {
 				StringHelper.notifyPlayer(p, Configuration.noPickupMessage(), iid);
 			}
 			if(Configuration.notifyAdmins()){
-				StringHelper.notifyAdmin(p, Configuration.adminMessage(), iid);
+				StringHelper.notifyAdmin(p, EventTypes.PICKUP, event.getItem().getItemStack());
 			}
 		} else {
 			log.debug("Item can be picked up");

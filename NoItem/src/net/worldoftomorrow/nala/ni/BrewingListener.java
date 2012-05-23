@@ -99,7 +99,7 @@ public class BrewingListener implements Listener {
 									StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 								}
 								if(Configuration.notifyAdmins()){
-									StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);
+									StringHelper.notifyAdmin(p, recipe);
 								}
 							}
 						} else {
@@ -110,7 +110,7 @@ public class BrewingListener implements Listener {
 									StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 								}
 								if(Configuration.notifyAdmins()){
-									StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);
+									StringHelper.notifyAdmin(p, recipe);
 								}
 							}
 						}	
@@ -129,7 +129,7 @@ public class BrewingListener implements Listener {
 								StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 							}
 							if(Configuration.notifyAdmins()){
-								StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);
+								StringHelper.notifyAdmin(p, recipe);
 							}
 							break;
 						}	
@@ -143,7 +143,7 @@ public class BrewingListener implements Listener {
 								StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
 							}
 							if(Configuration.notifyAdmins()){
-								StringHelper.notifyAdmin(p, Configuration.adminMessage(), recipe);;
+								StringHelper.notifyAdmin(p, recipe);
 							}
 							break;
 						}

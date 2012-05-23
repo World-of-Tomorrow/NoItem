@@ -51,7 +51,7 @@ public class Configuration {
 	private boolean eDebugging = false;
 	private String ePluginChannel = "main";
 	
-	private String eAdminMessage = "Player %n tried to get item %i @ %x, %y, %z in the world %w.";
+	private String eAdminMessage = "\'%n tried to %t %i in world %w @ %x,%y,%z\'";
 	private String eNoUseMessage = "You are not allowed to use this tool!";
 	private String eNoBrewMessage = "You are not allowed to brew that potion!";
 	private String eNoHoldMessage = "You are not allowed to hold that!";
@@ -62,7 +62,7 @@ public class Configuration {
 	private List<String> eDisallowedCrafting = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
-	private int configVersion = 5;
+	private int configVersion = 6;
 	
 	//----METHODS----//
 	public void load(){
@@ -125,12 +125,15 @@ public class Configuration {
 		if(writer != null){
 			//----WRITE THE CONFIGURATION ONE LINE AT A TIME----//
 			writer.println("# Notify Message Variables:");
-			writer.println("# %n = player name");
-			writer.println("# %i = item id");
+			writer.println("# %n = Player name");
+			writer.println("# %i = Item/Recipe");
 			writer.println("# %x = X location");
 			writer.println("# %y = Y location");
 			writer.println("# %z = Z location");
-			writer.println("# %w = world");
+			writer.println("# %w = World");
+			writer.println("# Admin Message Specfific Variables:");
+			writer.println("# %t = Event type (i.e. BREW, CRAFT, SMELT)");
+			writer.println("");
 			writer.println("Notify:");
 			writer.println("    Admins: " + eNotifyAdmins);
 			writer.println("    AdminMessage: " + eAdminMessage);

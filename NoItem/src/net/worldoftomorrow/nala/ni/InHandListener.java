@@ -41,7 +41,7 @@ public class InHandListener implements Listener{
 				StringHelper.notifyPlayer(p, Configuration.noHoldMessage(), iid);
 			}
 			if(Configuration.notifyAdmins()){
-				StringHelper.notifyAdmin(p, Configuration.adminMessage(), iid);
+				StringHelper.notifyAdmin(p, EventTypes.HOLD, notAllowed);
 			}
 		}
 	}
@@ -62,7 +62,7 @@ public class InHandListener implements Listener{
 					StringHelper.notifyPlayer(p, Configuration.noHoldMessage(), iid);
 				}
 				if(Configuration.notifyAdmins()){
-					StringHelper.notifyAdmin(p, Configuration.adminMessage(), iid);
+					StringHelper.notifyAdmin(p, EventTypes.HOLD, event.getCursor());
 				}
 			}
 		}

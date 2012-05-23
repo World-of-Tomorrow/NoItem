@@ -3,6 +3,8 @@ package net.worldoftomorrow.nala.ni;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import net.milkbowl.vault.item.ItemInfo;
 import net.milkbowl.vault.item.Items;
 
@@ -43,6 +45,49 @@ public class StringHelper {
 		return msg;
 	}
 	
+	public static String replaceVars(String msg, Player p, EventTypes type, ItemStack stack){
+		String x = Integer.toString(p.getLocation().getBlockX());
+		String y = Integer.toString(p.getLocation().getBlockY());
+		String z = Integer.toString(p.getLocation().getBlockZ());
+		int iid = stack.getTypeId();
+		
+		if (Tools.getTool(iid) != null) {
+			msg = msg.replace("%i", Tools.getTool(iid).getRealName());
+		} else if (Armour.getArmour(iid) != null) {
+			msg = msg.replace("%i", Armour.getArmour(iid).getRealName());
+		} else if (Vault.vaultPerms) {
+			//Get the item by stack so sub-types can be returned
+			ItemInfo info = Items.itemByStack(stack);
+			msg = msg.replace("%i", info.getName());
+		} else {
+			String id = Integer.toString(iid);
+			msg = msg.replace("%i", id);
+		}
+		
+		msg = msg.replace("%n", p.getDisplayName());
+		msg = msg.replace("%w", p.getWorld().getName());
+		msg = msg.replace("%x", x);
+		msg = msg.replace("%y", y);
+		msg = msg.replace("%z", z);
+		msg = msg.replace("%t", type.getName());
+		return msg;
+	}
+	
+	public static String replaceVars(String msg, Player p, EventTypes type, String recipe){
+		String x = Integer.toString(p.getLocation().getBlockX());
+		String y = Integer.toString(p.getLocation().getBlockY());
+		String z = Integer.toString(p.getLocation().getBlockZ());
+		
+		msg = msg.replace("%i", recipe);
+		msg = msg.replace("%n", p.getDisplayName());
+		msg = msg.replace("%w", p.getWorld().getName());
+		msg = msg.replace("%x", x);
+		msg = msg.replace("%y", y);
+		msg = msg.replace("%z", z);
+		msg = msg.replace("%t", type.getName());
+		return msg;
+	}
+	
 	public static void notifyPlayer(Player p, String msg, int id){
 		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 				+ replaceVars(msg, p, id));
@@ -53,10 +98,8 @@ public class StringHelper {
 				+ replaceVars(msg, p, recipe));
 	}
 	
-	public static void notifyAdmin(Player p, String msg, int iid) {
-		String message = StringHelper.replaceVars(msg, p, iid);
-		//TODO: separate option for log to console.
-		//log.log(message);
+	public static void notifyAdmin(Player p, String recipe) {
+		String message = StringHelper.replaceVars(Configuration.adminMessage(), p, EventTypes.BREW, recipe);
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players)
 			if (Perms.ADMIN.has(player)){
@@ -65,9 +108,8 @@ public class StringHelper {
 			}
 	}
 	
-	public static void notifyAdmin(Player p, String msg, String recipe) {
-		String message = StringHelper.replaceVars(msg, p, recipe);
-		//TODO: separate option for log to console.
+	public static void notifyAdmin(Player p, EventTypes type, ItemStack stack) {
+		String message = StringHelper.replaceVars(Configuration.adminMessage(), p, type, stack);
 		//log.log(message);
 		Player[] players = Bukkit.getOnlinePlayers();
 		for (Player player : players)
@@ -77,4 +119,5 @@ public class StringHelper {
 			}
 	}
 	//TODO: Chat color parsing
+	//TODO: separate option for log to console.
 }

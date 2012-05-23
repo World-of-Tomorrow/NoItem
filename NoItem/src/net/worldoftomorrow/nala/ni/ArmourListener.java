@@ -26,7 +26,7 @@ public class ArmourListener implements Listener {
 							StringHelper.notifyPlayer(p, Configuration.noWearMessage(), iid);
 						}
 						if (Configuration.notifyAdmins()) {
-							StringHelper.notifyAdmin(p, Configuration.adminMessage(), iid);
+							StringHelper.notifyAdmin(p, EventTypes.WEAR, event.getCurrentItem());
 						}
 					}
 				}
@@ -40,7 +40,7 @@ public class ArmourListener implements Listener {
 								StringHelper.notifyPlayer(p, Configuration.noWearMessage(), iid);
 							}
 							if (Configuration.notifyAdmins()) {
-								StringHelper.notifyAdmin(p, Configuration.adminMessage(), iid);
+								StringHelper.notifyAdmin(p, EventTypes.WEAR, event.getCursor());
 							}
 							event.setCancelled(true);
 						}
