@@ -1,11 +1,13 @@
 package net.worldoftomorrow.nala.ni;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,10 +78,11 @@ public class Configuration {
 			if(ccv < configVersion){
 				
 				//Update the configuration if it is old.
-				if(ccv != 0){ //This check is to see if the configuration is blank, which would be bad to copy the options from.
+				if(ccv != 0){
 					this.copyConfigOptions();
 				}
 				try {
+					this.backupConfig();
 					os = new FileOutputStream(new File(plugin.getDataFolder(), config));
 					writer = new PrintWriter(os);
 					this.writeConfig(writer);
@@ -113,6 +116,34 @@ public class Configuration {
 			} catch (IOException e) {
 				log.log("IOException: Could not create configuration..", e);
 			}
+		}
+	}
+	
+	private void backupConfig(){
+		File conf = new File(plugin.getDataFolder(), config);
+		if(conf.exists()){
+			//Current time in milliseconds/1000 to get a unique backup name
+			File backup = new File(plugin.getDataFolder(), config.concat(".BAK.".concat(Long.toString(System.currentTimeMillis()/1000))));
+			this.copyFile(conf, backup);
+		}
+	}
+	
+	private void copyFile(File source, File dest){
+		try{
+			if(!dest.exists()){
+				dest.createNewFile();
+			}
+			FileChannel s = new FileInputStream(source).getChannel();
+			FileChannel d = new FileOutputStream(dest).getChannel();
+			d.transferFrom(s, 0, s.size());
+			if(s != null) {
+				   s.close();
+				  }
+				  if(d != null) {
+				   d.close();
+				  }
+		} catch (IOException e){
+			e.printStackTrace();
 		}
 	}
 	
