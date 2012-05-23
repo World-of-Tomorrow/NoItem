@@ -48,9 +48,9 @@ public enum Perms {
 			}
 			//Use separate ELSE IF for NOBREW, because you want to check for 0 as a data value.
 		} else if(perm.equalsIgnoreCase(Perms.NOBREW.perm)) {
-			permission = this.perm.concat(Integer.toString(data)).concat(Integer.toString(itemId));
+			permission = this.perm.concat(Integer.toString(data)).concat(".").concat(Integer.toString(itemId));
 		} else {
-			permission = this.perm.concat(Integer.toString(itemId)).concat(Integer.toString(data));
+			permission = this.perm.concat(Integer.toString(itemId)).concat(".").concat(Integer.toString(data));
 		}
 		
 		if(Vault.vaultPerms){
