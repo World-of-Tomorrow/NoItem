@@ -32,7 +32,7 @@ public class Configuration {
 	private boolean loaded = false;
 	
 	//--------CONFIG DEFAULTS--------//
-	private boolean eNotifyAdmins = true;
+	private boolean eNotifyAdmins = false;
 	private boolean eStopToolUse = true;
 	private boolean eNotifyNoUse = true;
 	private boolean eNotifyNoBrew = true;
