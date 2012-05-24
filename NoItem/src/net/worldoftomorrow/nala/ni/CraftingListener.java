@@ -61,7 +61,7 @@ public class CraftingListener implements Listener {
 			}
 		//Else use permissions//
 		} else {
-			if(Perms.NOCRAFT.has(p, iid, dv)){
+			if(Perms.NOCRAFT.has(p, event.getCurrentItem())){
 				
 				event.setCancelled(true);
 				

@@ -33,6 +33,7 @@ public class NoItem extends JavaPlugin {
 		boolean toolListen = Configuration.stopToolUse();
 		boolean holdListen = Configuration.stopItemHold();
 		boolean wearListen = Configuration.stopArmourWear();
+		boolean cookListen = Configuration.stopItemCook();
 		
 		if (craftListen) {
 			pm.registerEvents(new CraftingListener(), this);
@@ -52,9 +53,12 @@ public class NoItem extends JavaPlugin {
 		if(wearListen){
 			pm.registerEvents(new ArmourListener(), this);
 		}
+		if(cookListen){
+			pm.registerEvents(new FurnaceListener(), this);
+		}
 		this.log.log("[NoItem] Configs loaded, events registered, and cake baked.");
 		
-		if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen) && (!holdListen) && (!wearListen)) {
+		if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen) && (!holdListen) && (!wearListen) && (!cookListen)) {
 			this.log.log("[NoItem] No listeners active! Shutting down plugin.");
 			getPluginLoader().disablePlugin(this);
 		}

@@ -1,6 +1,7 @@
 package net.worldoftomorrow.nala.ni;
 
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public enum Perms {
 	ADMIN("noitem.admin"),
@@ -10,7 +11,8 @@ public enum Perms {
 	NOBREW("noitem.nobrew."),
 	NOUSE("noitem.nouse."),
 	NOHOLD("noitem.nohold."),
-	NOWEAR("noitem.nowear.");
+	NOWEAR("noitem.nowear."),
+	NOCOOK("noitem.nocook.");
 
 	private String perm;
 
@@ -34,13 +36,23 @@ public enum Perms {
 		}
 	}
 	
-	public boolean has(Player p, int itemId, int data){
+	public boolean has(Player p, ItemStack stack){
 		//Check if the have the ALLITEMS permission first to prevent unneeded code execution.
+		int itemId = 0;
+		int data = 0;
+		if(stack != null){
+			itemId = stack.getTypeId();
+			data = stack.getDurability();
+		}
 		if(Perms.ALLITEMS.has(p)){
 			return false;
 		}
 		String permission = "";
-		if(perm.equalsIgnoreCase(Perms.NOCRAFT.perm) || perm.equalsIgnoreCase(Perms.NOPICKUP.perm) || perm.equalsIgnoreCase(Perms.NOHOLD.perm) || perm.equalsIgnoreCase(Perms.NOUSE.perm)){
+		if(perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
+				|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
+				|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
+				|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
+				|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
 			if(data > 0){
 				permission = this.perm.concat(Integer.toString(itemId)).concat(".").concat(Integer.toString(data));
 			} else {
@@ -57,11 +69,17 @@ public enum Perms {
 			if(Vault.has(p, permission)){
 				return true;
 				//If it is a permission that supports item names
-			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm) || perm.equalsIgnoreCase(Perms.NOPICKUP.perm) || perm.equalsIgnoreCase(Perms.NOHOLD.perm) || perm.equalsIgnoreCase(Perms.NOUSE.perm)){
+			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
+					|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
+					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
+					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
+					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
 				if(Tools.tools.containsKey(itemId)){
 					return Vault.has(p, this.perm.concat(Tools.tools.get(itemId).getName()));
 				} else if (Armour.armours.containsKey(itemId)){
 					return Vault.has(p, this.perm.concat(Armour.armours.get(itemId).getName()));
+				} else if (Cookable.items.containsKey(itemId)) {
+					return Vault.has(p, this.perm.concat(Cookable.items.get(itemId).getName()));
 				} else {
 					return false;
 				}
@@ -71,19 +89,39 @@ public enum Perms {
 		} else {
 			if (p.hasPermission(permission)) {
 				return true;
-			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm) || perm.equalsIgnoreCase(Perms.NOPICKUP.perm) || perm.equalsIgnoreCase(Perms.NOHOLD.perm) || perm.equalsIgnoreCase(Perms.NOUSE.perm)){
+			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
+					|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
+					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
+					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
+					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
 				if (Tools.tools.containsKey(itemId)) {
 					return p.hasPermission(this.perm.concat(Tools.tools.get(
 							itemId).getName()));
 				} else if (Armour.armours.containsKey(itemId)) {
 					return p.hasPermission(this.perm.concat(Armour.armours.get(
 							itemId).getName()));
+				} else if (Cookable.items.containsKey(itemId)) {
+					return p.hasPermission(this.perm.concat(Cookable.items.get(itemId).getName()));
 				} else {
 					return false;
 				}
 			} else {
 				return false;
 			}
+		}
+	}
+	
+	public boolean has(Player p, int data, int ingredient){
+		String permission;
+		if(perm.equalsIgnoreCase(Perms.NOBREW.perm)) {
+			permission = this.perm.concat(Integer.toString(data)).concat(".").concat(Integer.toString(ingredient));
+		} else {
+			permission = this.perm.concat(Integer.toString(data)).concat(".").concat(Integer.toString(ingredient));
+		}
+		if(Vault.vaultPerms){
+			return Vault.has(p, permission);
+		} else {
+			return p.hasPermission(permission);
 		}
 	}
 	

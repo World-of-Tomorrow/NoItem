@@ -21,20 +21,20 @@ public class InHandListener implements Listener{
 		int ns = event.getNewSlot();
 		int ps = event.getPreviousSlot();
 		int iid = 0;
-		int dv = 0;
+		//int dv = 0;
 		ItemStack notAllowed = null;
 		ItemStack allowed = null;
 		
 		if(p.getInventory().getItem(ns) != null){
 			iid = p.getInventory().getItem(ns).getTypeId();
-			dv = p.getInventory().getItem(ns).getDurability();
+			//dv = p.getInventory().getItem(ns).getDurability();
 			notAllowed = p.getInventory().getItem(ns);
 		}
 		if(p.getInventory().getItem(ps) != null){
 			allowed = p.getInventory().getItem(ps);
 		}
 		//Switch the items.
-		if(Perms.NOHOLD.has(p, iid, dv)){
+		if(Perms.NOHOLD.has(p, notAllowed)){
 			p.getInventory().setItem(ns, allowed);
 			p.getInventory().setItem(ps, notAllowed);
 			if(Configuration.notifyNoHold()){
@@ -51,12 +51,12 @@ public class InHandListener implements Listener{
 		if(event.getSlotType().equals(SlotType.QUICKBAR)){
 			Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 			int iid = 0;
-			int dv = 0;
+			//int dv = 0;
 			if(event.getCursor() != null){
 				iid = event.getCursor().getTypeId();
-				dv = event.getCursor().getDurability();
+				//dv = event.getCursor().getDurability();
 			}
-			if(Perms.NOHOLD.has(p, iid, dv)){
+			if(Perms.NOHOLD.has(p, event.getCursor())){
 				event.setCancelled(true);
 				if(Configuration.notifyNoHold()){
 					StringHelper.notifyPlayer(p, Configuration.noHoldMessage(), iid);

@@ -14,10 +14,9 @@ public class PickupListener implements Listener {
 
 		Player p = event.getPlayer();
 		int iid = event.getItem().getItemStack().getTypeId();
-		int dv = event.getItem().getItemStack().getDurability();
 		
 		log.debug("PlayerPickupItemEvent fired. ".concat(Integer.toString(iid)));
-		if(Perms.NOPICKUP.has(p, iid, dv)){
+		if(Perms.NOPICKUP.has(p, event.getItem().getItemStack())){
 			event.setCancelled(true);
 			event.getItem().setPickupDelay(200);
 			if(Configuration.notifyNoPickup()){
