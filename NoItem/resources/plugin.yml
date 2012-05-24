@@ -1,5 +1,5 @@
 name: NoItem
-version: 2.0.2
+version: 2.0.3
 website: http://dev.bukkit.org/server-mods/noitem/
 description: Stops certain items from being crafted/picked up, effectivally removing them on the server.
 author: nala3
