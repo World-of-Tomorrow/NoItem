@@ -22,7 +22,7 @@ public class ArmourListener implements Listener {
 
 					if (Perms.NOWEAR.has(p, iid)) {
 						event.setCancelled(true);
-						if (Configuration.notifyNoHold()) {
+						if (Configuration.notfiyNoWear()) {
 							StringHelper.notifyPlayer(p, Configuration.noWearMessage(), iid);
 						}
 						if (Configuration.notifyAdmins()) {
@@ -36,7 +36,7 @@ public class ArmourListener implements Listener {
 						int iid = event.getCursor().getTypeId();
 						
 						if (Perms.NOWEAR.has(p, iid)) {
-							if (Configuration.notifyNoHold()) {
+							if (Configuration.notfiyNoWear()) {
 								StringHelper.notifyPlayer(p, Configuration.noWearMessage(), iid);
 							}
 							if (Configuration.notifyAdmins()) {
