@@ -55,19 +55,19 @@ public class Configuration {
 	private boolean eDebugging = false;
 	private String ePluginChannel = "main";
 	
-	private String eAdminMessage = "\'%n tried to %t %i in world %w @ %x,%y,%z\'";
-	private String eNoUseMessage = "You are not allowed to use this tool!";
-	private String eNoBrewMessage = "You are not allowed to brew that potion!";
-	private String eNoHoldMessage = "You are not allowed to hold that!";
-	private String eNoWearMessage = "You are not allowed to wear that!";
-	private String eNoCraftMessage = "You are not allowed to craft %i.";
+	private String eAdminMessage = "&e%n &9tried to &c%t %i &9in world %w @ &a%x,%y,%z";
+	private String eNoUseMessage = "&9You are not allowed to use a(n) &4%i&9!";
+	private String eNoBrewMessage = "You are not allowed to brew that potion! &4(%i)";
+	private String eNoHoldMessage = "You are not allowed to hold &4%i&9!";
+	private String eNoWearMessage = "You are not allowed to wear &4%i&9!";
+	private String eNoCraftMessage = "You are not allowed to craft &4%i&9.";
 	private String eNoPickupMessage = "You are not allowed to pick that up! (%i)";
-	private String eNoCookMessage = "You are not allowed to cook %i.";
+	private String eNoCookMessage = "You are not allowed to cook &4%i&9.";
 	
 	private List<String> eDisallowedCrafting = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
-	private int configVersion = 6;
+	private int configVersion = 7;
 	
 	//----METHODS----//
 	public void load(){
@@ -170,21 +170,23 @@ public class Configuration {
 			writer.println("");
 			writer.println("Notify:");
 			writer.println("    Admins: " + eNotifyAdmins);
-			writer.println("    AdminMessage: " + eAdminMessage);
+			//Insert the 's here otherwise it will cause problems when updating
+			//Because the getter methods do not grab them
+			writer.println("    AdminMessage: \'" + eAdminMessage + "\'");
 			writer.println("    NoUse: " + eNotifyNoUse);
-			writer.println("    NoUseMessage: " + eNoUseMessage);
+			writer.println("    NoUseMessage: \'" + eNoUseMessage + "\'");
 			writer.println("    NoBrew: " + eNotifyNoBrew);
-			writer.println("    NoBrewMessage: " + eNoBrewMessage);
+			writer.println("    NoBrewMessage: \'" + eNoBrewMessage + "\'");
 			writer.println("    NoHold: " + eNotifyNoHold);
-			writer.println("    NoHoldMessage: " + eNoHoldMessage);
+			writer.println("    NoHoldMessage: \'" + eNoHoldMessage + "\'");
 			writer.println("    NoWear: " + eNotifyNoWear);
-			writer.println("    NoWearMessage: " + eNoWearMessage);
+			writer.println("    NoWearMessage: \'" + eNoWearMessage + "\'");
 			writer.println("    NoCraft: " + eNotifyNoCraft);
-			writer.println("    NoCraftMessage: " + eNoCraftMessage);
+			writer.println("    NoCraftMessage: \'" + eNoCraftMessage + "\'");
 			writer.println("    NoPickup: " + eNotifyNoPickup);
-			writer.println("    NoPickupMessage: " + eNoPickupMessage);
+			writer.println("    NoPickupMessage: \'" + eNoPickupMessage + "\'");
 			writer.println("    NoCook: " + eNotifyNoCook);
-			writer.println("    NoCookMessage: " + eNoCookMessage);
+			writer.println("    NoCookMessage: \'" + eNoCookMessage + "\'");
 			writer.println("");
 			writer.println("# Blocked items list ( itemID:DamageValue )    ");
 			writer.println("DisallowedCraftingRecipes:");
