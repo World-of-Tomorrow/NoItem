@@ -7,3 +7,9 @@ author: nala3
 main: net.worldoftomorrow.nala.ni.NoItem
 database: false
 softdepend: [Vault]
+
+commands:
+    noitem:
+        description: NoItems only command, used to reloading the config.
+        permission: noitem.admin
+        usage: /noitem [reload]

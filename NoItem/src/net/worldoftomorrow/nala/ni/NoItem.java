@@ -13,6 +13,8 @@ public class NoItem extends JavaPlugin {
 		
 		config.load();
 		vault = new Vault(this);
+		CommandListener cl = new CommandListener(this);
+		this.getCommand("noitem").setExecutor(cl);
 		
 		Updater updater = new Updater(this.getDescription().getVersion());
 		if(!updater.isLatest()){
