@@ -29,6 +29,7 @@ public class StringHelper {
 			String id = Integer.toString(iid);
 			msg = msg.replace("%i", id);
 		}
+		msg = StringHelper.parseColors(msg);
 		return msg;
 	}
 
@@ -42,6 +43,7 @@ public class StringHelper {
 		msg = msg.replace("%y", y);
 		msg = msg.replace("%z", z);
 		msg.replace("%i", recipe);
+		msg = StringHelper.parseColors(msg);
 		return msg;
 	}
 	
@@ -70,6 +72,7 @@ public class StringHelper {
 		msg = msg.replace("%y", y);
 		msg = msg.replace("%z", z);
 		msg = msg.replace("%t", type.getName());
+		msg = StringHelper.parseColors(msg);
 		return msg;
 	}
 	
@@ -85,6 +88,7 @@ public class StringHelper {
 		msg = msg.replace("%y", y);
 		msg = msg.replace("%z", z);
 		msg = msg.replace("%t", type.getName());
+		msg = StringHelper.parseColors(msg);
 		return msg;
 	}
 	
@@ -118,6 +122,31 @@ public class StringHelper {
 						+ message);
 			}
 	}
-	//TODO: Chat color parsing
+	
+	public static String parseColors(String msg){
+		msg = msg.replace("&0", ChatColor.BLACK.toString());
+		msg = msg.replace("&1", ChatColor.DARK_BLUE.toString());
+		msg = msg.replace("&2", ChatColor.DARK_GREEN.toString());
+		msg = msg.replace("&3", ChatColor.DARK_AQUA.toString());
+		msg = msg.replace("&4", ChatColor.DARK_RED.toString());
+		msg = msg.replace("&5", ChatColor.DARK_PURPLE.toString());
+		msg = msg.replace("&6", ChatColor.GOLD.toString());
+		msg = msg.replace("&7", ChatColor.GRAY.toString());
+		msg = msg.replace("&8", ChatColor.DARK_GRAY.toString());
+		msg = msg.replace("&9", ChatColor.BLUE.toString());
+		msg = msg.replace("&a", ChatColor.GREEN.toString());
+		msg = msg.replace("&b", ChatColor.AQUA.toString());
+		msg = msg.replace("&c", ChatColor.RED.toString());
+		msg = msg.replace("&d", ChatColor.LIGHT_PURPLE.toString());
+		msg = msg.replace("&e", ChatColor.YELLOW.toString());
+		msg = msg.replace("&f", ChatColor.WHITE.toString());
+		msg = msg.replace("&k", ChatColor.MAGIC.toString());
+		msg = msg.replace("&l", ChatColor.BOLD.toString());
+		msg = msg.replace("&m", ChatColor.STRIKETHROUGH.toString());
+		msg = msg.replace("&n", ChatColor.UNDERLINE.toString());
+		msg = msg.replace("&o", ChatColor.ITALIC.toString());
+		msg = msg.replace("&r", ChatColor.RESET.toString());
+		return msg;
+	}
 	//TODO: separate option for log to console.
 }
