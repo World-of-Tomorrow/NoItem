@@ -54,4 +54,12 @@
   </properties>
   <url>http://dev.bukkit.org/server-mods/noitem/</url>
   <description>Advanced item control plugin for the Bukkit Minecraft server. NoItem provides an effective way of controlling who can use and make what on a server.</description>
+  <scm>
+  	<developerConnection>nala3</developerConnection>
+  	<url>https://github.com/nala3/NoItem/NoItem.git</url>
+  </scm>
+  <issueManagement>
+  	<system>GitHub</system>
+  	<url>https://github.com/nala3/NoItem/issues</url>
+  </issueManagement>
 </project>

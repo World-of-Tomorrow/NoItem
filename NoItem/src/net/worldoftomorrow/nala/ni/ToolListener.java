@@ -23,7 +23,7 @@ public class ToolListener implements Listener{
 		
 		Player p = event.getPlayer();
 		int id = p.getItemInHand().getTypeId();
-		ItemStack item = p.getItemInHand();
+		ItemStack item = new ItemStack(p.getItemInHand());
 		//Do this to prevent accidentally using armor or tool damage values
 		if(Tools.tools.containsKey(id) || Armour.armours.containsKey(id)){
 			item.setDurability((short) 0);
