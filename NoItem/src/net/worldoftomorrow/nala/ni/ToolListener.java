@@ -48,7 +48,7 @@ public class ToolListener implements Listener{
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
 			if(block.getType().equals(Material.DIRT) || block.getType().equals(Material.GRASS)){
 				Player p = event.getPlayer();
-				ItemStack stack = p.getItemInHand();
+				ItemStack stack = new ItemStack(p.getItemInHand());
 				int inHand = stack.getTypeId();
 				if(inHand >= 290 && inHand <= 294){
 					stack.setDurability((short) 0);
