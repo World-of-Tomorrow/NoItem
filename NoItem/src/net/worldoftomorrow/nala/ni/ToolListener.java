@@ -23,6 +23,7 @@ public class ToolListener implements Listener{
 		
 		Player p = event.getPlayer();
 		int id = p.getItemInHand().getTypeId();
+		//Create a new item stack because it likes to reset the item otherwise.
 		ItemStack item = new ItemStack(p.getItemInHand());
 		//Do this to prevent accidentally using armor or tool damage values
 		if(Tools.tools.containsKey(id) || Armour.armours.containsKey(id)){

@@ -30,9 +30,9 @@ public enum Perms {
 			if(p.isOp()){ return true; }
 		}
 		if(Vault.vaultPerms){
-			return Vault.has(p, perm);
+			return Vault.has(p, this.perm);
 		} else {
-			return p.hasPermission(perm);
+			return p.hasPermission(this.perm);
 		}
 	}
 	
@@ -112,6 +112,9 @@ public enum Perms {
 	}
 	
 	public boolean has(Player p, int data, int ingredient){
+		if(Perms.ALLITEMS.has(p)){
+			return false;
+		}
 		String permission;
 		if(perm.equalsIgnoreCase(Perms.NOBREW.perm)) {
 			permission = this.perm.concat(Integer.toString(data)).concat(".").concat(Integer.toString(ingredient));
@@ -126,6 +129,9 @@ public enum Perms {
 	}
 	
 	public boolean has(Player p, int itemId){
+		if(Perms.ALLITEMS.has(p)){
+			return false;
+		}
 		if(perm.equalsIgnoreCase(Perms.NOWEAR.perm)){
 			if(Vault.vaultPerms){
 				if(Vault.has(p, perm.concat(Integer.toString(itemId)))){
