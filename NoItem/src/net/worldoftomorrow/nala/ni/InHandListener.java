@@ -9,6 +9,7 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
 public class InHandListener implements Listener{
 	
@@ -52,10 +53,8 @@ public class InHandListener implements Listener{
 		if(event.getSlotType().equals(SlotType.QUICKBAR)){
 			Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 			int iid = 0;
-			//int dv = 0;
 			if(event.getCursor() != null){
 				iid = event.getCursor().getTypeId();
-				//dv = event.getCursor().getDurability();
 			}
 			if(Perms.NOHOLD.has(p, event.getCursor())){
 				event.setCancelled(true);
@@ -73,9 +72,18 @@ public class InHandListener implements Listener{
 	public void onItemPickUp(PlayerPickupItemEvent event){
 		Player p = event.getPlayer();
 		ItemStack stack = event.getItem().getItemStack();
-		if(Perms.NOHOLD.has(p, stack)){
-			if(event.getPlayer().getItemInHand() == null){
+		PlayerInventory inv = p.getInventory();
+		if (Perms.NOHOLD.has(p, stack)) {
+			if (inv.getItemInHand().getTypeId() == 0 && inv.firstEmpty() == inv.getHeldItemSlot()) {
 				event.setCancelled(true);
+				event.getItem().setPickupDelay(200);
+				if (Configuration.notifyNoHold()) {
+					StringHelper.notifyPlayer(p, Configuration.noHoldMessage(),
+							stack.getTypeId());
+				}
+				if (Configuration.notifyAdmins()) {
+					StringHelper.notifyAdmin(p, EventTypes.HOLD, stack);
+				}
 			}
 		}
 	}
