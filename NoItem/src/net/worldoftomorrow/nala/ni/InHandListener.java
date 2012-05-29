@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class InHandListener implements Listener{
@@ -64,6 +65,17 @@ public class InHandListener implements Listener{
 				if(Configuration.notifyAdmins()){
 					StringHelper.notifyAdmin(p, EventTypes.HOLD, event.getCursor());
 				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onItemPickUp(PlayerPickupItemEvent event){
+		Player p = event.getPlayer();
+		ItemStack stack = event.getItem().getItemStack();
+		if(Perms.NOHOLD.has(p, stack)){
+			if(event.getPlayer().getItemInHand() == null){
+				event.setCancelled(true);
 			}
 		}
 	}
