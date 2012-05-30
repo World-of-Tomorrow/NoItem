@@ -9,6 +9,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
 
 public class ToolListener implements Listener{
 	
@@ -64,6 +65,21 @@ public class ToolListener implements Listener{
 						}
 					}
 				}
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onBucketEmpty(PlayerBucketEmptyEvent event){
+		Player p = event.getPlayer();
+		int bucketID = event.getBucket().getId();
+		if(Perms.NOUSE.has(p, bucketID)){
+			event.setCancelled(true);
+			if (Configuration.notifyNoUse()) {
+				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), bucketID);
+			}
+			if (Configuration.notifyAdmins()) {
+				StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
 			}
 		}
 	}
