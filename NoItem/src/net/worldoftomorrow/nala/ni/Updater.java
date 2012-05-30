@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.UnknownHostException;
+import java.util.logging.Level;
 
 public class Updater {
 	
@@ -46,9 +48,13 @@ public class Updater {
 			in.close();
 		} catch(MalformedURLException e){
 			e.printStackTrace();
+		} catch (UnknownHostException e){
+			Log log = new Log();
+			log.log(Level.WARNING, "[NoItem] Could not connect to update site");
 		} catch (IOException e){
 			e.printStackTrace();
 		}
+		
 	}
 	
 	public String getLatest(){
