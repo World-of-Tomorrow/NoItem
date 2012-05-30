@@ -8,6 +8,12 @@ main: net.worldoftomorrow.nala.ni.NoItem
 database: false
 softdepend: [Vault]
 
+permissions:
+    noitem.admin:
+        description: Allows access to noitem commands and admin notifications
+    noitem.allitems:
+        description: Negates all rescrictions on the player
+
 commands:
     noitem:
         description: NoItems only command, used to reloading the config.
