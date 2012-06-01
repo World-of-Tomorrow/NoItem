@@ -39,9 +39,7 @@ public class ToolListener implements Listener{
 			if (Configuration.notifyNoUse()) {
 				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), id);
 			}
-			if (Configuration.notifyAdmins()) {
-				StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
-			}
+			StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
 		}
 	}
 	
@@ -68,9 +66,7 @@ public class ToolListener implements Listener{
 				if (Configuration.notifyNoUse()) {
 					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
 				}
-				if (Configuration.notifyAdmins()) {
-					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
-				}
+				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
 		}
 		if(type.equals(Material.DIRT) || type.equals(Material.GRASS)){
@@ -81,9 +77,7 @@ public class ToolListener implements Listener{
 					if (Configuration.notifyNoUse()) {
 						StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
 					}
-					if (Configuration.notifyAdmins()) {
-						StringHelper.notifyAdmin(p, EventTypes.USE, stack);
-					}
+					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 				}
 			}
 		}
@@ -100,9 +94,7 @@ public class ToolListener implements Listener{
 				if (Configuration.notifyNoUse()) {
 					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
 				}
-				if (Configuration.notifyAdmins()) {
-					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
-				}
+				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
 		}
 	}
@@ -116,9 +108,7 @@ public class ToolListener implements Listener{
 			if (Configuration.notifyNoUse()) {
 				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), bucketID);
 			}
-			if (Configuration.notifyAdmins()) {
-				StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
-			}
+			StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
 		}
 	}
 	
@@ -131,9 +121,7 @@ public class ToolListener implements Listener{
 			if (Configuration.notifyNoUse()) {
 				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), shears.getTypeId());
 			}
-			if (Configuration.notifyAdmins()) {
-				StringHelper.notifyAdmin(p, EventTypes.USE, shears);
-			}
+			StringHelper.notifyAdmin(p, EventTypes.USE, shears);
 		}
 	}
 	//TODO: Add bow support

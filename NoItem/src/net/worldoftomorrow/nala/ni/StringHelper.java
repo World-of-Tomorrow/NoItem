@@ -113,14 +113,17 @@ public class StringHelper {
 	}
 	
 	public static void notifyAdmin(Player p, EventTypes type, ItemStack stack) {
-		String message = StringHelper.replaceVars(Configuration.adminMessage(), p, type, stack);
-		//log.log(message);
-		Player[] players = Bukkit.getOnlinePlayers();
-		for (Player player : players)
-			if (Perms.ADMIN.has(player)){
-				player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-						+ message);
-			}
+		if (Configuration.notifyAdmins()) {
+			String message = StringHelper.replaceVars(
+					Configuration.adminMessage(), p, type, stack);
+			// log.log(message);
+			Player[] players = Bukkit.getOnlinePlayers();
+			for (Player player : players)
+				if (Perms.ADMIN.has(player)) {
+					player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
+							+ message);
+				}
+		}
 	}
 	
 	public static String parseColors(String msg){

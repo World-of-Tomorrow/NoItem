@@ -25,9 +25,7 @@ public class ArmourListener implements Listener {
 						if (Configuration.notfiyNoWear()) {
 							StringHelper.notifyPlayer(p, Configuration.noWearMessage(), iid);
 						}
-						if (Configuration.notifyAdmins()) {
-							StringHelper.notifyAdmin(p, EventTypes.WEAR, event.getCurrentItem());
-						}
+						StringHelper.notifyAdmin(p, EventTypes.WEAR, event.getCurrentItem());
 					}
 				}
 			} else {
@@ -39,9 +37,7 @@ public class ArmourListener implements Listener {
 							if (Configuration.notfiyNoWear()) {
 								StringHelper.notifyPlayer(p, Configuration.noWearMessage(), iid);
 							}
-							if (Configuration.notifyAdmins()) {
-								StringHelper.notifyAdmin(p, EventTypes.WEAR, event.getCursor());
-							}
+							StringHelper.notifyAdmin(p, EventTypes.WEAR, event.getCursor());
 							event.setCancelled(true);
 						}
 					}

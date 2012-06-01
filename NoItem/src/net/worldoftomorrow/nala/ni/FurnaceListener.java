@@ -21,9 +21,7 @@ public class FurnaceListener implements Listener{
 						if(Configuration.notifyNoCook()){
 							StringHelper.notifyPlayer(p, Configuration.noCookMessage(), stack.getTypeId());
 						}
-						if(Configuration.notifyAdmins()){
-							StringHelper.notifyAdmin(p, EventTypes.COOK ,stack);
-						}
+						StringHelper.notifyAdmin(p, EventTypes.COOK ,stack);
 					}
 				}
 			}

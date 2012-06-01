@@ -53,9 +53,7 @@ public class CraftingListener implements Listener {
 					StringHelper.notifyPlayer(p,
 							Configuration.noCraftMessage(), iid);
 				}
-				if (Configuration.notifyAdmins()) {
-					StringHelper.notifyAdmin(p, EventTypes.CRAFT, event.getCurrentItem());
-				}
+				StringHelper.notifyAdmin(p, EventTypes.CRAFT, event.getCurrentItem());
 			} else {
 				log.debug("This item can be crafted");
 			}
@@ -68,9 +66,7 @@ public class CraftingListener implements Listener {
 				if(Configuration.notifyNoCraft()){
 					StringHelper.notifyPlayer(p, Configuration.noCraftMessage(), iid);
 				}
-				if (Configuration.notifyAdmins()) {
-					StringHelper.notifyAdmin(p, EventTypes.CRAFT, event.getCurrentItem());
-				}
+				StringHelper.notifyAdmin(p, EventTypes.CRAFT, event.getCurrentItem());
 			} else {
 				log.debug("This item can be crafted");
 			}
