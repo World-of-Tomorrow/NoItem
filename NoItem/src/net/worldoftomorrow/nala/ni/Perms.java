@@ -74,8 +74,8 @@ public enum Perms {
 					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
 					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
 					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
-				if(Tools.tools.containsKey(itemId)){
-					return Vault.has(p, this.perm.concat(Tools.tools.get(itemId).getName()));
+				if(Tools.isTool(itemId)){
+					return Vault.has(p, this.perm.concat(Tools.getTool(itemId).getName()));
 				} else if (Armour.armours.containsKey(itemId)){
 					return Vault.has(p, this.perm.concat(Armour.armours.get(itemId).getName()));
 				} else if (Cookable.items.containsKey(itemId)) {
@@ -94,8 +94,8 @@ public enum Perms {
 					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
 					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
 					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
-				if (Tools.tools.containsKey(itemId)) {
-					return p.hasPermission(this.perm.concat(Tools.tools.get(
+				if (Tools.isTool(itemId)) {
+					return p.hasPermission(this.perm.concat(Tools.getTool(
 							itemId).getName()));
 				} else if (Armour.armours.containsKey(itemId)) {
 					return p.hasPermission(this.perm.concat(Armour.armours.get(

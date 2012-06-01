@@ -2,16 +2,19 @@ package net.worldoftomorrow.nala.ni;
 
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
+//import org.bukkit.event.player.PlayerFishEvent;
 
 public class ToolListener implements Listener{
 	
@@ -29,7 +32,7 @@ public class ToolListener implements Listener{
 		//Create a new item stack because it likes to reset the item otherwise.
 		ItemStack item = new ItemStack(p.getItemInHand());
 		//Do this to prevent accidentally using armor or tool damage values
-		if(Tools.tools.containsKey(id) || Armour.armours.containsKey(id)){
+		if(Tools.isTool(id) || Armour.armours.containsKey(id)){
 			item.setDurability((short) 0);
 		}
 		
@@ -114,19 +117,6 @@ public class ToolListener implements Listener{
 	}
 	
 	@EventHandler
-	public void onPlayerShear(PlayerShearEntityEvent event){
-		Player p = event.getPlayer();
-		ItemStack shears = new ItemStack(Material.SHEARS);
-		if(Perms.NOUSE.has(p, shears)){
-			event.setCancelled(true);
-			if (Configuration.notifyNoUse()) {
-				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), shears.getTypeId());
-			}
-			StringHelper.notifyAdmin(p, EventTypes.USE, shears);
-		}
-	}
-	
-	@EventHandler
 	public void onBucketFill(PlayerBucketFillEvent event){
 		Player p = event.getPlayer();
 		int bucketID = event.getBucket().getId();
@@ -137,6 +127,38 @@ public class ToolListener implements Listener{
 			}
 			if (Configuration.notifyAdmins()) {
 				StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
+			}
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerShear(PlayerShearEntityEvent event){
+		Player p = event.getPlayer();
+		ItemStack shears = new ItemStack(Material.SHEARS);
+		shears.setDurability((short) 0);
+		if(Perms.NOUSE.has(p, shears)){
+			event.setCancelled(true);
+			if (Configuration.notifyNoUse()) {
+				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), shears.getTypeId());
+			}
+			StringHelper.notifyAdmin(p, EventTypes.USE, shears);
+		}
+	}
+	
+	@EventHandler
+	public void onSwordSwing(EntityDamageByEntityEvent event){
+		Entity damager = event.getDamager();
+		if(damager instanceof Player){
+			Player p = (Player) damager;
+			ItemStack stack = new ItemStack(p.getItemInHand());
+			stack.setDurability((short) 0);
+			Material type = stack.getType();
+			if(Tools.isTool(type) && Perms.NOUSE.has(p, stack)){
+				event.setCancelled(true);
+				if (Configuration.notifyNoUse()) {
+					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
+				}
+				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
 		}
 	}
