@@ -10,6 +10,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 
 public class ToolListener implements Listener{
 	
@@ -45,25 +46,62 @@ public class ToolListener implements Listener{
 	}
 	
 	@EventHandler
-	public void onLandFarm(PlayerInteractEvent event){
-		Block block = event.getClickedBlock();
-		if(event.getAction() == Action.RIGHT_CLICK_BLOCK){
-			if(block.getType().equals(Material.DIRT) || block.getType().equals(Material.GRASS)){
-				Player p = event.getPlayer();
-				ItemStack stack = new ItemStack(p.getItemInHand());
-				int inHand = stack.getTypeId();
-				if(inHand >= 290 && inHand <= 294){
-					stack.setDurability((short) 0);
-					//Use a data value of 0 because it is a tool and is not wanted!
-					if(Perms.NOUSE.has(p, stack)){
-						event.setCancelled(true);
-						if (Configuration.notifyNoUse()) {
-							StringHelper.notifyPlayer(p, Configuration.noUseMessage(), inHand);
-						}
-						if (Configuration.notifyAdmins()) {
-							StringHelper.notifyAdmin(p, EventTypes.USE, stack);
-						}
+	public void onPlayerInteract(PlayerInteractEvent event){
+		Action action = event.getAction();
+		if(action.equals(Action.LEFT_CLICK_BLOCK)){
+			this.handleBlockLeftClick(event);
+		}
+		if(action.equals(Action.RIGHT_CLICK_BLOCK)){
+			this.handleBlockRightClick(event);
+		}
+		//I need to handle right and left click air
+	}
+	
+	private void handleBlockRightClick(PlayerInteractEvent event){
+		Player p = event.getPlayer();
+		ItemStack stack = new ItemStack(p.getItemInHand());
+		Material type = stack.getType();
+		stack.setDurability((short) 0);
+		if(type.equals(Material.FLINT_AND_STEEL)){
+			if(Perms.NOUSE.has(p, stack)){
+				event.setCancelled(true);
+				if (Configuration.notifyNoUse()) {
+					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
+				}
+				if (Configuration.notifyAdmins()) {
+					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
+				}
+			}
+		}
+		if(type.equals(Material.DIRT) || type.equals(Material.GRASS)){
+			//If it is a hoe (gotta handle them hoes!)
+			if(stack.getTypeId() >= 290 && stack.getTypeId() <= 294){
+				if(Perms.NOUSE.has(p, stack)){
+					event.setCancelled(true);
+					if (Configuration.notifyNoUse()) {
+						StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
 					}
+					if (Configuration.notifyAdmins()) {
+						StringHelper.notifyAdmin(p, EventTypes.USE, stack);
+					}
+				}
+			}
+		}
+	}
+	
+	private void handleBlockLeftClick(PlayerInteractEvent event){
+		Player p = event.getPlayer();
+		Block b = event.getClickedBlock();
+		ItemStack stack = new ItemStack(p.getItemInHand());
+		Material type = stack.getType();
+		if(type.equals(Material.FLINT_AND_STEEL) && b.getType().equals(Material.TNT)){
+			if(Perms.NOUSE.has(p, stack)){
+				event.setCancelled(true);
+				if (Configuration.notifyNoUse()) {
+					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
+				}
+				if (Configuration.notifyAdmins()) {
+					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 				}
 			}
 		}
@@ -83,5 +121,22 @@ public class ToolListener implements Listener{
 			}
 		}
 	}
+	
+	@EventHandler
+	public void onPlayerShear(PlayerShearEntityEvent event){
+		Player p = event.getPlayer();
+		ItemStack shears = new ItemStack(Material.SHEARS);
+		if(Perms.NOUSE.has(p, shears)){
+			event.setCancelled(true);
+			if (Configuration.notifyNoUse()) {
+				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), shears.getTypeId());
+			}
+			if (Configuration.notifyAdmins()) {
+				StringHelper.notifyAdmin(p, EventTypes.USE, shears);
+			}
+		}
+	}
 	//TODO: Add bow support
+	//TODO: Change notifyPlayer and notifyAdmin methods to do the
+	//configuration check so I don't need and if statement every time
 }
