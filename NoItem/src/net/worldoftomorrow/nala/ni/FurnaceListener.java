@@ -15,11 +15,17 @@ public class FurnaceListener implements Listener {
 		if (event.getInventory().getType().equals(InventoryType.FURNACE)) {
 			if (event.getRawSlot() == 0 && event.getCursor() != null) {
 				ItemStack stack = event.getCursor();
+				int id = stack.getTypeId();
 				if (Perms.NOCOOK.has(p, stack)) {
 					event.setCancelled(true);
-					StringHelper.notifyPlayer(p, EventTypes.COOK,
-							stack.getTypeId());
-					StringHelper.notifyAdmin(p, EventTypes.COOK, stack);
+					if(Cookable.getItem(id).isFood()){
+						StringHelper.notifyPlayer(p, EventTypes.COOK, id);
+						StringHelper.notifyAdmin(p, EventTypes.COOK, stack);
+					} else {
+						StringHelper.notifyPlayer(p, EventTypes.SMELT, id);
+						StringHelper.notifyAdmin(p, EventTypes.SMELT, stack);
+					}
+					
 				}
 			}
 		}
