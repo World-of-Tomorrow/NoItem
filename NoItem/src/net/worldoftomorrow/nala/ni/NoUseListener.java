@@ -178,5 +178,4 @@ public class NoUseListener implements Listener{
 	}
 	//TODO: Add bow support
 	//TODO: Change notifyPlayer and notifyAdmin methods to do the
-	//configuration check so I don't need and if statement every time
 }
