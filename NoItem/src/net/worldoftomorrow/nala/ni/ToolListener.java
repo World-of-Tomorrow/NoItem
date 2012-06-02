@@ -8,6 +8,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -42,6 +43,19 @@ public class ToolListener implements Listener{
 			event.setCancelled(true);
 			if (Configuration.notifyNoUse()) {
 				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), id);
+			}
+			StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
+		}
+	}
+	
+	@EventHandler
+	public void onBlockPlace(BlockPlaceEvent event){
+		Player p = event.getPlayer();
+		ItemStack block = new ItemStack(event.getBlockPlaced().getType());
+		if(Perms.NOUSE.has(p, block)){
+			event.setCancelled(true);
+			if (Configuration.notifyNoUse()) {
+				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), block.getTypeId());
 			}
 			StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
 		}
