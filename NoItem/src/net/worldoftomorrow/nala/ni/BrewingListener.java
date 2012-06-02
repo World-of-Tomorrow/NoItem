@@ -95,18 +95,14 @@ public class BrewingListener implements Listener {
 							if (dPotions.contains(dv + ":" + ingredient)) {
 								event.setCancelled(true);
 								String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
-								if (Configuration.notifyNoBrew()) {
-									StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
-								}
+								StringHelper.notifyPlayer(p, EventTypes.BREW, recipe);
 								StringHelper.notifyAdmin(p, recipe);
 							}
 						} else {
 							if (Perms.NOBREW.has(p, dv, ingredient)) {
 								event.setCancelled(true);
 								String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
-								if (Configuration.notifyNoBrew()) {
-									StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
-								}
+								StringHelper.notifyPlayer(p, EventTypes.BREW, recipe);
 								StringHelper.notifyAdmin(p, recipe);
 							}
 						}	
@@ -121,9 +117,7 @@ public class BrewingListener implements Listener {
 						String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
 						if(dPotions.contains(recipe)){
 							event.setCancelled(true);
-							if (Configuration.notifyNoBrew()) {
-								StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
-							}
+							StringHelper.notifyPlayer(p, EventTypes.BREW, recipe);
 							StringHelper.notifyAdmin(p, recipe);
 							break;
 						}	
@@ -133,9 +127,7 @@ public class BrewingListener implements Listener {
 						String recipe = Integer.toString(dv).concat(":").concat(Integer.toString(ingredient));
 						if (Perms.NOBREW.has(p, dv, ingredient)) {
 							event.setCancelled(true);
-							if (Configuration.notifyNoBrew()) {
-								StringHelper.notifyPlayer(p, Configuration.noBrewMessage(), recipe);
-							}
+							StringHelper.notifyPlayer(p, EventTypes.BREW, recipe);
 							StringHelper.notifyAdmin(p, recipe);
 							break;
 						}

@@ -41,9 +41,7 @@ public class NoUseListener implements Listener{
 		
 		if(Perms.NOUSE.has(p, item)){
 			event.setCancelled(true);
-			if (Configuration.notifyNoUse()) {
-				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), id);
-			}
+			StringHelper.notifyPlayer(p, EventTypes.USE, id);
 			StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
 		}
 	}
@@ -54,10 +52,9 @@ public class NoUseListener implements Listener{
 		ItemStack block = new ItemStack(event.getBlockPlaced().getType());
 		if(Perms.NOUSE.has(p, block)){
 			event.setCancelled(true);
-			if (Configuration.notifyNoUse()) {
-				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), block.getTypeId());
-			}
+			StringHelper.notifyPlayer(p, EventTypes.USE, block.getTypeId());
 			StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
+			//TODO: fix this nonsense
 		}
 	}
 	
@@ -81,9 +78,7 @@ public class NoUseListener implements Listener{
 		if(type.equals(Material.FLINT_AND_STEEL)){
 			if(Perms.NOUSE.has(p, stack)){
 				event.setCancelled(true);
-				if (Configuration.notifyNoUse()) {
-					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
-				}
+				StringHelper.notifyPlayer(p, EventTypes.USE, stack.getTypeId());
 				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
 		}
@@ -92,9 +87,7 @@ public class NoUseListener implements Listener{
 			if(stack.getTypeId() >= 290 && stack.getTypeId() <= 294){
 				if(Perms.NOUSE.has(p, stack)){
 					event.setCancelled(true);
-					if (Configuration.notifyNoUse()) {
-						StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
-					}
+					StringHelper.notifyPlayer(p, EventTypes.USE, stack.getTypeId());
 					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 				}
 			}
@@ -109,9 +102,7 @@ public class NoUseListener implements Listener{
 		if(type.equals(Material.FLINT_AND_STEEL) && b.getType().equals(Material.TNT)){
 			if(Perms.NOUSE.has(p, stack)){
 				event.setCancelled(true);
-				if (Configuration.notifyNoUse()) {
-					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
-				}
+				StringHelper.notifyPlayer(p, EventTypes.USE, stack.getTypeId());
 				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
 		}
@@ -123,9 +114,7 @@ public class NoUseListener implements Listener{
 		int bucketID = event.getBucket().getId();
 		if(Perms.NOUSE.has(p, bucketID)){
 			event.setCancelled(true);
-			if (Configuration.notifyNoUse()) {
-				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), bucketID);
-			}
+			StringHelper.notifyPlayer(p, EventTypes.USE, bucketID);
 			StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
 		}
 	}
@@ -136,12 +125,8 @@ public class NoUseListener implements Listener{
 		int bucketID = event.getBucket().getId();
 		if(Perms.NOUSE.has(p, bucketID)){
 			event.setCancelled(true);
-			if (Configuration.notifyNoUse()) {
-				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), bucketID);
-			}
-			if (Configuration.notifyAdmins()) {
-				StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
-			}
+			StringHelper.notifyPlayer(p, EventTypes.USE, bucketID);
+			StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
 		}
 	}
 	
@@ -152,9 +137,7 @@ public class NoUseListener implements Listener{
 		shears.setDurability((short) 0);
 		if(Perms.NOUSE.has(p, shears)){
 			event.setCancelled(true);
-			if (Configuration.notifyNoUse()) {
-				StringHelper.notifyPlayer(p, Configuration.noUseMessage(), shears.getTypeId());
-			}
+			StringHelper.notifyPlayer(p, EventTypes.USE, shears.getTypeId());
 			StringHelper.notifyAdmin(p, EventTypes.USE, shears);
 		}
 	}
@@ -169,9 +152,7 @@ public class NoUseListener implements Listener{
 			Material type = stack.getType();
 			if(Tools.isTool(type) && Perms.NOUSE.has(p, stack)){
 				event.setCancelled(true);
-				if (Configuration.notifyNoUse()) {
-					StringHelper.notifyPlayer(p, Configuration.noUseMessage(), stack.getTypeId());
-				}
+				StringHelper.notifyPlayer(p, EventTypes.USE, stack.getTypeId());
 				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
 		}

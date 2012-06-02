@@ -19,9 +19,7 @@ public class PickupListener implements Listener {
 		if(Perms.NOPICKUP.has(p, event.getItem().getItemStack())){
 			event.setCancelled(true);
 			event.getItem().setPickupDelay(200);
-			if(Configuration.notifyNoPickup()){
-				StringHelper.notifyPlayer(p, Configuration.noPickupMessage(), iid);
-			}
+			StringHelper.notifyPlayer(p, EventTypes.PICKUP, iid);
 			StringHelper.notifyAdmin(p, EventTypes.PICKUP, event.getItem().getItemStack());
 		} else {
 			log.debug("Item can be picked up");

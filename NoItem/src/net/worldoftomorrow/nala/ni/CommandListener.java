@@ -31,6 +31,8 @@ public class CommandListener implements CommandExecutor {
 		} else {
 			if (args[0].equalsIgnoreCase("reload")) {
 				plugin.config.load();
+				//set itemsAdded to false so that they are re-added on config reload
+				CraftingListener.itemsAdded = false;
 				sender.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE + "Configuration reloaded.");
 				return true;
 			} else {

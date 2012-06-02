@@ -8,18 +8,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.CraftItemEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class CraftingListener implements Listener {
-	
+
 	private static Log log = new Log();
 
 	private List<String> rawItems = Configuration.disallowedCrafting();
 
 	private List<String> dItems = new ArrayList<String>();
 
-	private boolean itemsAdded = false;
+	protected static boolean itemsAdded = false;
 
 	private void addItems() {
+		dItems.clear();
 		for (String raw : rawItems) {
 			if (raw.contains(":")) {
 				dItems.add(raw);
@@ -40,33 +42,25 @@ public class CraftingListener implements Listener {
 		log.debug("CraftItemEvent Fired");
 
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-		int iid = event.getCurrentItem().getTypeId();
-		int dv = event.getCurrentItem().getDurability();
-		
-		//If the item list should be used//
+		ItemStack stack = event.getCurrentItem();
+		int iid = stack.getTypeId();
+		int dv = stack.getDurability();
+
+		// If the item list should be used//
 		if (!Configuration.perItemPerms()) {
 			if (dItems.contains(iid + ":" + dv) && !Perms.ALLITEMS.has(p)) {
-				
 				event.setCancelled(true);
-				
-				if (Configuration.notifyNoCraft()) {
-					StringHelper.notifyPlayer(p,
-							Configuration.noCraftMessage(), iid);
-				}
-				StringHelper.notifyAdmin(p, EventTypes.CRAFT, event.getCurrentItem());
+				StringHelper.notifyPlayer(p, EventTypes.CRAFT, iid);
+				StringHelper.notifyAdmin(p, EventTypes.CRAFT, stack);
 			} else {
 				log.debug("This item can be crafted");
 			}
-		//Else use permissions//
+			// Else use permissions//
 		} else {
-			if(Perms.NOCRAFT.has(p, event.getCurrentItem())){
-				
+			if (Perms.NOCRAFT.has(p, stack)) {
 				event.setCancelled(true);
-				
-				if(Configuration.notifyNoCraft()){
-					StringHelper.notifyPlayer(p, Configuration.noCraftMessage(), iid);
-				}
-				StringHelper.notifyAdmin(p, EventTypes.CRAFT, event.getCurrentItem());
+				StringHelper.notifyPlayer(p, EventTypes.CRAFT, iid);
+				StringHelper.notifyAdmin(p, EventTypes.CRAFT, stack);
 			} else {
 				log.debug("This item can be crafted");
 			}
