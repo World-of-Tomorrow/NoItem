@@ -17,9 +17,9 @@ import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 //import org.bukkit.event.player.PlayerFishEvent;
 
-public class ToolListener implements Listener{
+public class NoUseListener implements Listener{
 	
-	public ToolListener(){
+	public NoUseListener(){
 		
 	}
 	

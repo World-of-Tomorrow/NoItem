@@ -47,10 +47,10 @@ public class NoItem extends JavaPlugin {
 			pm.registerEvents(new BrewingListener(), this);
 		}
 		if(toolListen){
-			pm.registerEvents(new ToolListener(), this);
+			pm.registerEvents(new NoUseListener(), this);
 		}
 		if(holdListen){
-			pm.registerEvents(new InHandListener(), this);
+			pm.registerEvents(new HoldListener(), this);
 		}
 		if(wearListen){
 			pm.registerEvents(new ArmourListener(), this);

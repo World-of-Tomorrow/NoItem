@@ -10,7 +10,7 @@ import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class InHandListener implements Listener{
+public class HoldListener implements Listener{
 	
 	Log log = new Log();
 	
