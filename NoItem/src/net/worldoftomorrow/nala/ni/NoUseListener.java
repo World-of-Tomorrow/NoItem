@@ -53,8 +53,7 @@ public class NoUseListener implements Listener{
 		if(Perms.NOUSE.has(p, block)){
 			event.setCancelled(true);
 			StringHelper.notifyPlayer(p, EventTypes.USE, block.getTypeId());
-			StringHelper.notifyAdmin(p, EventTypes.USE, p.getItemInHand());
-			//TODO: fix this nonsense
+			StringHelper.notifyAdmin(p, EventTypes.USE, block);
 		}
 	}
 	
