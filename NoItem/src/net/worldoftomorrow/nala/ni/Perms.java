@@ -8,6 +8,7 @@ public enum Perms {
 	ALLITEMS("noitem.allitems"),
 	NOCRAFT("noitem.nocraft."),
 	NOPICKUP("noitem.nopickup."),
+	NODROP("noitem.nodrop."),
 	NOBREW("noitem.nobrew."),
 	NOUSE("noitem.nouse."),
 	NOHOLD("noitem.nohold."),
@@ -50,6 +51,7 @@ public enum Perms {
 		String permission = "";
 		if(perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
 				|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
+				|| perm.equalsIgnoreCase(Perms.NODROP.perm)
 				|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
 				|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
 				|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
@@ -71,6 +73,7 @@ public enum Perms {
 				//If it is a permission that supports item names
 			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
 					|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
+					|| perm.equalsIgnoreCase(Perms.NODROP.perm)
 					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
 					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
 					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){

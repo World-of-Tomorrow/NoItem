@@ -5,6 +5,7 @@ public enum EventTypes {
 	BREW("brew", Configuration.notifyNoBrew()),
 	WEAR("wear", Configuration.notfiyNoWear()),
 	PICKUP("pick up", Configuration.notifyNoPickup()),
+	DROP("drop", Configuration.notifyNoDrop()),
 	USE("user", Configuration.notifyNoUse()),
 	HOLD("hold", Configuration.notifyNoHold()),
 	SMELT("smelt", Configuration.notifyNoCook()),

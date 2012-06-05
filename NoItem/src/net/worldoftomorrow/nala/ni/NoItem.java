@@ -36,6 +36,7 @@ public class NoItem extends JavaPlugin {
 		boolean holdListen = Configuration.stopItemHold();
 		boolean wearListen = Configuration.stopArmourWear();
 		boolean cookListen = Configuration.stopItemCook();
+		boolean dropListen = Configuration.stopItemDrop();
 		
 		if (craftListen) {
 			pm.registerEvents(new CraftingListener(), this);
@@ -57,6 +58,9 @@ public class NoItem extends JavaPlugin {
 		}
 		if(cookListen){
 			pm.registerEvents(new FurnaceListener(), this);
+		}
+		if(dropListen){
+			pm.registerEvents(new DropListener(), this);
 		}
 		this.log.log("[NoItem] Configs loaded, events registered, and cake baked.");
 		

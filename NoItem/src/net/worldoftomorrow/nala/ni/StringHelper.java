@@ -100,6 +100,7 @@ public class StringHelper {
 			case BREW: msg = Configuration.noBrewMessage();
 			case WEAR: msg = Configuration.noWearMessage();
 			case PICKUP: msg = Configuration.noPickupMessage();
+			case DROP: msg = Configuration.noDropMessage();
 			case USE: msg = Configuration.noUseMessage();
 			case HOLD: msg = Configuration.noHoldMessage();
 			case SMELT: msg = Configuration.noCookMessage();

@@ -43,6 +43,7 @@ public class Configuration {
 	private boolean eNotifyNoCraft = true;
 	private boolean eNotifyNoPickup = true;
 	private boolean eNotifyNoCook = true;
+	private boolean eNotifyNoDrop = true;
 	
 	private boolean eStopCrafting = true;
 	private boolean eStopItemPickup = true;
@@ -50,6 +51,7 @@ public class Configuration {
 	private boolean eStopItemHold = true;
 	private boolean eStopWear = true;
 	private boolean eStopCook = true;
+	private boolean eStopItemDrop = true;
 	
 	private boolean ePerItemPermissions = true;
 	private boolean eDebugging = false;
@@ -63,6 +65,7 @@ public class Configuration {
 	private String eNoCraftMessage = "You are not allowed to craft &4%i&9.";
 	private String eNoPickupMessage = "You are not allowed to pick that up! (%i)";
 	private String eNoCookMessage = "You are not allowed to cook &4%i&9.";
+	private String eNoDropMessage = "You are not allowed to drop &4%i.";
 	
 	private List<String> eDisallowedCrafting = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
@@ -187,6 +190,8 @@ public class Configuration {
 			writer.println("    NoPickupMessage: \'" + eNoPickupMessage + "\'");
 			writer.println("    NoCook: " + eNotifyNoCook);
 			writer.println("    NoCookMessage: \'" + eNoCookMessage + "\'");
+			writer.println("    NoDrop: " + eNotifyNoDrop);
+			writer.println("    NoDropMessage: \'" + eNoDropMessage + "\'");
 			writer.println("");
 			writer.println("# Blocked items list ( itemID:DamageValue )    ");
 			writer.println("DisallowedCraftingRecipes:");
@@ -253,13 +258,20 @@ public class Configuration {
 			writer.println("StopItemHold: " + eStopItemHold);
 			writer.println("StopArmourWear: " + eStopWear);
 			writer.println("StopItemCook: " + eStopCook);
+			writer.println("StopItemDrop: " + eStopItemDrop);
 			writer.println("");
 			writer.println("# Permissions:");
-			writer.println("# 'noitem.nocraft.<item#>[.datavalue]' or");
-			writer.println("# 'noitem.nopickup.<item#>[.datavalue]' or");
-			writer.println("# 'noitem.nobrew.<potionDV>.<IngredientID>'");
-			writer.println("# 'noitem.nouse.<tool# OR toolname>' (i.e. noitem.nouse.diamondaxe)");
-			writer.println("# 'noitem.allitems' overrides ALL Permissions.");
+			writer.println("# noitem.allitems");
+			writer.println("# noitem.admin");
+			writer.println("# noitem.nopickup.<itemId>[.dataValue]");
+			writer.println("# noitem.nocraft.<itemId>[.dataValue]");
+			writer.println("# noitem.nobrew.<potionDV>.<IngredientID>");
+			writer.println("# noitem.nouse.<itemID> or noitem.nouse.<itemName>");
+			writer.println("# noitem.nohold.<itemID> or noitem.nohold.<itemName>");
+			writer.println("# noitem.nowear.<itemID> or noitem.nowear.<itemName>");
+			writer.println("# noitem.nocook.<itemID> or noitem.nocook.<itemName>");
+			writer.println("# noitem.nodrop.<itemID>[.dataValue]");
+			writer.println("");
 			writer.println("PerItemPermissions: " + ePerItemPermissions);
 			writer.println("");
 			writer.println("#Don't turn this on unless you like getting spammed with messages!");
@@ -310,6 +322,12 @@ public class Configuration {
 			this.eNoCookMessage = conf.getString("Notify.NoCookMessage");
 		}
 		
+		if(configVersion <= 8){
+			this.eStopItemDrop = conf.getBoolean("StopItemDrop");
+			this.eNotifyNoDrop = conf.getBoolean("Notify.NoDrop");
+			this.eNoDropMessage = conf.getString("Notify.NoDropMessage");
+		}
+		
 		this.eAdminMessage = conf.getString("Notify.AdminMessage");
 		this.eNoUseMessage = conf.getString("Notify.NoUseMessage");
 		
@@ -343,6 +361,9 @@ public class Configuration {
 	public static boolean notifyNoCook(){
 		return Configuration.conf.getBoolean("Notify.NoCook");
 	}
+	public static boolean notifyNoDrop(){
+		return Configuration.conf.getBoolean("Notify.NoDrop");
+	}
 	//Stop//
 	public static boolean stopCrafting(){
 		return Configuration.conf.getBoolean("StopCrafting");
@@ -364,6 +385,9 @@ public class Configuration {
 	}
 	public static boolean stopItemCook(){
 		return Configuration.conf.getBoolean("StopItemCook");
+	}
+	public static boolean stopItemDrop(){
+		return Configuration.conf.getBoolean("StopItemDrop");
 	}
 	//Misc//
 	public static boolean debugging(){
@@ -399,6 +423,9 @@ public class Configuration {
 	}
 	public static String noCookMessage(){
 		return Configuration.conf.getString("Notify.NoCookMessage");
+	}
+	public static String noDropMessage(){
+		return Configuration.conf.getString("Notify.NoDropMessage");
 	}
 	//Lists//
 	public static List<String> disallowedCrafting(){
