@@ -20,8 +20,8 @@ public class StringHelper {
 		msg = msg.replace("%z", z);
 		if (Tools.getTool(iid) != null) {
 			msg = msg.replace("%i", Tools.getTool(iid).getRealName());
-		} else if (Armour.getArmour(iid) != null) {
-			msg = msg.replace("%i", Armour.getArmour(iid).getRealName());
+		} else if (Armor.getArmour(iid) != null) {
+			msg = msg.replace("%i", Armor.getArmour(iid).getRealName());
 		} else if (Vault.vaultPerms) {
 			ItemInfo info = Items.itemById(iid);
 			msg = msg.replace("%i", info.getName());
@@ -55,8 +55,8 @@ public class StringHelper {
 		
 		if (Tools.getTool(iid) != null) {
 			msg = msg.replace("%i", Tools.getTool(iid).getRealName());
-		} else if (Armour.getArmour(iid) != null) {
-			msg = msg.replace("%i", Armour.getArmour(iid).getRealName());
+		} else if (Armor.getArmour(iid) != null) {
+			msg = msg.replace("%i", Armor.getArmour(iid).getRealName());
 		} else if (Vault.vaultPerms) {
 			//Get the item by stack so sub-types can be returned
 			ItemInfo info = Items.itemByStack(stack);

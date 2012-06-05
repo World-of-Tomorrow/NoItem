@@ -79,8 +79,8 @@ public enum Perms {
 					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)){
 				if(Tools.isTool(itemId)){
 					return Vault.has(p, this.perm.concat(Tools.getTool(itemId).getName()));
-				} else if (Armour.armours.containsKey(itemId)){
-					return Vault.has(p, this.perm.concat(Armour.armours.get(itemId).getName()));
+				} else if (Armor.isArmor(itemId)){
+					return Vault.has(p, this.perm.concat(Armor.getArmour(itemId).getName()));
 				} else if (Cookable.items.containsKey(itemId)) {
 					return Vault.has(p, this.perm.concat(Cookable.items.get(itemId).getName()));
 				} else {
@@ -100,9 +100,8 @@ public enum Perms {
 				if (Tools.isTool(itemId)) {
 					return p.hasPermission(this.perm.concat(Tools.getTool(
 							itemId).getName()));
-				} else if (Armour.armours.containsKey(itemId)) {
-					return p.hasPermission(this.perm.concat(Armour.armours.get(
-							itemId).getName()));
+				} else if (Armor.isArmor(itemId)) {
+					return p.hasPermission(this.perm.concat(Armor.getArmour(itemId).getName()));
 				} else if (Cookable.items.containsKey(itemId)) {
 					return p.hasPermission(this.perm.concat(Cookable.items.get(itemId).getName()));
 				} else {
@@ -140,8 +139,8 @@ public enum Perms {
 				if(Vault.has(p, perm.concat(Integer.toString(itemId)))){
 					return true;
 				} else {
-					if(Armour.armours.containsKey(itemId)){
-						return Vault.has(p, perm.concat(Armour.getArmour(itemId).getName()));
+					if(Armor.isArmor(itemId)){
+						return Vault.has(p, perm.concat(Armor.getArmour(itemId).getName()));
 					} else {
 						return false;
 					}
@@ -150,8 +149,8 @@ public enum Perms {
 				if(p.hasPermission(perm.concat(Integer.toString(itemId)))){
 					return true;
 				} else {
-					if(Armour.armours.containsKey(itemId)){
-						return p.hasPermission(perm.concat(Armour.getArmour(itemId).getName()));
+					if(Armor.isArmor(itemId)){
+						return p.hasPermission(perm.concat(Armor.getArmour(itemId).getName()));
 					} else {
 						return false;
 					}
