@@ -4,29 +4,33 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.bukkit.Material;
+
 public enum Cookable {
-	CHICKEN("chicken", 365, "Chicken", true),
-	BEEF("beef", 363, "Beef", true),
-	PORK("pork", 319, "Porkchop", true),
-	FISH("fish", 349, "Fish", true),
-	LOG("log", 17, "Log", false),
-	IRON_ORE("ironore", 15, "Iron Ore", false),
-	GOLD_ORE("goldore", 14, "Gold Ore", false),
-	COBBLESTONE("cobblestone", 4, "Cobblestone", false),
-	SAND("sand", 12, "Sand", false),
-	CLAY("clay", 337, "Clay Ball", false),
-	CACTUS("cactus", 81, "Cactus", false);
+	CHICKEN("chicken", 365, "Chicken", true, Material.RAW_CHICKEN),
+	BEEF("beef", 363, "Beef", true, Material.RAW_BEEF),
+	PORK("pork", 319, "Porkchop", true, Material.PORK),
+	FISH("fish", 349, "Fish", true, Material.RAW_FISH),
+	LOG("log", 17, "Log", false, Material.LOG),
+	IRON_ORE("ironore", 15, "Iron Ore", false, Material.IRON_ORE),
+	GOLD_ORE("goldore", 14, "Gold Ore", false, Material.GOLD_ORE),
+	COBBLESTONE("cobblestone", 4, "Cobblestone", false, Material.COBBLESTONE),
+	SAND("sand", 12, "Sand", false, Material.SAND),
+	CLAY("clay", 337, "Clay Ball", false, Material.CLAY_BALL),
+	CACTUS("cactus", 81, "Cactus", false, Material.CACTUS);
 	
 	private final String name;
 	private final int id;
 	private final String realName;
 	private final boolean isFood;
+	private final Material material;
 	
-	Cookable(String name, int id, String realName, boolean isFood){
+	Cookable(String name, int id, String realName, boolean isFood, Material material){
 		this.name = name;
 		this.id = id;
 		this.realName = realName;
 		this.isFood = isFood;
+		this.material = material;
 	}
 	
 	public int getID(){
@@ -61,17 +65,25 @@ public enum Cookable {
 		}
 	}
 	
-	public static Map<Cookable, Integer> ids = new HashMap<Cookable, Integer>();
-	public static Map<Integer, Cookable> items = new HashMap<Integer, Cookable>();
-	public static Map<String, Cookable> names = new HashMap<String, Cookable>();
-	public static Map<Cookable, String> realNames = new HashMap<Cookable, String>();
+	public static boolean isCookable(int id){
+		return items.containsKey(id);
+	}
+	
+	public static boolean isCookable(Material mat){
+		return materials.containsValue(mat);
+	}
+	
+	private static Map<Integer, Cookable> items = new HashMap<Integer, Cookable>();
+	private static Map<String, Cookable> names = new HashMap<String, Cookable>();
+	private static Map<Cookable, String> realNames = new HashMap<Cookable, String>();
+	private static Map<Cookable, Material> materials = new HashMap<Cookable, Material>();
 	
 	static{
 		for(Cookable item : EnumSet.allOf(Cookable.class)){
-			ids.put(item, item.id);
 			items.put(item.id, item);
 			names.put(item.name, item);
 			realNames.put(item, item.realName);
+			materials.put(item, item.material);
 		}
 	}
 }
