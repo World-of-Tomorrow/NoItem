@@ -12,7 +12,7 @@ public class DropListener implements Listener{
 		Player p = event.getPlayer();
 		ItemStack stack = new ItemStack(event.getItemDrop().getItemStack());
 		int iid = stack.getTypeId();
-		if(Tools.isTool(iid) /*TODO: or armor*/){
+		if(Tools.isTool(iid) || Armor.isArmor(iid)){
 			stack.setDurability((short) 0);
 		}
 		if(Perms.NODROP.has(p, stack)){

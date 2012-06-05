@@ -17,7 +17,7 @@ public class PickupListener implements Listener {
 		ItemStack stack = new ItemStack(event.getItem().getItemStack());
 		int iid = event.getItem().getItemStack().getTypeId();
 		
-		if(Tools.isTool(iid) /*TODO: or is armor*/){
+		if(Tools.isTool(iid) || Armor.isArmor(iid)){
 			stack.setDurability((short) 0);
 		}
 		
