@@ -6,7 +6,7 @@ public enum EventTypes {
 	WEAR("wear", Configuration.notfiyNoWear()),
 	PICKUP("pick up", Configuration.notifyNoPickup()),
 	DROP("drop", Configuration.notifyNoDrop()),
-	USE("user", Configuration.notifyNoUse()),
+	USE("use", Configuration.notifyNoUse()),
 	HOLD("hold", Configuration.notifyNoHold()),
 	SMELT("smelt", Configuration.notifyNoCook()),
 	COOK("cook", Configuration.notifyNoCook());
