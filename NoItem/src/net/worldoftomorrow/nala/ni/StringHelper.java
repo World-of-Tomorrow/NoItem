@@ -92,20 +92,40 @@ public class StringHelper {
 		return msg;
 	}
 	
-	public static void notifyPlayer(Player p, EventTypes type, String recipe){
-		if(type.doNotify()){
+	public static void notifyPlayer(Player p, EventTypes type, String recipe) {
+		if (type.doNotify()) {
 			String msg;
-			switch(type) {
-			case CRAFT: msg = Configuration.noCraftMessage();
-			case BREW: msg = Configuration.noBrewMessage();
-			case WEAR: msg = Configuration.noWearMessage();
-			case PICKUP: msg = Configuration.noPickupMessage();
-			case DROP: msg = Configuration.noDropMessage();
-			case USE: msg = Configuration.noUseMessage();
-			case HOLD: msg = Configuration.noHoldMessage();
-			case SMELT: msg = Configuration.noCookMessage();
-			case COOK: msg = Configuration.noCookMessage();
-			default: msg = "Unknown event type: " + type.name();;
+			switch (type) {
+			case CRAFT:
+				msg = Configuration.noCraftMessage();
+				break;
+			case BREW:
+				msg = Configuration.noBrewMessage();
+				break;
+			case WEAR:
+				msg = Configuration.noWearMessage();
+				break;
+			case PICKUP:
+				msg = Configuration.noPickupMessage();
+				break;
+			case DROP:
+				msg = Configuration.noDropMessage();
+				break;
+			case USE:
+				msg = Configuration.noUseMessage();
+				break;
+			case HOLD:
+				msg = Configuration.noHoldMessage();
+				break;
+			case SMELT:
+				msg = Configuration.noCookMessage();
+				break;
+			case COOK:
+				msg = Configuration.noCookMessage();
+				break;
+			default:
+				msg = "Unknown event type: " + type.name();
+				break;
 			}
 			p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 					+ replaceVars(msg, p, recipe));

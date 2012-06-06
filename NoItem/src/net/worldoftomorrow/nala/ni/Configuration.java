@@ -70,7 +70,7 @@ public class Configuration {
 	private List<String> eDisallowedCrafting = new ArrayList<String>();
 	private List<String> eDisallowedPotionRecipes = new ArrayList<String>();
 	
-	private int configVersion = 7;
+	private int configVersion = 8;
 	
 	//----METHODS----//
 	public void load(){
