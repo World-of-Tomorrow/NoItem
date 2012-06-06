@@ -302,11 +302,11 @@ public class Configuration {
 		this.eNotifyNoBrew = conf.getBoolean("Notify.NoBrew");
 		this.eNoBrewMessage = conf.getString("Notify.NoBrewMessage");
 		
-		if(configVersion <= 4){
+		if(configVersion >= 4){
 			this.ePluginChannel = conf.getString("PluginChannel");
 		}
 		
-		if(configVersion <= 5){
+		if(configVersion >= 5){
 			this.eStopWear = conf.getBoolean("StopArmourWear");
 			this.eNoWearMessage = conf.getString("Notify.NoWearMessage");
 			this.eNotifyNoWear = conf.getBoolean("Notify.NoWear");
@@ -316,13 +316,13 @@ public class Configuration {
 			this.eNotifyNoPickup = conf.getBoolean("Notfy.NoPickup");
 		}
 		
-		if(configVersion <= 6){
+		if(configVersion >= 6){
 			this.eStopCook = conf.getBoolean("StopItemCook");
 			this.eNotifyNoCook = conf.getBoolean("Notify.NoCook");
 			this.eNoCookMessage = conf.getString("Notify.NoCookMessage");
 		}
 		
-		if(configVersion <= 8){
+		if(configVersion >= 8){
 			this.eStopItemDrop = conf.getBoolean("StopItemDrop");
 			this.eNotifyNoDrop = conf.getBoolean("Notify.NoDrop");
 			this.eNoDropMessage = conf.getString("Notify.NoDropMessage");
