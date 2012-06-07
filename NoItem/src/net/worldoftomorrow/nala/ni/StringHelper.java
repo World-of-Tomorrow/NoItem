@@ -42,7 +42,7 @@ public class StringHelper {
 		msg = msg.replace("%x", x);
 		msg = msg.replace("%y", y);
 		msg = msg.replace("%z", z);
-		msg.replace("%i", recipe);
+		msg = msg.replace("%i", recipe);
 		msg = StringHelper.parseColors(msg);
 		return msg;
 	}
