@@ -22,10 +22,7 @@
   	<dependency>
   		<groupId>org.bukkit</groupId>
   		<artifactId>bukkit</artifactId>
-  		<version>1.2.5-R2.0</version>
-  		<type>jar</type>
-  		<scope>compile</scope>
-  		<optional>false</optional>
+  		<version>1.2.5-R3.0</version>
   	</dependency>
   	<dependency>
   		<artifactId>Vault</artifactId>
