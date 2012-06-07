@@ -176,11 +176,12 @@ public class StringHelper {
 			String message = StringHelper.replaceVars(
 					Configuration.adminMessage(), p, EventTypes.BREW, recipe);
 			Player[] players = Bukkit.getOnlinePlayers();
-			for (Player player : players)
+			for (Player player : players) {
 				if (Perms.ADMIN.has(player)) {
 					player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 							+ message);
 				}
+			}
 		}
 	}
 
@@ -190,11 +191,12 @@ public class StringHelper {
 					Configuration.adminMessage(), p, type, stack);
 			// log.log(message);
 			Player[] players = Bukkit.getOnlinePlayers();
-			for (Player player : players)
+			for (Player player : players) {
 				if (Perms.ADMIN.has(player)) {
 					player.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 							+ message);
 				}
+			}
 		}
 	}
 
