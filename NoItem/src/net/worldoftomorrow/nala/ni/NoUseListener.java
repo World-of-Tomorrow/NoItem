@@ -33,6 +33,7 @@ public class NoUseListener implements Listener{
 		//Create a new item stack because it likes to reset the item otherwise.
 		ItemStack item = new ItemStack(p.getItemInHand());
 		//Do this to prevent accidentally using armor or tool damage values
+		log.debug("Original data value: " + item.getDurability());
 		if(Tools.isTool(id) || Armor.isArmor(id)){
 			item.setDurability((short) 0);
 		}
