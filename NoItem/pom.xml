@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.worldoftomorrow.ni</groupId>
   <artifactId>NoItem</artifactId>
-  <version>2.0.4-SNAPSHOT</version>
+  <version>2.0.5-SNAPSHOT</version>
   <name>NoItem</name>
   <organization>
   	<name>World of Tomorrow</name>
@@ -34,7 +34,7 @@
   	</dependency>
   </dependencies>
   <build>
-  	<defaultGoal>compile package</defaultGoal>
+  	<defaultGoal>clean compile package</defaultGoal>
   	<sourceDirectory>${basedir}/src/</sourceDirectory>
   	<resources>
   		<resource>
