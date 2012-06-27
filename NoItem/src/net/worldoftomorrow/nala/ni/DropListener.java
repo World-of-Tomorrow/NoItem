@@ -9,6 +9,7 @@ import org.bukkit.inventory.ItemStack;
 public class DropListener implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
+    Log.debug("ItemDropEvent fired.");
 	Player p = event.getPlayer();
 	ItemStack stack = new ItemStack(event.getItemDrop().getItemStack());
 	int iid = stack.getTypeId();
