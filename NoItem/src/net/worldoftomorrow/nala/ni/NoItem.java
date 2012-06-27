@@ -55,7 +55,7 @@ public class NoItem extends JavaPlugin {
 	    pm.registerEvents(new HoldListener(), this);
 	}
 	if (wearListen) {
-	    pm.registerEvents(new ArmourListener(), this);
+	    pm.registerEvents(new ArmorListener(), this);
 	}
 	if (cookListen) {
 	    pm.registerEvents(new FurnaceListener(), this);

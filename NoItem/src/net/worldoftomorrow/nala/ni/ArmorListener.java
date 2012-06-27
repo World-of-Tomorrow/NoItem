@@ -8,7 +8,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 
-public class ArmourListener implements Listener {
+public class ArmorListener implements Listener {
 
     @EventHandler
     public void onArmourEquip(InventoryClickEvent event) {
