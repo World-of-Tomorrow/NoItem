@@ -12,58 +12,55 @@ import org.bukkit.inventory.ItemStack;
 
 public class CraftingListener implements Listener {
 
-	private static Log log = new Log();
+    private List<String> rawItems = Config.disallowedCrafting();
+    private List<String> dItems = new ArrayList<String>();
 
-	private List<String> rawItems = Configuration.disallowedCrafting();
+    protected static boolean itemsAdded = false;
 
-	private List<String> dItems = new ArrayList<String>();
+    private void addItems() {
+	dItems.clear();
+	for (String raw : rawItems) {
+	    if (raw.contains(":")) {
+		dItems.add(raw);
+	    } else {
+		String n = raw.concat(":0");
+		dItems.add(n);
+	    }
+	}
+    }
 
-	protected static boolean itemsAdded = false;
-
-	private void addItems() {
-		dItems.clear();
-		for (String raw : rawItems) {
-			if (raw.contains(":")) {
-				dItems.add(raw);
-			} else {
-				String n = raw.concat(":0");
-				dItems.add(n);
-			}
-		}
+    @EventHandler
+    public void onItemCraft(CraftItemEvent event) {
+	if (!itemsAdded) {
+	    addItems();
+	    itemsAdded = true;
 	}
 
-	@EventHandler
-	public void onItemCraft(CraftItemEvent event) {
-		if (!itemsAdded) {
-			addItems();
-			itemsAdded = true;
-		}
+	Log.debug("CraftItemEvent Fired");
 
-		log.debug("CraftItemEvent Fired");
+	Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
+	ItemStack stack = event.getCurrentItem();
+	int iid = stack.getTypeId();
+	int dv = stack.getDurability();
 
-		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-		ItemStack stack = event.getCurrentItem();
-		int iid = stack.getTypeId();
-		int dv = stack.getDurability();
-
-		// If the item list should be used//
-		if (!Configuration.perItemPerms()) {
-			if (dItems.contains(iid + ":" + dv) && !Perms.ALLITEMS.has(p)) {
-				event.setCancelled(true);
-				StringHelper.notifyPlayer(p, EventTypes.CRAFT, iid);
-				StringHelper.notifyAdmin(p, EventTypes.CRAFT, stack);
-			} else {
-				log.debug("This item can be crafted");
-			}
-			// Else use permissions//
-		} else {
-			if (Perms.NOCRAFT.has(p, stack)) {
-				event.setCancelled(true);
-				StringHelper.notifyPlayer(p, EventTypes.CRAFT, iid);
-				StringHelper.notifyAdmin(p, EventTypes.CRAFT, stack);
-			} else {
-				log.debug("This item can be crafted");
-			}
-		}
+	// If the item list should be used//
+	if (!Config.perItemPerms()) {
+	    if (dItems.contains(iid + ":" + dv) && !Perms.ALLITEMS.has(p)) {
+		event.setCancelled(true);
+		StringHelper.notifyPlayer(p, EventTypes.CRAFT, iid);
+		StringHelper.notifyAdmin(p, EventTypes.CRAFT, stack);
+	    } else {
+		Log.debug("This item can be crafted");
+	    }
+	    // Else use permissions//
+	} else {
+	    if (Perms.NOCRAFT.has(p, stack)) {
+		event.setCancelled(true);
+		StringHelper.notifyPlayer(p, EventTypes.CRAFT, iid);
+		StringHelper.notifyAdmin(p, EventTypes.CRAFT, stack);
+	    } else {
+		Log.debug("This item can be crafted");
+	    }
 	}
+    }
 }

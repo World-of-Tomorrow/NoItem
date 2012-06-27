@@ -4,37 +4,38 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class Log {
-	private final Logger log = Logger.getLogger("Minecraft");
+    private static Logger log = NoItem.getPlugin().getLogger();
 
-	public void log(Level l, String s) {
-		log.log(l, s);
-	}
+    public static void info(String s) {
+	log.log(Level.INFO, s);
+    }
 
-	public void log(String s) {
-		log.log(Level.INFO, s);
-	}
+    public static void severe(String s, Exception e) {
+	log.log(Level.SEVERE, s, e);
+    }
 
-	public void log(Level l, String s, Exception e, boolean printE) {
-		if (printE)
-			log.log(l, s, e);
-		else
-			log.log(l, s);
-	}
+    public static void severe(String s) {
+	log.log(Level.SEVERE, s);
+    }
 
-	public void log(String s, Exception e, boolean printE) {
-		if (printE)
-			log.log(Level.SEVERE, s, e);
-		else
-			log.log(Level.SEVERE, s);
-	}
+    public static void warn(String s) {
+	log.log(Level.WARNING, s);
+    }
 
-	public void log(String s, Exception e) {
-		log.log(Level.SEVERE, s, e);
+    public static void warn(String s, Exception e) {
+	log.log(Level.WARNING, s, e);
+    }
+
+    public static void debug(String s) {
+	if (Config.debugging()) {
+	    log.log(Level.FINE, s);
 	}
-	
-	public void debug(String s){
-		if(Configuration.debugging()){
-			this.log("[DEBUG] ".concat(s));
-		}
+    }
+
+    public static void debug(String s, Exception e) {
+	if (Config.debugging()) {
+	    log.log(Level.FINE, s);
+	    e.printStackTrace();
 	}
+    }
 }
