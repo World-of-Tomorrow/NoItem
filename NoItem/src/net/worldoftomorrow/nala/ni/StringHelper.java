@@ -18,13 +18,21 @@ public class StringHelper {
 		msg = msg.replace("%x", x);
 		msg = msg.replace("%y", y);
 		msg = msg.replace("%z", z);
-		if (Tools.getTool(iid) != null) {
+		if (Tools.isTool(iid)) { //Check if it is a tool
 			msg = msg.replace("%i", Tools.getTool(iid).getRealName());
-		} else if (Armor.getArmour(iid) != null) {
+		} else if (Armor.isArmor(iid)) { //Check if it is Armor
 			msg = msg.replace("%i", Armor.getArmour(iid).getRealName());
-		} else if (Vault.vaultPerms) {
+		} else if (Cookable.isCookable(iid)){ //Check if it is a cookable item
+			msg = msg.replace("%i", Cookable.getItem(iid).getRealName());
+		} else if (TekkitTools.isTekkitTool(iid)) { //Check if it a known TekkitTool
+			msg = msg.replace("%i", TekkitTools.getTool(iid).getRealName());
+		} else if (Vault.vaultPerms) { //Then finally try to use vault and get the name
 			ItemInfo info = Items.itemById(iid);
-			msg = msg.replace("%i", info.getName());
+			if(info != null){
+				msg = msg.replace("%i", info.getName());
+			} else {
+				msg = msg.replace("%i", Integer.toString(iid));
+			}
 		} else {
 			String id = Integer.toString(iid);
 			msg = msg.replace("%i", id);
@@ -54,14 +62,21 @@ public class StringHelper {
 		String z = Integer.toString(p.getLocation().getBlockZ());
 		int iid = stack.getTypeId();
 
-		if (Tools.getTool(iid) != null) {
+		if (Tools.isTool(iid)) { //Check if it is a tool
 			msg = msg.replace("%i", Tools.getTool(iid).getRealName());
-		} else if (Armor.getArmour(iid) != null) {
+		} else if (Armor.isArmor(iid)) { //Check if it is Armor
 			msg = msg.replace("%i", Armor.getArmour(iid).getRealName());
-		} else if (Vault.vaultPerms) {
-			// Get the item by stack so sub-types can be returned
-			ItemInfo info = Items.itemByStack(stack);
-			msg = msg.replace("%i", info.getName());
+		} else if (Cookable.isCookable(iid)){ //Check if it is a cookable item
+			msg = msg.replace("%i", Cookable.getItem(iid).getRealName());
+		} else if (TekkitTools.isTekkitTool(iid)) { //Check if it a known TekkitTool
+			msg = msg.replace("%i", TekkitTools.getTool(iid).getRealName());
+		} else if (Vault.vaultPerms) { //Then finally try to use vault and get the name
+			ItemInfo info = Items.itemById(iid);
+			if(info != null){
+				msg = msg.replace("%i", info.getName());
+			} else {
+				msg = msg.replace("%i", Integer.toString(iid));
+			}
 		} else {
 			String id = Integer.toString(iid);
 			msg = msg.replace("%i", id);
