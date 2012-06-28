@@ -63,17 +63,17 @@ public class NoItem extends JavaPlugin {
 	if (dropListen) {
 	    pm.registerEvents(new DropListener(), this);
 	}
-	Log.info("[NoItem] Configs loaded, events registered, and cake baked.");
+	Log.info("Configs loaded, events registered, and cake baked.");
 
 	if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen)
 		&& (!holdListen) && (!wearListen) && (!cookListen)) {
-	    Log.info("[NoItem] No listeners active! Shutting down plugin.");
+	    Log.info("No listeners active! Shutting down plugin.");
 	    getPluginLoader().disablePlugin(this);
 	}
     }
 
     public void onDisable() {
-	Log.info("[NoItem] Configs unloaded, events unregisterededed, and cake eaten.");
+	Log.info("Configs unloaded, events unregisterededed, and cake eaten.");
     }
 
     public static NoItem getPlugin() {
