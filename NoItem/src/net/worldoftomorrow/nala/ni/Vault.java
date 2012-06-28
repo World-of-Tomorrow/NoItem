@@ -8,7 +8,7 @@ import net.milkbowl.vault.permission.Permission;
 public class Vault {
 
     private NoItem plugin;
-    protected static boolean vaultPerms = false;
+    static boolean vaultPerms = false;
 
     public Vault(NoItem plugin) {
 	this.plugin = plugin;
