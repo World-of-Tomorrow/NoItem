@@ -15,7 +15,7 @@ public enum Perms {
 	NOWEAR("noitem.nowear."),
 	NOCOOK("noitem.nocook.");
 
-	private String perm;
+	private final String perm;
 
 	private Perms(String perm) {
 		this.perm = perm;
@@ -26,155 +26,73 @@ public enum Perms {
 	}
 
 	public boolean has(Player p) {
-		if (perm.equalsIgnoreCase(Perms.ALLITEMS.perm)
-				|| perm.equalsIgnoreCase(Perms.ADMIN.perm)) {
-			// Do the Op check here to avoid needing to run it elsewhere.
-			if (p.isOp()) {
+		if (perm.equalsIgnoreCase(Perms.ALLITEMS.getPerm())
+				|| perm.equalsIgnoreCase(Perms.ADMIN.getPerm())) {
+			if (p.isOp())
 				return true;
-			}
 		}
-		if (Vault.vaultPerms) {
-			return Vault.has(p, this.perm);
-		} else {
-			return p.hasPermission(this.perm);
-		}
+		return this.check(p, this.perm);
 	}
 
 	public boolean has(Player p, ItemStack stack) {
-		// Check if the have the ALLITEMS permission first to prevent unneeded
-		// code execution.
-		int itemId = 0;
-		int data = 0;
+		if (Perms.ALLITEMS.has(p)) return false;
 		if (stack != null) {
-			itemId = stack.getTypeId();
-			data = stack.getDurability();
-		}
-		if (Perms.ALLITEMS.has(p)) {
-			return false;
-		}
-		String permission = "";
-		if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
-				|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
-				|| perm.equalsIgnoreCase(Perms.NODROP.perm)
-				|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
-				|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
-				|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)) {
-			if (data > 0) {
-				permission = this.perm.concat(Integer.toString(itemId))
-						.concat(".").concat(Integer.toString(data));
-			} else {
-				permission = this.perm.concat(Integer.toString(itemId));
-			}
-			// Use separate ELSE IF for NOBREW, because you want to check for 0
-			// as a data value.
-		} else if (perm.equalsIgnoreCase(Perms.NOBREW.perm)) {
-			permission = this.perm.concat(Integer.toString(data)).concat(".")
-					.concat(Integer.toString(itemId));
-		} else {
-			permission = this.perm.concat(Integer.toString(itemId)).concat(".")
-					.concat(Integer.toString(data));
-		}
-
-		if (Vault.vaultPerms) {
-			if (Vault.has(p, permission)) {
-				return true;
-				// If it is a permission that supports item names
-			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
-					|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
-					|| perm.equalsIgnoreCase(Perms.NODROP.perm)
-					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
-					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
-					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)) {
-				if (Tools.isTool(itemId)) {
-					return Vault.has(p,
-							this.perm.concat(Tools.getTool(itemId).getName()));
-				} else if (Armor.isArmor(itemId)) {
-					return Vault
-							.has(p, this.perm.concat(Armor.getArmour(itemId)
-									.getName()));
-				} else if (Cookable.isCookable(itemId)) {
-					return Vault.has(p, this.perm.concat(Cookable.getItem(
-							itemId).getName()));
-				} else {
-					return false;
-				}
-			} else {
+			int id = stack.getTypeId();
+			int data = stack.getDurability();
+			if (perm.equalsIgnoreCase(Perms.NOCOOK.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOCRAFT.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NODROP.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOHOLD.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOPICKUP.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOUSE.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())) {
+				String numPerm = perm + id;
+				numPerm = data > 0 ? numPerm + "." + data : numPerm;
+				if(this.check(p, numPerm)) return true;
+				String namePerm = perm + this.getItemName(id);
+				namePerm = data > 0 ? namePerm + "." + data : namePerm;
+				if(this.check(p, namePerm)) return true;
 				return false;
-			}
-		} else {
-			if (p.hasPermission(permission)) {
-				return true;
-			} else if (perm.equalsIgnoreCase(Perms.NOCRAFT.perm)
-					|| perm.equalsIgnoreCase(Perms.NOPICKUP.perm)
-					|| perm.equalsIgnoreCase(Perms.NOHOLD.perm)
-					|| perm.equalsIgnoreCase(Perms.NOUSE.perm)
-					|| perm.equalsIgnoreCase(Perms.NOCOOK.perm)) {
-				if (Tools.isTool(itemId)) {
-					return p.hasPermission(this.perm.concat(Tools.getTool(
-							itemId).getName()));
-				} else if (Armor.isArmor(itemId)) {
-					return p.hasPermission(this.perm.concat(Armor.getArmour(
-							itemId).getName()));
-				} else if (Cookable.isCookable(itemId)) {
-					return p.hasPermission(this.perm.concat(Cookable.getItem(
-							itemId).getName()));
-				} else {
-					return false;
-				}
 			} else {
-				return false;
+				Log.severe("Something tried to check for an invalid permission. \n Report this to the author please!");
+				return true;
 			}
 		}
+		Log.severe("Something tried to check for a permission with a null stack. \n Report this to the author please!");
+		return true;
+	}
+	
+	public boolean has(Player p, int data, int ingredient) {
+		if (Perms.ALLITEMS.has(p)) return false;
+		if(perm.equalsIgnoreCase(Perms.NOBREW.getPerm())){
+			return this.check(p, perm + data + "." + ingredient);
+		}
+		Log.severe("Something tried to check an item using the brewing perm checker. \n Report this to the author please!");
+		return true;
+	}
+	
+	public boolean has(Player p, int id){
+		if (Perms.ALLITEMS.has(p)) return false;
+		if(perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())){
+			if(this.check(p, perm + id)) return true;
+			return this.check(p, perm + this.getItemName(id));
+		}
+		return true;
 	}
 
-	public boolean has(Player p, int data, int ingredient) {
-		if (Perms.ALLITEMS.has(p)) {
-			return false;
-		}
-		String permission;
-		permission = this.perm.concat(Integer.toString(data)).concat(".")
-				.concat(Integer.toString(ingredient));
+	private boolean check(Player p, String permission) {
 		if (Vault.vaultPerms) {
 			return Vault.has(p, permission);
 		} else {
 			return p.hasPermission(permission);
 		}
 	}
-
-	public boolean has(Player p, int itemId) {
-		if (Perms.ALLITEMS.has(p)) {
-			return false;
-		}
-		if (perm.equalsIgnoreCase(Perms.NOWEAR.perm)) {
-			if (Vault.vaultPerms) {
-				if (Vault.has(p, perm.concat(Integer.toString(itemId)))) {
-					return true;
-				} else {
-					if (Armor.isArmor(itemId)) {
-						return Vault.has(p,
-								perm.concat(Armor.getArmour(itemId).getName()));
-					} else {
-						return false;
-					}
-				}
-			} else {
-				if (p.hasPermission(perm.concat(Integer.toString(itemId)))) {
-					return true;
-				} else {
-					if (Armor.isArmor(itemId)) {
-						return p.hasPermission(perm.concat(Armor.getArmour(
-								itemId).getName()));
-					} else {
-						return false;
-					}
-				}
-			}
-		} else {
-			if (Vault.vaultPerms) {
-				return Vault.has(p, perm.concat(Integer.toString(itemId)));
-			} else {
-				return p.hasPermission(perm.concat(Integer.toString(itemId)));
-			}
-		}
+	
+	private String getItemName(int id) {
+		if(Tools.isTool(id)) return Tools.getTool(id).getName();
+		if(Armor.isArmor(id)) return Armor.getArmour(id).getName();
+		if(Cookable.isCookable(id)) return Cookable.getItem(id).getName();
+		if(TekkitTools.isTekkitTool(id)) return TekkitTools.getTool(id).getName();
+		return Integer.toString(id);
 	}
 }
