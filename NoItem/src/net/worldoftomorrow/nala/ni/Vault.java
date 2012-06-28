@@ -26,10 +26,10 @@ public class Vault {
 			    net.milkbowl.vault.permission.Permission.class);
 	    if (permProvider != null) {
 		permission = permProvider.getProvider();
-		Log.info("[NoItem] Hooked into vault for permissions.");
+		Log.info("Hooked into vault for permissions.");
 	    }
 	} catch (NoClassDefFoundError e) {
-	    Log.info("[NoItem] Vault not found, using superPerms.");
+	    Log.info("Vault not found, using superPerms.");
 	}
 	return permission != null;
     }
