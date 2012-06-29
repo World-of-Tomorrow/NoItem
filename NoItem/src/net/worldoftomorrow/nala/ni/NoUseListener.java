@@ -27,7 +27,7 @@ public class NoUseListener implements Listener {
 	ItemStack item = new ItemStack(p.getItemInHand());
 	// Do this to prevent accidentally using armor or tool damage values
 	Log.debug("Original data value: " + item.getDurability());
-	if (Tools.isTool(id) || Armor.isArmor(id)) {
+	if (Tools.isTool(id) || Armor.isArmor(id) || TekkitTools.isTekkitTool(id)) {
 	    item.setDurability((short) 0);
 	}
 
@@ -107,7 +107,7 @@ public class NoUseListener implements Listener {
     public void onBucketEmpty(PlayerBucketEmptyEvent event) {
 	Player p = event.getPlayer();
 	int bucketID = event.getBucket().getId();
-	if (Perms.NOUSE.has(p, bucketID)) {
+	if (Perms.NOUSE.has(p, event.getItemStack())) {
 	    event.setCancelled(true);
 	    StringHelper.notifyPlayer(p, EventTypes.USE, bucketID);
 	    StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
@@ -118,7 +118,7 @@ public class NoUseListener implements Listener {
     public void onBucketFill(PlayerBucketFillEvent event) {
 	Player p = event.getPlayer();
 	int bucketID = event.getBucket().getId();
-	if (Perms.NOUSE.has(p, bucketID)) {
+	if (Perms.NOUSE.has(p, event.getItemStack())) {
 	    event.setCancelled(true);
 	    StringHelper.notifyPlayer(p, EventTypes.USE, bucketID);
 	    StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());

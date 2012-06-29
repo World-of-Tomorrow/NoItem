@@ -15,7 +15,7 @@ public class PickupListener implements Listener {
 		ItemStack stack = new ItemStack(event.getItem().getItemStack());
 		int iid = event.getItem().getItemStack().getTypeId();
 
-		if (Tools.isTool(iid) || Armor.isArmor(iid)) {
+		if (Tools.isTool(iid) || Armor.isArmor(iid) || TekkitTools.isTekkitTool(iid)) {
 			stack.setDurability((short) 0);
 		}
 

@@ -35,7 +35,7 @@ public class CraftingListener implements Listener {
 		Log.debug("CraftItemEvent Fired");
 
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-		ItemStack stack = event.getCurrentItem();
+		ItemStack stack = event.getInventory().getResult();
 		int iid = stack.getTypeId();
 		int dv = stack.getDurability();
 

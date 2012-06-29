@@ -219,6 +219,12 @@ public class Config {
 		conf = plugin.getConfig();
 		this.updateConfig();
 	}
+	
+	public void reloadConfig() {
+		conf = null;
+		plugin.reloadConfig();
+		conf = plugin.getConfig();
+	}
 
 	private void updateConfig() {
 		if (conf.isSet("Notify.Admins")) {

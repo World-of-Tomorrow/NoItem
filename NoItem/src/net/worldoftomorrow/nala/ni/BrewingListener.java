@@ -67,11 +67,11 @@ public class BrewingListener implements Listener {
 	@EventHandler
 	public void onBrewerInvEvent(InventoryClickEvent event) {
 
-		Log.debug("InventoryClick event fired. RawSlot: "
+		Log.debug("InventoryClick event fired.\n RawSlot: "
 				.concat(Integer.toString(event.getRawSlot()))
-				.concat(" InvType: ")
+				.concat("\n InvType: ")
 				.concat(event.getInventory().getType().name())
-				.concat(" SlotType: ").concat(event.getSlotType().name()));
+				.concat("\n SlotType: ").concat(event.getSlotType().name()));
 
 		if (event.getInventory().getType().equals(InventoryType.BREWING)) {
 			if (!checked) {

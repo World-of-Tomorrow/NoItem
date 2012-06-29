@@ -35,7 +35,8 @@ public enum Perms {
 	}
 
 	public boolean has(Player p, ItemStack stack) {
-		if (Perms.ALLITEMS.has(p)) return false;
+		if (Perms.ALLITEMS.has(p))
+			return false;
 		if (stack != null) {
 			int id = stack.getTypeId();
 			int data = stack.getDurability();
@@ -47,34 +48,42 @@ public enum Perms {
 					|| perm.equalsIgnoreCase(Perms.NOUSE.getPerm())
 					|| perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())) {
 				String numPerm = perm + id;
-				numPerm = data > 0 ? numPerm + "." + data : numPerm;
-				if(this.check(p, numPerm)) return true;
+				numPerm = data != 0 ? numPerm + "." + data : numPerm;
+				if (this.check(p, numPerm)) {
+					return true;
+				}
 				String namePerm = perm + this.getItemName(id);
-				namePerm = data > 0 ? namePerm + "." + data : namePerm;
-				if(this.check(p, namePerm)) return true;
+				namePerm = data != 0 ? namePerm + "." + data : namePerm;
+				if (this.check(p, namePerm)) {
+					return true;
+				}
 				return false;
 			} else {
 				Log.severe("Something tried to check for an invalid permission. \n Report this to the author please!");
 				return true;
 			}
+		} else {
+			Log.severe("Something tried to check for a permission with a null stack. \n Report this to the author please!");
+			return true;
 		}
-		Log.severe("Something tried to check for a permission with a null stack. \n Report this to the author please!");
-		return true;
 	}
-	
+
 	public boolean has(Player p, int data, int ingredient) {
-		if (Perms.ALLITEMS.has(p)) return false;
-		if(perm.equalsIgnoreCase(Perms.NOBREW.getPerm())){
+		if (Perms.ALLITEMS.has(p))
+			return false;
+		if (perm.equalsIgnoreCase(Perms.NOBREW.getPerm())) {
 			return this.check(p, perm + data + "." + ingredient);
 		}
 		Log.severe("Something tried to check an item using the brewing perm checker. \n Report this to the author please!");
 		return true;
 	}
-	
-	public boolean has(Player p, int id){
-		if (Perms.ALLITEMS.has(p)) return false;
-		if(perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())){
-			if(this.check(p, perm + id)) return true;
+
+	public boolean has(Player p, int id) {
+		if (Perms.ALLITEMS.has(p))
+			return false;
+		if (perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())) {
+			if (this.check(p, perm + id))
+				return true;
 			return this.check(p, perm + this.getItemName(id));
 		}
 		return true;
@@ -87,12 +96,16 @@ public enum Perms {
 			return p.hasPermission(permission);
 		}
 	}
-	
+
 	private String getItemName(int id) {
-		if(Tools.isTool(id)) return Tools.getTool(id).getName();
-		if(Armor.isArmor(id)) return Armor.getArmour(id).getName();
-		if(Cookable.isCookable(id)) return Cookable.getItem(id).getName();
-		if(TekkitTools.isTekkitTool(id)) return TekkitTools.getTool(id).getName();
+		if (Tools.isTool(id))
+			return Tools.getTool(id).getName();
+		if (Armor.isArmor(id))
+			return Armor.getArmour(id).getName();
+		if (Cookable.isCookable(id))
+			return Cookable.getItem(id).getName();
+		if (TekkitTools.isTekkitTool(id))
+			return TekkitTools.getTool(id).getName();
 		return Integer.toString(id);
 	}
 }
