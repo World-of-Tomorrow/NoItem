@@ -49,6 +49,7 @@ public class InventoryListener implements Listener {
 			break;
 		case DISPENSER:
 			this.handleDispenser(event, p);
+			break;
 		default:
 			this.handleGenericInv(event, p);
 			break;
@@ -74,8 +75,8 @@ public class InventoryListener implements Listener {
 		// NoWear
 		if (event.getSlotType() == SlotType.ARMOR) {
 			ItemStack oncur = p.getItemOnCursor();
-			int id = oncur.getTypeId();
 			if (oncur != null) {
+				int id = oncur.getTypeId();
 				if (Perms.NOWEAR.has(p, oncur)) {
 					event.setCancelled(true);
 					StringHelper.notifyPlayer(p, EventTypes.WEAR, id);
@@ -101,8 +102,8 @@ public class InventoryListener implements Listener {
 			}
 		} else if (rs < 3 && rs >= 0) {
 			ItemStack ing = inv.getItem(3);
-			int potiondv = oncur.getDurability();
 			if (ing != null && oncur != null) {
+				int potiondv = oncur.getDurability();
 				if (Perms.NOBREW.has(p, potiondv, ing.getTypeId())) {
 					event.setCancelled(true);
 					String recipe = potiondv + ":" + ing.getTypeId();
