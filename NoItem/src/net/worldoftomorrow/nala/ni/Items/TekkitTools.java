@@ -1,4 +1,4 @@
-package net.worldoftomorrow.nala.ni;
+package net.worldoftomorrow.nala.ni.Items;
 
 import java.util.EnumSet;
 import java.util.HashMap;

@@ -1,4 +1,7 @@
-package net.worldoftomorrow.nala.ni;
+package net.worldoftomorrow.nala.ni.listeners;
+
+import net.worldoftomorrow.nala.ni.NoItem;
+import net.worldoftomorrow.nala.ni.Perms;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -31,8 +34,7 @@ public class CommandListener implements CommandExecutor {
 			return false;
 		} else {
 			if (args[0].equalsIgnoreCase("reload")) {
-				plugin.config.reloadConfig();
-				CraftingListener.addItems();
+				plugin.getConfigClass().reloadConfig();
 				sender.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
 						+ "Configuration reloaded.");
 				return true;

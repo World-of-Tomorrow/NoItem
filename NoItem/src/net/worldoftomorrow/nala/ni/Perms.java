@@ -1,5 +1,12 @@
 package net.worldoftomorrow.nala.ni;
 
+import net.worldoftomorrow.nala.ni.Items.Armor;
+import net.worldoftomorrow.nala.ni.Items.Cookable;
+import net.worldoftomorrow.nala.ni.Items.TekkitTools;
+import net.worldoftomorrow.nala.ni.Items.Tools;
+
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -13,7 +20,9 @@ public enum Perms {
 	NOUSE("noitem.nouse."),
 	NOHOLD("noitem.nohold."),
 	NOWEAR("noitem.nowear."),
-	NOCOOK("noitem.nocook.");
+	NOCOOK("noitem.nocook."),
+	NOPLACE("noitem.noplace."),
+	NOBREAK("noitem.nobreak.");
 
 	private final String perm;
 
@@ -46,7 +55,9 @@ public enum Perms {
 					|| perm.equalsIgnoreCase(Perms.NOHOLD.getPerm())
 					|| perm.equalsIgnoreCase(Perms.NOPICKUP.getPerm())
 					|| perm.equalsIgnoreCase(Perms.NOUSE.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())) {
+					|| perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOBREAK.getPerm())
+					|| perm.equalsIgnoreCase(Perms.NOPLACE.getPerm())) {
 				String numPerm = perm + id;
 				numPerm = data != 0 ? numPerm + "." + data : numPerm;
 				if (this.check(p, numPerm)) {
@@ -89,6 +100,26 @@ public enum Perms {
 		return true;
 	}
 
+	public boolean has(Player p, Block b) {
+		if (Perms.ALLITEMS.has(p))
+			return false;
+		if (perm.equalsIgnoreCase(Perms.NOBREAK.getPerm())) {
+			String numPerm = perm + b.getTypeId();
+			int data = b.getData();
+			numPerm = data != 0 ? numPerm + "." + data : numPerm;
+			if (this.check(p, numPerm)) {
+				return true;
+			}
+			String namePerm = perm + this.getItemName(b.getTypeId());
+			namePerm = data != 0 ? namePerm + "." + data : namePerm;
+			if (this.check(p, namePerm)) {
+				return true;
+			}
+			return false;
+		}
+		return true;
+	}
+
 	private boolean check(Player p, String permission) {
 		if (Vault.vaultPerms) {
 			return Vault.has(p, permission);
@@ -106,6 +137,9 @@ public enum Perms {
 			return Cookable.getItem(id).getName();
 		if (TekkitTools.isTekkitTool(id))
 			return TekkitTools.getTool(id).getName();
+		if (Material.getMaterial(id) != null)
+			return Material.getMaterial(id).name().replace("_", "")
+					.toLowerCase();
 		return Integer.toString(id);
 	}
 }

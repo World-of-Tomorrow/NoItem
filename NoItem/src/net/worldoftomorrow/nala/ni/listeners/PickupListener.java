@@ -1,4 +1,9 @@
-package net.worldoftomorrow.nala.ni;
+package net.worldoftomorrow.nala.ni.listeners;
+
+import net.worldoftomorrow.nala.ni.EventTypes;
+import net.worldoftomorrow.nala.ni.Log;
+import net.worldoftomorrow.nala.ni.Perms;
+import net.worldoftomorrow.nala.ni.StringHelper;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,21 +17,15 @@ public class PickupListener implements Listener {
 	public void onPickup(PlayerPickupItemEvent event) {
 
 		Player p = event.getPlayer();
-		ItemStack stack = new ItemStack(event.getItem().getItemStack());
+		ItemStack stack = event.getItem().getItemStack();
 		int iid = event.getItem().getItemStack().getTypeId();
 
-		if (Tools.isTool(iid) || Armor.isArmor(iid) || TekkitTools.isTekkitTool(iid)) {
-			stack.setDurability((short) 0);
-		}
-
-		Log.debug("PlayerPickupItemEvent fired. ".concat(Integer.toString(iid)));
+		Log.debug("PlayerPickupItemEvent fired. " + iid);
 		if (Perms.NOPICKUP.has(p, stack)) {
 			event.setCancelled(true);
-			event.getItem().setPickupDelay(200);
+			event.getItem().setPickupDelay(100);
 			StringHelper.notifyPlayer(p, EventTypes.PICKUP, iid);
 			StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
-		} else {
-			Log.debug("Item can be picked up");
 		}
 	}
 }

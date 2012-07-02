@@ -9,7 +9,9 @@ public enum EventTypes {
 	USE("use", Config.notifyNoUse()),
 	HOLD("hold", Config.notifyNoHold()),
 	SMELT("smelt", Config.notifyNoCook()),
-	COOK("cook", Config.notifyNoCook());
+	COOK("cook", Config.notifyNoCook()),
+	BREAK("break", Config.notifyNoBreak()), //TODO: Make this configurable
+	PLACE("place", Config.notifyNoPlace());
 
 	private final String name;
 	private final boolean notify;

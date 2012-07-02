@@ -1,10 +1,13 @@
-package net.worldoftomorrow.nala.ni;
+package net.worldoftomorrow.nala.ni.listeners;
 
-import org.bukkit.Bukkit;
+import net.worldoftomorrow.nala.ni.EventTypes;
+import net.worldoftomorrow.nala.ni.Log;
+import net.worldoftomorrow.nala.ni.Perms;
+import net.worldoftomorrow.nala.ni.StringHelper;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -27,30 +30,13 @@ public class HoldListener implements Listener {
 			iid = p.getInventory().getItem(ns).getTypeId();
 			notAllowed = p.getInventory().getItem(ns);
 			allowed = p.getInventory().getItem(ps);
-			
+
 			// Switch the items.
 			if (Perms.NOHOLD.has(p, notAllowed)) {
 				p.getInventory().setItem(ns, allowed);
 				p.getInventory().setItem(ps, notAllowed);
 				StringHelper.notifyPlayer(p, EventTypes.HOLD, iid);
 				StringHelper.notifyAdmin(p, EventTypes.HOLD, notAllowed);
-			}
-		}
-	}
-
-	@EventHandler
-	public void onItemInvPlace(InventoryClickEvent event) {
-		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-		// If the slot is selected that is trying to be used
-		if (p.getInventory().getHeldItemSlot() == event.getSlot()) {
-			int iid = 0;
-			if (event.getCursor() != null) {
-				iid = event.getCursor().getTypeId();
-			}
-			if (Perms.NOHOLD.has(p, event.getCursor())) {
-				event.setCancelled(true);
-				StringHelper.notifyPlayer(p, EventTypes.HOLD, iid);
-				StringHelper.notifyAdmin(p, EventTypes.HOLD, event.getCursor());
 			}
 		}
 	}

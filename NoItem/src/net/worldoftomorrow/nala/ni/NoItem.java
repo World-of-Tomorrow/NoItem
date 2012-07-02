@@ -2,12 +2,20 @@ package net.worldoftomorrow.nala.ni;
 
 import java.io.IOException;
 
+import net.worldoftomorrow.nala.ni.listeners.BlockListener;
+import net.worldoftomorrow.nala.ni.listeners.CommandListener;
+import net.worldoftomorrow.nala.ni.listeners.DropListener;
+import net.worldoftomorrow.nala.ni.listeners.HoldListener;
+import net.worldoftomorrow.nala.ni.listeners.InventoryListener;
+import net.worldoftomorrow.nala.ni.listeners.NoUseListener;
+import net.worldoftomorrow.nala.ni.listeners.PickupListener;
+
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class NoItem extends JavaPlugin {
 
-	protected Config config;
+	private Config config;
 	protected Vault vault;
 	private static NoItem plugin;
 	private Metrics metrics;
@@ -32,47 +40,13 @@ public class NoItem extends JavaPlugin {
 		}
 
 		PluginManager pm = getServer().getPluginManager();
-
-		boolean craftListen = Config.stopCrafting();
-		boolean pickupListen = Config.stopItemPickup();
-		boolean brewListen = Config.stopPotionBrew();
-		boolean toolListen = Config.stopToolUse();
-		boolean holdListen = Config.stopItemHold();
-		boolean wearListen = Config.stopArmourWear();
-		boolean cookListen = Config.stopItemCook();
-		boolean dropListen = Config.stopItemDrop();
-
-		if (craftListen) {
-			pm.registerEvents(new CraftingListener(), this);
-		}
-		if (pickupListen) {
-			pm.registerEvents(new PickupListener(), this);
-		}
-		if (brewListen) {
-			pm.registerEvents(new BrewingListener(), this);
-		}
-		if (toolListen) {
-			pm.registerEvents(new NoUseListener(), this);
-		}
-		if (holdListen) {
-			pm.registerEvents(new HoldListener(), this);
-		}
-		if (wearListen) {
-			pm.registerEvents(new ArmorListener(), this);
-		}
-		if (cookListen) {
-			pm.registerEvents(new FurnaceListener(), this);
-		}
-		if (dropListen) {
-			pm.registerEvents(new DropListener(), this);
-		}
-		Log.info("Configs loaded, events registered, and cake baked.");
-
-		if ((!craftListen) && (!pickupListen) && (!brewListen) && (!toolListen)
-				&& (!holdListen) && (!wearListen) && (!cookListen)) {
-			Log.info("No listeners active! Shutting down plugin.");
-			getPluginLoader().disablePlugin(this);
-		}
+		
+		pm.registerEvents(new InventoryListener(), this);
+		pm.registerEvents(new DropListener(), this);
+		pm.registerEvents(new HoldListener(), this);
+		pm.registerEvents(new NoUseListener(), this);
+		pm.registerEvents(new PickupListener(), this);
+		pm.registerEvents(new BlockListener(), this);
 
 		try {
 			metrics = new Metrics(this);
@@ -82,7 +56,6 @@ public class NoItem extends JavaPlugin {
 	}
 
 	public void onDisable() {
-		Log.info("Configs unloaded, events unregisterededed, and cake eaten.");
 	}
 
 	public static NoItem getPlugin() {
@@ -91,5 +64,9 @@ public class NoItem extends JavaPlugin {
 
 	public Vault getVault() {
 		return vault;
+	}
+	
+	public Config getConfigClass() {
+		return this.config;
 	}
 }

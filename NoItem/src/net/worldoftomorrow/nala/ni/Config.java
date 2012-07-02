@@ -5,14 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
 	/*--Config Version--*/
-	private static final double configVersion = 1.0;
+	private static final double configVersion = 1.1;
 
 	/*--Defaults--*/
 	private boolean notifyAdmins = false;
@@ -24,17 +22,9 @@ public class Config {
 	private boolean notifyNoPickup = true;
 	private boolean notifyNoCook = true;
 	private boolean notifyNoDrop = true;
-
-	private boolean stopArmorWear = true;
-	private boolean stopToolUse = true;
-	private boolean stopCrafting = true;
-	private boolean stopItemPickup = true;
-	private boolean stopPotionBrew = true;
-	private boolean stopItemHold = true;
-	private boolean stopCook = true;
-	private boolean stopItemDrop = true;
-
-	private boolean perItemPermissions = true;
+	private boolean notifyNoBreak = true;
+	private boolean notifyNoPlace = true;
+	
 	private boolean debugging = false;
 	private String pluginChannel = "main";
 
@@ -47,9 +37,9 @@ public class Config {
 	private String noPickupMessage = "You are not allowed to pick that up! (%i)";
 	private String noCookMessage = "You are not allowed to cook &4%i&9.";
 	private String noDropMessage = "You are not allowed to drop &4%i.";
-
-	private List<String> disallowedCrafting = new ArrayList<String>();
-	private List<String> disallowedPotionRecipes = new ArrayList<String>();
+	private String noBreakMessage = "You are not allowed to break &4%i.";
+	private String noPlaceMessage = "You are not allowed to place &4%i.";
+	
 	/*----------*/
 	private NoItem plugin;
 	private PrintWriter out = null;
@@ -117,18 +107,11 @@ public class Config {
 			out.println("    NoCookMessage: \'" + noCookMessage + "\'");
 			out.println("    NoDrop: " + notifyNoDrop);
 			out.println("    NoDropMessage: \'" + noDropMessage + "\'");
+			out.println("    NoBreak: " + notifyNoBreak);
+			out.println("    NoBreakMessage: \'" + noBreakMessage + "\'");
+			out.println("    NoPlace: " + notifyNoPlace);
+			out.println("    NoPlaceMessage: \'" + noPlaceMessage + "\'");
 			out.println("");
-			out.println("# Blocked items list ( itemID:DamageValue )    ");
-			out.println("DisallowedCraftingRecipes:");
-			if (disallowedCrafting.isEmpty()) {
-				out.println("    - '5'");
-				out.println("    - '5:1'");
-				out.println("    - '5:2'");
-			} else {
-				for (String item : disallowedCrafting) {
-					out.println("    - '" + item + "'");
-				}
-			}
 			out.println();
 			out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
 			out.println("# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing");
@@ -165,26 +148,6 @@ public class Config {
 			out.println("# Blaze Powder - 377");
 			out.println("# Gun Powder - 289");
 			out.println();
-			out.println("# Default example is 0:372 which would block the Awkward Potion");
-			out.println("DisallowedPotionRecipes:");
-			if (disallowedPotionRecipes.isEmpty()) {
-				out.println("    - '0:372'");
-			} else {
-				for (String recipe : disallowedPotionRecipes) {
-					out.println("    - '" + recipe + "'");
-				}
-			}
-			out.println();
-			out.println("#Use these to turn off individual features");
-			out.println("StopCrafting: " + stopCrafting);
-			out.println("StopItemPickup: " + stopItemPickup);
-			out.println("StopPotionBrew: " + stopPotionBrew);
-			out.println("StopToolUse: " + stopToolUse);
-			out.println("StopItemHold: " + stopItemHold);
-			out.println("StopArmorWear: " + stopArmorWear);
-			out.println("StopItemCook: " + stopCook);
-			out.println("StopItemDrop: " + stopItemDrop);
-			out.println();
 			out.println("# Permissions:");
 			out.println("# noitem.allitems");
 			out.println("# noitem.admin");
@@ -196,8 +159,6 @@ public class Config {
 			out.println("# noitem.nowear.<itemID> or noitem.nowear.<itemName>");
 			out.println("# noitem.nocook.<itemID> or noitem.nocook.<itemName>");
 			out.println("# noitem.nodrop.<itemID>[.dataValue]");
-			out.println();
-			out.println("PerItemPermissions: " + perItemPermissions);
 			out.println();
 			out.println("#Don't turn this on unless you like getting spammed with messages!");
 			out.println("Debugging: " + debugging);
@@ -254,46 +215,17 @@ public class Config {
 		if (conf.isSet("Notify.NoDrop")) {
 			this.notifyNoDrop = conf.getBoolean("Notify.NoDrop");
 		}
-		if (conf.isSet("StopCrafting")) {
-			this.stopCrafting = conf.getBoolean("StopCrafting");
+		if (conf.isSet("Notify.NoBreak")) {
+			this.notifyNoBreak = conf.getBoolean("Notify.NoBreak");
 		}
-		if (conf.isSet("StopItemPickup")) {
-			this.stopItemPickup = conf.getBoolean("StopItemPickup");
-		}
-		if (conf.isSet("StopPotionBrew")) {
-			this.stopPotionBrew = conf.getBoolean("StopPotionBrew");
-		}
-		if (conf.isSet("StopToolUse")) {
-			this.stopToolUse = conf.getBoolean("StopToolUse");
-		}
-		if (conf.isSet("StopItemHold")) {
-			this.stopItemHold = conf.getBoolean("StopItemHold");
-		}
-		if (conf.isSet("StopArmorWear")) {
-			this.stopArmorWear = conf.getBoolean("StopArmorWear");
-		}
-		if (conf.isSet("StopItemCook")) {
-			this.stopCook = conf.getBoolean("StopItemCook");
-		}
-		if (conf.isSet("StopItemDrop")) {
-			this.stopItemDrop = conf.getBoolean("StopItemDrop");
-		}
-		if (conf.isSet("PerItemPermissions")) {
-			this.perItemPermissions = conf.getBoolean("PerItemPermissions");
+		if (conf.isSet("Notify.NoPlace")) {
+			this.notifyNoPlace = conf.getBoolean("Notify.NoPlace");
 		}
 		if (conf.isSet("Debugging")) {
 			this.debugging = conf.getBoolean("Debugging");
 		}
 		if (conf.isSet("PluginChannel")) {
 			this.pluginChannel = conf.getString("PluginChannel");
-		}
-		if (conf.isSet("DisallowedCraftingRecipes")) {
-			this.disallowedCrafting = conf
-					.getStringList("DisallowedCraftingRecipes");
-		}
-		if (conf.isSet("DisallowedPotionRecipes")) {
-			this.disallowedPotionRecipes = conf
-					.getStringList("DisallowedPotionRecipes");
 		}
 		if (conf.isSet("Notify.AdminMessage")) {
 			this.adminMessage = conf.getString("Notify.AdminMessage");
@@ -321,6 +253,12 @@ public class Config {
 		}
 		if (conf.isSet("Notify.NoDropMessage")) {
 			this.noDropMessage = conf.getString("Notify.NoDropMessage");
+		}
+		if (conf.isSet("Notify.NoBreakMessage")) {
+			this.noBreakMessage = conf.getString("Notify.NoBreakMessage");
+		}
+		if (conf.isSet("Notify.NoPlaceMessage")) {
+			this.noPlaceMessage = conf.getString("Notify.NoPlaceMessage");
 		}
 
 		this.writeConfig(); // Load all the variables that are set in the
@@ -362,38 +300,12 @@ public class Config {
 	public static boolean notifyNoDrop() {
 		return conf.getBoolean("Notify.NoDrop");
 	}
-
-	// Stop//
-	public static boolean stopCrafting() {
-		return conf.getBoolean("StopCrafting");
+	
+	public static boolean notifyNoBreak() {
+		return conf.getBoolean("Notify.NoBreak");
 	}
-
-	public static boolean stopItemPickup() {
-		return conf.getBoolean("StopItemPickup");
-	}
-
-	public static boolean stopPotionBrew() {
-		return conf.getBoolean("StopPotionBrew");
-	}
-
-	public static boolean stopToolUse() {
-		return conf.getBoolean("StopToolUse");
-	}
-
-	public static boolean stopItemHold() {
-		return conf.getBoolean("StopItemHold");
-	}
-
-	public static boolean stopArmourWear() {
-		return conf.getBoolean("StopArmourWear");
-	}
-
-	public static boolean stopItemCook() {
-		return conf.getBoolean("StopItemCook");
-	}
-
-	public static boolean stopItemDrop() {
-		return conf.getBoolean("StopItemDrop");
+	public static boolean notifyNoPlace() {
+		return conf.getBoolean("Notify.NoPlace");
 	}
 
 	// Misc//
@@ -445,14 +357,13 @@ public class Config {
 	public static String noDropMessage() {
 		return conf.getString("Notify.NoDropMessage");
 	}
-
-	// Lists//
-	public static List<String> disallowedCrafting() {
-		return conf.getStringList("DisallowedCraftingRecipes");
+	
+	public static String noBreakMessage() {
+		return conf.getString("Notify.NoBreakMessage");
 	}
-
-	public static List<String> disallowedPotions() {
-		return conf.getStringList("DisallowedPotionRecipes");
+	
+	public static String noPlaceMessage() {
+		return conf.getString("Notify.NoPlaceMessage");
 	}
 
 	public static Object getValue(String path) {
