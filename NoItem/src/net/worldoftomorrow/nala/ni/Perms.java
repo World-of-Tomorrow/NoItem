@@ -116,6 +116,19 @@ public enum Perms {
 				return true;
 			}
 			return false;
+		} else if (perm.equalsIgnoreCase(Perms.NOPLACE.getPerm())) {
+			String numPerm = perm + b.getTypeId();
+			int data = b.getData();
+			numPerm = data != 0 ? numPerm + "." + data : numPerm;
+			if (this.check(p, numPerm)) {
+				return true;
+			}
+			String namePerm = perm + this.getItemName(b.getTypeId());
+			namePerm = data != 0 ? namePerm + "." + data : namePerm;
+			if (this.check(p, namePerm)) {
+				return true;
+			}
+			return false;
 		}
 		return true;
 	}

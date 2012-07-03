@@ -41,7 +41,7 @@ public class BlockListener implements Listener {
 		Log.debug("BlockPlaceEvent fired");
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
-		if (Perms.NOPLACE.has(p, b.getTypeId())) {
+		if (Perms.NOPLACE.has(p, b)) {
 			event.setCancelled(true);
 			StringHelper.notifyPlayer(p, EventTypes.PLACE, b.getTypeId());
 			StringHelper.notifyAdmin(p, b);
