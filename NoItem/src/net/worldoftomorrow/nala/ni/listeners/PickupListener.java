@@ -22,10 +22,13 @@ public class PickupListener implements Listener {
 
 		Log.debug("PlayerPickupItemEvent fired. " + iid);
 		if (Perms.NOPICKUP.has(p, stack)) {
+			Log.debug("Player has the permission node");
 			event.setCancelled(true);
 			event.getItem().setPickupDelay(100);
 			StringHelper.notifyPlayer(p, EventTypes.PICKUP, iid);
 			StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
+		} else {
+			Log.debug("Player does not have the permission node");
 		}
 	}
 }

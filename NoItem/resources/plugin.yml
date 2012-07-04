@@ -13,6 +13,14 @@ permissions:
         description: Allows access to noitem commands and admin notifications
     noitem.allitems:
         description: Negates all rescrictions on the player
+    noitem.nohold.*:
+        description: Blocks user from holding all items
+    noitem.nocraft.*:
+        description: Blocks user from crafting all items
+    noitem.nodrop.*:
+        description: Blocks user from dropping all items
+    noitem.nopickup.*:
+        description: Blocks user from picking up all items
 
 commands:
     noitem:

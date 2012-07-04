@@ -58,13 +58,27 @@ public enum Perms {
 					|| perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())
 					|| perm.equalsIgnoreCase(Perms.NOBREAK.getPerm())
 					|| perm.equalsIgnoreCase(Perms.NOPLACE.getPerm())) {
-				String numPerm = perm + id;
-				numPerm = data != 0 ? numPerm + "." + data : numPerm;
+				String numPerm = perm.concat(Integer.toString(id));
+				if (data > 0) {
+					if (this.check(p, numPerm + "." + data)) {
+						return true;
+					}
+					if (this.check(p, numPerm + ".all")) {
+						return true;
+					}
+				}
 				if (this.check(p, numPerm)) {
 					return true;
 				}
 				String namePerm = perm + this.getItemName(id);
-				namePerm = data != 0 ? namePerm + "." + data : namePerm;
+				if (data > 0) {
+					if (this.check(p, namePerm + "." + data)) {
+						return true;
+					}
+					if (this.check(p, namePerm + ".all")) {
+						return true;
+					}
+				}
 				if (this.check(p, namePerm)) {
 					return true;
 				}
@@ -103,28 +117,56 @@ public enum Perms {
 	public boolean has(Player p, Block b) {
 		if (Perms.ALLITEMS.has(p))
 			return false;
+		int id = b.getTypeId();
+		int data = b.getData();
 		if (perm.equalsIgnoreCase(Perms.NOBREAK.getPerm())) {
-			String numPerm = perm + b.getTypeId();
-			int data = b.getData();
-			numPerm = data != 0 ? numPerm + "." + data : numPerm;
+			String numPerm = perm.concat(Integer.toString(id));
+			if (data > 0) {
+				if (this.check(p, numPerm + "." + data)) {
+					return true;
+				}
+				if (this.check(p, numPerm + ".all")) {
+					return true;
+				}
+			}
 			if (this.check(p, numPerm)) {
 				return true;
 			}
-			String namePerm = perm + this.getItemName(b.getTypeId());
-			namePerm = data != 0 ? namePerm + "." + data : namePerm;
+			String namePerm = perm + this.getItemName(id);
+			if (data > 0) {
+				if (this.check(p, namePerm + "." + data)) {
+					return true;
+				}
+				if (this.check(p, namePerm + ".all")) {
+					return true;
+				}
+			}
 			if (this.check(p, namePerm)) {
 				return true;
 			}
 			return false;
 		} else if (perm.equalsIgnoreCase(Perms.NOPLACE.getPerm())) {
-			String numPerm = perm + b.getTypeId();
-			int data = b.getData();
-			numPerm = data != 0 ? numPerm + "." + data : numPerm;
+			String numPerm = perm.concat(Integer.toString(id));
+			if (data > 0) {
+				if (this.check(p, numPerm + "." + data)) {
+					return true;
+				}
+				if (this.check(p, numPerm + ".all")) {
+					return true;
+				}
+			}
 			if (this.check(p, numPerm)) {
 				return true;
 			}
-			String namePerm = perm + this.getItemName(b.getTypeId());
-			namePerm = data != 0 ? namePerm + "." + data : namePerm;
+			String namePerm = perm + this.getItemName(id);
+			if (data > 0) {
+				if (this.check(p, namePerm + "." + data)) {
+					return true;
+				}
+				if (this.check(p, namePerm + ".all")) {
+					return true;
+				}
+			}
 			if (this.check(p, namePerm)) {
 				return true;
 			}
@@ -134,6 +176,7 @@ public enum Perms {
 	}
 
 	private boolean check(Player p, String permission) {
+		Log.debug("Checking Perm: " + permission);
 		if (Vault.vaultPerms) {
 			return Vault.has(p, permission);
 		} else {

@@ -7,6 +7,7 @@ import net.worldoftomorrow.nala.ni.listeners.CommandListener;
 import net.worldoftomorrow.nala.ni.listeners.DropListener;
 import net.worldoftomorrow.nala.ni.listeners.HoldListener;
 import net.worldoftomorrow.nala.ni.listeners.InventoryListener;
+import net.worldoftomorrow.nala.ni.listeners.JoinListener;
 import net.worldoftomorrow.nala.ni.listeners.NoUseListener;
 import net.worldoftomorrow.nala.ni.listeners.PickupListener;
 
@@ -47,6 +48,7 @@ public class NoItem extends JavaPlugin {
 		pm.registerEvents(new NoUseListener(), this);
 		pm.registerEvents(new PickupListener(), this);
 		pm.registerEvents(new BlockListener(), this);
+		pm.registerEvents(new JoinListener(), this);
 
 		try {
 			metrics = new Metrics(this);

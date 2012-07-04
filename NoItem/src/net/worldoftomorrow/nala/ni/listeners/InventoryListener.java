@@ -20,10 +20,22 @@ public class InventoryListener implements Listener {
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 		Inventory inv = event.getInventory();
 		
-		Log.debug("InventoryClickEvent\nPlayer: " + p.getName() + "\nSlot: "
-				+ event.getSlot() + "\nRawSlot: " + event.getRawSlot() + "\nInvType: "
-				+ inv.getType().name() + "\nSlotType: "
-				+ event.getSlotType().name());
+		int rs = event.getRawSlot();
+		int slot = event.getSlot();
+		int id = -1;
+		int dv = -1;
+		if(rs > 0 && event.getCurrentItem() != null){
+			id = event.getCurrentItem().getTypeId();
+			dv = event.getCurrentItem().getDurability();
+		}
+		
+		Log.debug("InventoryClickEvent\nPlayer: " + p.getName()
+				+ "\nSlot: " + slot
+				+ "\nRawSlot: " + rs
+				+ "\nInvType: " + inv.getType().name()
+				+ "\nSlotType: " + event.getSlotType().name()
+				+ "\nItemId: " + id
+				+ "\nDataValue: " + dv);
 		
 		switch (inv.getType()) {
 		case CRAFTING:
@@ -58,10 +70,9 @@ public class InventoryListener implements Listener {
 
 	private void handleCrafting(InventoryClickEvent event, Player p) {
 		int rs = event.getRawSlot();
-		Inventory inv = event.getInventory();
 		ItemStack stack = null;
 		if (rs >= 0) {
-			stack = inv.getItem(rs);
+			stack = event.getCurrentItem();
 		}
 		SlotType st = event.getSlotType();
 		// NoCraft
@@ -73,7 +84,7 @@ public class InventoryListener implements Listener {
 			return;
 		}
 		// NoWear
-		if (event.getSlotType() == SlotType.ARMOR) {
+		if (st == SlotType.ARMOR) {
 			ItemStack oncur = p.getItemOnCursor();
 			if (oncur != null) {
 				int id = oncur.getTypeId();
