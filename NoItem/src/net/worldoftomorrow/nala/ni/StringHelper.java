@@ -7,8 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.milkbowl.vault.item.ItemInfo;
-import net.milkbowl.vault.item.Items;
 import net.worldoftomorrow.nala.ni.Items.Armor;
 import net.worldoftomorrow.nala.ni.Items.Cookable;
 import net.worldoftomorrow.nala.ni.Items.TekkitTools;

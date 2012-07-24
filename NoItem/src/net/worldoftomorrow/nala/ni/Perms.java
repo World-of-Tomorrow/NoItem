@@ -22,8 +22,8 @@ public enum Perms {
 	NOWEAR("noitem.nowear."),
 	NOCOOK("noitem.nocook."),
 	NOPLACE("noitem.noplace."),
-	NOBREAK("noitem.nobreak.");
-
+	NOBREAK("noitem.nobreak."),
+	ONDEATH("noitem.ondeath.");
 	private final String perm;
 
 	private Perms(String perm) {
@@ -173,6 +173,10 @@ public enum Perms {
 			return false;
 		}
 		return true;
+	}
+	
+	public boolean has(Player p, String type) {
+		return this.check(p, this.perm + type);
 	}
 
 	private boolean check(Player p, String permission) {
