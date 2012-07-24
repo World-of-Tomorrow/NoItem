@@ -20,7 +20,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class DropListener implements Listener {
 
-	Map<String, List<ItemStack>> itemList = new HashMap<String, List<ItemStack>>();
+	private Map<String, List<ItemStack>> itemList = new HashMap<String, List<ItemStack>>();
 
 	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
@@ -44,23 +44,21 @@ public class DropListener implements Listener {
 		Player p = event.getEntity().getPlayer();
 		if (Perms.ONDEATH.has(p, "keep")) {
 			List<ItemStack> drops = new ArrayList<ItemStack>(event.getDrops());
-			for (ItemStack drop : event.getDrops()) {
-				drop = null;
-			}
+			event.getDrops().clear();
 			itemList.put(p.getName(), drops);
 		} else if (Perms.ONDEATH.has(p, "remove")) {
-			for (ItemStack drop : event.getDrops()) {
-				drop = null;
-			}
+			event.getDrops().clear();
 		}
 	}
-
+	
+	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Player p = event.getPlayer();
 		if (itemList.containsKey(p.getName())) {
 			for(ItemStack i : itemList.get(p.getName())) {
 				p.getInventory().addItem(i);
 			}
+			itemList.remove(p.getName());
 		}
 	}
 }
