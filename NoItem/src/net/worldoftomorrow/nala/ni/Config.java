@@ -87,6 +87,9 @@ public class Config {
 
 	private void loadCustomBlocks() {
 		ConfigurationSection section = getCustomBlocks();
+		if(section == null) {
+			return;
+		}
 		Set<String> keys = section.getKeys(false);
 		ArrayList<CustomFurnace> furnaces = new ArrayList<CustomFurnace>();
 		ArrayList<CustomWorkbench> workbenches = new ArrayList<CustomWorkbench>();
@@ -150,6 +153,7 @@ public class Config {
 			out.println("    NoPlace: " + notifyNoPlace);
 			out.println("    NoPlaceMessage: \'" + noPlaceMessage + "\'");
 			out.println();
+			out.println("CustomBlocks: ");
 			out.println();
 			out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
 			out.println("# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing");
