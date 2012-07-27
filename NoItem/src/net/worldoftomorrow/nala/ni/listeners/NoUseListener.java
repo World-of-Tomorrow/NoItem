@@ -1,6 +1,7 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.EventTypes;
+import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.Items.Tools;
@@ -23,6 +24,7 @@ public class NoUseListener implements Listener {
 
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
+		Log.debug("Player Interact Event");
 		Action action = event.getAction();
 		if (action.equals(Action.LEFT_CLICK_BLOCK)) {
 			this.handleBlockLeftClick(event);

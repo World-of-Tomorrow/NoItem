@@ -5,7 +5,15 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
+import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
+import net.worldoftomorrow.nala.ni.otherblocks.CustomType;
+import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
+
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 
 public class Config {
@@ -24,7 +32,7 @@ public class Config {
 	private boolean notifyNoDrop = true;
 	private boolean notifyNoBreak = true;
 	private boolean notifyNoPlace = true;
-	
+
 	private boolean debugging = false;
 	private String pluginChannel = "main";
 
@@ -39,7 +47,10 @@ public class Config {
 	private String noDropMessage = "You are not allowed to drop &4%i.";
 	private String noBreakMessage = "You are not allowed to break &4%i.";
 	private String noPlaceMessage = "You are not allowed to place &4%i.";
-	
+
+	private List<String> furnaces = new ArrayList<String>();
+	private List<String> workbenches = new ArrayList<String>();
+
 	/*----------*/
 	private NoItem plugin;
 	private PrintWriter out = null;
@@ -71,6 +82,33 @@ public class Config {
 			this.updateConfig(); // Update/Fix it.
 			this.loadConfig(); // Reload the updated config.
 		}
+		this.loadCustomBlocks();
+	}
+
+	private void loadCustomBlocks() {
+		ConfigurationSection section = getCustomBlocks();
+		Set<String> keys = section.getKeys(false);
+		ArrayList<CustomFurnace> furnaces = new ArrayList<CustomFurnace>();
+		ArrayList<CustomWorkbench> workbenches = new ArrayList<CustomWorkbench>();
+		for (String key : keys) {
+			ConfigurationSection block = conf.getConfigurationSection(key);
+			String type = block.getString("type");
+			int id = block.getInt("id");
+			short data = (short) block.getInt("data");
+			if (type.equalsIgnoreCase("furnaces")
+					|| type.equalsIgnoreCase("oven")) {
+				List<Short> resultSlots = block.getShortList("resultSlots");
+				List<Short> fuelSlots = block.getShortList("fuelSlots");
+				List<Short> itemSlots = block.getShortList("itemSlots");
+				furnaces.add(new CustomFurnace(id, data, CustomType.FURNACE, resultSlots, fuelSlots, itemSlots, key));
+			} else if (type.equalsIgnoreCase("workbench")
+					|| type.equalsIgnoreCase("craftingtable")) {
+				short result = (short) block.getInt("resultSlot");
+				workbenches.add(new CustomWorkbench(id, data, CustomType.WORKBENCH, result, key));
+			}
+		}
+		CustomBlocks.setFurnaces(furnaces);
+		CustomBlocks.setWorkbenches(workbenches);
 	}
 
 	private void writeConfig() {
@@ -85,7 +123,7 @@ public class Config {
 			out.println("# %w = World");
 			out.println("# Admin Message Specfific Variables:");
 			out.println("# %t = Event type (i.e. BREW, CRAFT, SMELT)");
-			out.println("");
+			out.println();
 			out.println("Notify:");
 			out.println("    Admins: " + notifyAdmins);
 			// Insert the 's here otherwise it will cause problems when updating
@@ -111,7 +149,7 @@ public class Config {
 			out.println("    NoBreakMessage: \'" + noBreakMessage + "\'");
 			out.println("    NoPlace: " + notifyNoPlace);
 			out.println("    NoPlaceMessage: \'" + noPlaceMessage + "\'");
-			out.println("");
+			out.println();
 			out.println();
 			out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
 			out.println("# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing");
@@ -180,7 +218,7 @@ public class Config {
 		conf = plugin.getConfig();
 		this.updateConfig();
 	}
-	
+
 	public void reloadConfig() {
 		conf = null;
 		plugin.reloadConfig();
@@ -300,10 +338,11 @@ public class Config {
 	public static boolean notifyNoDrop() {
 		return conf.getBoolean("Notify.NoDrop");
 	}
-	
+
 	public static boolean notifyNoBreak() {
 		return conf.getBoolean("Notify.NoBreak");
 	}
+
 	public static boolean notifyNoPlace() {
 		return conf.getBoolean("Notify.NoPlace");
 	}
@@ -357,16 +396,20 @@ public class Config {
 	public static String noDropMessage() {
 		return conf.getString("Notify.NoDropMessage");
 	}
-	
+
 	public static String noBreakMessage() {
 		return conf.getString("Notify.NoBreakMessage");
 	}
-	
+
 	public static String noPlaceMessage() {
 		return conf.getString("Notify.NoPlaceMessage");
 	}
 
 	public static Object getValue(String path) {
 		return conf.get(path);
+	}
+
+	public static ConfigurationSection getCustomBlocks() {
+		return conf.getConfigurationSection("CustomBlocks");
 	}
 }
