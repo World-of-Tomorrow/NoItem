@@ -25,5 +25,4 @@ permissions:
 commands:
     noitem:
         description: NoItems only command, used to reloading the config.
-        permission: noitem.admin
-        usage: /noitem [reload]
+        usage: /noitem [reload|claim]
