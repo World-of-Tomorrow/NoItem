@@ -1,6 +1,9 @@
 package net.worldoftomorrow.nala.ni;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import net.worldoftomorrow.nala.ni.listeners.BlockListener;
 import net.worldoftomorrow.nala.ni.listeners.CommandListener;
@@ -11,6 +14,7 @@ import net.worldoftomorrow.nala.ni.listeners.JoinListener;
 import net.worldoftomorrow.nala.ni.listeners.NoUseListener;
 import net.worldoftomorrow.nala.ni.listeners.PickupListener;
 
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -20,7 +24,9 @@ public class NoItem extends JavaPlugin {
 	protected Vault vault;
 	private static NoItem plugin;
 	private Metrics metrics;
-
+	
+	private Map<String, List<ItemStack>> itemList = new HashMap<String, List<ItemStack>>();
+	
 	public void onEnable() {
 		plugin = this;
 		this.config = new Config(this);
@@ -70,5 +76,9 @@ public class NoItem extends JavaPlugin {
 	
 	public Config getConfigClass() {
 		return this.config;
+	}
+	
+	public Map<String, List<ItemStack>> getItemList(){
+		return this.itemList;
 	}
 }
