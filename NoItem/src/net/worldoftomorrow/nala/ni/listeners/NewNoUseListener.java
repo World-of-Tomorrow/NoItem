@@ -72,7 +72,7 @@ public class NewNoUseListener implements Listener {
 					event.setCancelled(true);
 					return; // return if it should be cancelled
 				}
-				break; // break if not, it could be cancelled later
+				break; // break if not; it could be cancelled later
 			default:
 				break;
 			}
