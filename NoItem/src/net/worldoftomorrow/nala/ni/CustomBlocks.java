@@ -3,6 +3,9 @@ package net.worldoftomorrow.nala.ni;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.block.Block;
+
+import net.worldoftomorrow.nala.ni.otherblocks.CustomBlock;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
 
@@ -53,5 +56,23 @@ public class CustomBlocks {
 			}
 		}
 		return null;
+	}
+	
+	public static boolean isCustomBlock(Block b) {
+		return isCustomBlock(b.getTypeId());
+	}
+	
+	public static boolean isCustomBlock(int id) {
+		for(CustomBlock block : furnaces) {
+			if(block.getID() == id){
+				return true;
+			}
+		}
+		for(CustomBlock block : workbenches) {
+			if(block.getID() == id) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

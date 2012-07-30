@@ -1,5 +1,6 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
+import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
@@ -14,6 +15,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -38,6 +40,7 @@ public class NoUseListener implements Listener {
 	private void handleBlockRightClick(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		ItemStack stack = new ItemStack(p.getItemInHand());
+		Block clicked = event.getClickedBlock();
 		Material type = stack.getType();
 		stack.setDurability((short) 0);
 		if (type.equals(Material.FLINT_AND_STEEL)) {
@@ -46,6 +49,7 @@ public class NoUseListener implements Listener {
 				StringHelper.notifyPlayer(p, EventTypes.USE, stack.getTypeId());
 				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 			}
+			return;
 		}
 		if (type.equals(Material.DIRT) || type.equals(Material.GRASS)) {
 			// If it is a hoe (gotta handle them hoes!)
@@ -56,6 +60,26 @@ public class NoUseListener implements Listener {
 							stack.getTypeId());
 					StringHelper.notifyAdmin(p, EventTypes.USE, stack);
 				}
+			}
+			return;
+		}
+		if (clicked.getType().equals(Material.LEVER)
+				|| clicked.getType().equals(Material.STONE_BUTTON)
+				|| clicked.getType().equals(Material.WOOD_DOOR)
+				|| clicked.getType().equals(Material.BREWING_STAND)
+				|| clicked.getType().equals(Material.CHEST)
+				|| clicked.getType().equals(Material.FURNACE)
+				|| clicked.getType().equals(Material.DISPENSER)
+				|| clicked.getType().equals(Material.WORKBENCH)
+				|| clicked.getType().equals(Material.ENCHANTMENT_TABLE)
+				|| CustomBlocks.isCustomBlock(clicked)) {
+			if (Perms.NOUSE.has(p,
+					new ItemStack(clicked.getTypeId(), clicked.getData()))) {
+				event.setCancelled(true);
+				StringHelper.notifyPlayer(p, EventTypes.USE,
+						clicked.getTypeId());
+				StringHelper.notifyAdmin(p, EventTypes.USE, new ItemStack(
+						clicked.getTypeId(), clicked.getData()));
 			}
 		}
 	}
