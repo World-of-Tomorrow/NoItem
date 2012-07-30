@@ -126,8 +126,7 @@ public enum Perms {
 				if (this.check(p, numPerm + ".all")) {
 					return true;
 				}
-			}
-			if (this.check(p, numPerm)) {
+			} else if (this.check(p, numPerm)) {
 				return true;
 			}
 			String namePerm = perm + this.getItemName(id);
@@ -138,8 +137,7 @@ public enum Perms {
 				if (this.check(p, namePerm + ".all")) {
 					return true;
 				}
-			}
-			if (this.check(p, namePerm)) {
+			} else if (this.check(p, namePerm)) {
 				return true;
 			}
 			return false;
@@ -152,8 +150,7 @@ public enum Perms {
 				if (this.check(p, numPerm + ".all")) {
 					return true;
 				}
-			}
-			if (this.check(p, numPerm)) {
+			} else if (this.check(p, numPerm)) {
 				return true;
 			}
 			String namePerm = perm + this.getItemName(id);
@@ -164,15 +161,14 @@ public enum Perms {
 				if (this.check(p, namePerm + ".all")) {
 					return true;
 				}
-			}
-			if (this.check(p, namePerm)) {
+			} else if (this.check(p, namePerm)) {
 				return true;
 			}
 			return false;
 		}
 		return true;
 	}
-	
+
 	public boolean has(Player p, String type) {
 		return this.check(p, this.perm + type);
 	}

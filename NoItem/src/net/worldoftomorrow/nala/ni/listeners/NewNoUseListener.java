@@ -6,10 +6,13 @@ import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
 import org.bukkit.block.Block;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityShootBowEvent;
+import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -33,19 +36,53 @@ public class NewNoUseListener implements Listener {
 		Player p = event.getPlayer();
 		Block clicked = event.getClickedBlock();
 		ItemStack inHand = event.getItem();
-		switch (inHand.getType()) {
-		case FLINT_AND_STEEL:
-			boolean cancel = this.handleLighter(p, clicked, inHand);
-			if(cancel){
-				event.setCancelled(true);
-				return;
-			} //TODO: FINISH THIS - URGENT
-			break;
+		if (inHand != null) {
+			switch (inHand.getType()) {
+			case FLINT_AND_STEEL:
+				if (Perms.NOUSE.has(p, inHand)) {
+					event.setCancelled(true);
+					return; // return if it should be cancelled
+				}
+				break; // break if not, it could be cancelled later
+			default:
+				break;
+			}
+		}
+
+		switch (clicked.getType()) {
+		case LEVER:
+		case STONE_BUTTON:
+		case WOODEN_DOOR:
+			event.setCancelled(this.handleInteract(p, clicked));
+			return;
 		default:
 			break;
 		}
-		
-		switch(clicked.getType()) {
+	}
+
+	private void handleBlockRightClick(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		Block clicked = event.getClickedBlock();
+		ItemStack inHand = event.getItem();
+
+		if (inHand != null) {
+			switch (inHand.getType()) {
+			case FLINT_AND_STEEL:
+				if (Perms.NOUSE.has(p, inHand)) {
+					event.setCancelled(true);
+					return; // return if it should be cancelled
+				}
+				break; // break if not, it could be cancelled later
+			default:
+				break;
+			}
+		}
+
+		switch (clicked.getType()) {
+		case GRASS:
+		case DIRT:
+			event.setCancelled(this.handleHoe(p, inHand));
+			break;
 		case LEVER:
 		case STONE_BUTTON:
 		case WOODEN_DOOR:
@@ -56,38 +93,9 @@ public class NewNoUseListener implements Listener {
 		case ENCHANTMENT_TABLE:
 			event.setCancelled(this.handleInteract(p, clicked));
 			return;
-		}
-	}
-
-	private void handleBlockRightClick(PlayerInteractEvent event) {
-		Player p = event.getPlayer();
-		Block clicked = event.getClickedBlock();
-		ItemStack inHand = event.getItem();
-
-		switch (inHand.getType()) {
-		case FLINT_AND_STEEL:
-			event.setCancelled(this.handleLighter(p, clicked, inHand));
-			break;
 		default:
 			break;
 		}
-
-		switch (clicked.getType()) {
-		case GRASS:
-		case DIRT:
-			event.setCancelled(this.handleHoe(p, inHand));
-			break;
-		}
-	}
-
-	private boolean handleLighter(Player p, Block clicked, ItemStack inHand) {
-		if (Perms.NOUSE.has(p, inHand)) {
-			return true;
-		}
-		if (Perms.NOUSE.has(p, clicked)) {
-			return true;
-		}
-		return false;
 	}
 
 	private boolean handleHoe(Player p, ItemStack inHand) {
@@ -101,8 +109,22 @@ public class NewNoUseListener implements Listener {
 		}
 		return false;
 	}
-	
+
 	private boolean handleInteract(Player p, Block clicked) {
 		return true;
+	}
+	
+	@EventHandler
+	public void onBowShoot(EntityShootBowEvent event) {
+		if(event.getEntityType() == EntityType.PLAYER) {
+			//TODO: implement
+		}
+	}
+	
+	@EventHandler
+	public void onTNTPrime(ExplosionPrimeEvent event) {
+		if(event.getEntityType() == EntityType.PRIMED_TNT) {
+			//TODO: implement
+		}
 	}
 }
