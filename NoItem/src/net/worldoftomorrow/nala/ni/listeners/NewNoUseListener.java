@@ -35,14 +35,27 @@ public class NewNoUseListener implements Listener {
 		ItemStack inHand = event.getItem();
 		switch (inHand.getType()) {
 		case FLINT_AND_STEEL:
-			event.setCancelled(this.handleLighter(p, clicked, inHand));
-			break;
-		case DIRT:
-		case GRASS:
-			event.setCancelled(this.handleHoe(p, inHand));
+			boolean cancel = this.handleLighter(p, clicked, inHand);
+			if(cancel){
+				event.setCancelled(true);
+				return;
+			} //TODO: FINISH THIS - URGENT
 			break;
 		default:
 			break;
+		}
+		
+		switch(clicked.getType()) {
+		case LEVER:
+		case STONE_BUTTON:
+		case WOODEN_DOOR:
+		case BREWING_STAND:
+		case WORKBENCH:
+		case FURNACE:
+		case DISPENSER:
+		case ENCHANTMENT_TABLE:
+			event.setCancelled(this.handleInteract(p, clicked));
+			return;
 		}
 	}
 
@@ -51,9 +64,29 @@ public class NewNoUseListener implements Listener {
 		Block clicked = event.getClickedBlock();
 		ItemStack inHand = event.getItem();
 
+		switch (inHand.getType()) {
+		case FLINT_AND_STEEL:
+			event.setCancelled(this.handleLighter(p, clicked, inHand));
+			break;
+		default:
+			break;
+		}
+
+		switch (clicked.getType()) {
+		case GRASS:
+		case DIRT:
+			event.setCancelled(this.handleHoe(p, inHand));
+			break;
+		}
 	}
 
 	private boolean handleLighter(Player p, Block clicked, ItemStack inHand) {
+		if (Perms.NOUSE.has(p, inHand)) {
+			return true;
+		}
+		if (Perms.NOUSE.has(p, clicked)) {
+			return true;
+		}
 		return false;
 	}
 
@@ -67,5 +100,9 @@ public class NewNoUseListener implements Listener {
 			}
 		}
 		return false;
+	}
+	
+	private boolean handleInteract(Player p, Block clicked) {
+		return true;
 	}
 }
