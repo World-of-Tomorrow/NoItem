@@ -70,7 +70,7 @@ public enum Perms {
 	}
 
 	public boolean has(Player p) {
-		if (!perm.equals(ADMIN.perm) || !perm.equals(ALLITEMS.perm)) {
+		if (!perm.equals(ADMIN.perm) && !perm.equals(ALLITEMS.perm)) {
 			throw new UnsupportedOperationException(
 					"Incorrect checking of a permission.");
 		} else {
@@ -80,7 +80,7 @@ public enum Perms {
 	
 	public boolean has(Player p, String recipe) {
 		if(perm.equals(NOBREW.perm) || perm.equals(ONDEATH.perm)) {
-			return this.check(p, perm + "." + recipe);	
+			return this.check(p, perm + recipe);	
 		} else {
 			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		}
