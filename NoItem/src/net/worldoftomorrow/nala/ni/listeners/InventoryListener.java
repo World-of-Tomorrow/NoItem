@@ -115,7 +115,7 @@ public class InventoryListener implements Listener {
 			ItemStack ing = inv.getItem(3);
 			if (ing != null && oncur != null) {
 				int potiondv = oncur.getDurability();
-				if (Perms.NOBREW.has(p, potiondv, ing.getTypeId())) {
+				if (Perms.NOBREW.has(p, potiondv + "." + ing.getTypeId())) {
 					event.setCancelled(true);
 					String recipe = potiondv + ":" + ing.getTypeId();
 					StringHelper.notifyPlayer(p, recipe);
@@ -192,7 +192,7 @@ public class InventoryListener implements Listener {
 				break; // If we have checked all potion slots
 			if (stack != null) {
 				int dv = stack.getDurability();
-				if (Perms.NOBREW.has(p, dv, oncur.getTypeId())) {
+				if (Perms.NOBREW.has(p, dv + "." + oncur.getTypeId())) {
 					String recipe = dv + ":" + oncur.getTypeId();
 					StringHelper.notifyPlayer(p, recipe);
 					StringHelper.notifyAdmin(p, recipe);

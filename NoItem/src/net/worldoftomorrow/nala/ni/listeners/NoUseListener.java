@@ -1,6 +1,5 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
-import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
@@ -15,7 +14,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.ExplosionPrimeEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
@@ -72,7 +70,7 @@ public class NoUseListener implements Listener {
 				|| clicked.getType().equals(Material.DISPENSER)
 				|| clicked.getType().equals(Material.WORKBENCH)
 				|| clicked.getType().equals(Material.ENCHANTMENT_TABLE)
-				|| CustomBlocks.isCustomBlock(clicked)) {
+				/*|| CustomBlocks.isCustomBlock(clicked)*/) {
 			if (Perms.NOUSE.has(p,
 					new ItemStack(clicked.getTypeId(), clicked.getData()))) {
 				event.setCancelled(true);

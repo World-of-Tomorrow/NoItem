@@ -24,161 +24,65 @@ public enum Perms {
 	NOPLACE("noitem.noplace."),
 	NOBREAK("noitem.nobreak."),
 	ONDEATH("noitem.ondeath.");
+
 	private final String perm;
 
 	private Perms(String perm) {
 		this.perm = perm;
 	}
 
-	public String getPerm() {
-		return this.perm;
-	}
-
-	public boolean has(Player p) {
-		if (perm.equalsIgnoreCase(Perms.ALLITEMS.getPerm())
-				|| perm.equalsIgnoreCase(Perms.ADMIN.getPerm())) {
-			if (p.isOp())
-				return true;
+	public boolean check(Player p, String perm) {
+		Log.debug("Checking Perm: " + perm);
+		if (Vault.vaultPerms) {
+			return Vault.has(p, perm);
+		} else {
+			return p.hasPermission(perm);
 		}
-		return this.check(p, this.perm);
 	}
 
 	public boolean has(Player p, ItemStack stack) {
-		if (Perms.ALLITEMS.has(p))
-			return false;
-		if (stack != null) {
-			int id = stack.getTypeId();
-			int data = stack.getDurability();
-			if (perm.equalsIgnoreCase(Perms.NOCOOK.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOCRAFT.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NODROP.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOHOLD.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOPICKUP.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOUSE.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOBREAK.getPerm())
-					|| perm.equalsIgnoreCase(Perms.NOPLACE.getPerm())) {
-				String numPerm = perm.concat(Integer.toString(id));
-				if (data > 0) {
-					if (this.check(p, numPerm + "." + data)) {
-						return true;
-					}
-					if (this.check(p, numPerm + ".all")) {
-						return true;
-					}
-				} else if (this.check(p, numPerm)) {
-					return true;
-				}
-				String namePerm = perm + this.getItemName(id);
-				if (data > 0) {
-					if (this.check(p, namePerm + "." + data)) {
-						return true;
-					}
-					if (this.check(p, namePerm + ".all")) {
-						return true;
-					}
-				} else if (this.check(p, namePerm)) {
-					return true;
-				}
-				return false;
-			} else {
-				Log.severe("Something tried to check for an invalid permission. \n Report this to the author please!");
-				return true;
-			}
-		} else {
-			Log.severe("Something tried to check for a permission with a null stack. \n Report this to the author please!");
-			return true;
-		}
-	}
-
-	public boolean has(Player p, int data, int ingredient) {
-		if (Perms.ALLITEMS.has(p))
-			return false;
-		if (perm.equalsIgnoreCase(Perms.NOBREW.getPerm())) {
-			return this.check(p, perm + data + "." + ingredient);
-		}
-		Log.severe("Something tried to check an item using the brewing perm checker. \n Report this to the author please!");
-		return true;
-	}
-
-	public boolean has(Player p, int id) {
-		if (Perms.ALLITEMS.has(p))
-			return false;
-		if (perm.equalsIgnoreCase(Perms.NOWEAR.getPerm())) {
-			if (this.check(p, perm + id))
-				return true;
-			return this.check(p, perm + this.getItemName(id));
-		}
-		return true;
+		return this.has(p, stack.getType(), stack.getDurability());
 	}
 
 	public boolean has(Player p, Block b) {
-		if (Perms.ALLITEMS.has(p))
-			return false;
-		int id = b.getTypeId();
-		int data = b.getData();
-		if (perm.equalsIgnoreCase(Perms.NOBREAK.getPerm())) {
-			String numPerm = perm.concat(Integer.toString(id));
-			if (data > 0) {
-				if (this.check(p, numPerm + "." + data)) {
-					return true;
-				}
-				if (this.check(p, numPerm + ".all")) {
-					return true;
-				}
-			} else if (this.check(p, numPerm)) {
-				return true;
-			}
-			String namePerm = perm + this.getItemName(id);
-			if (data > 0) {
-				if (this.check(p, namePerm + "." + data)) {
-					return true;
-				}
-				if (this.check(p, namePerm + ".all")) {
-					return true;
-				}
-			} else if (this.check(p, namePerm)) {
-				return true;
-			}
-			return false;
-		} else if (perm.equalsIgnoreCase(Perms.NOPLACE.getPerm())) {
-			String numPerm = perm.concat(Integer.toString(id));
-			if (data > 0) {
-				if (this.check(p, numPerm + "." + data)) {
-					return true;
-				}
-				if (this.check(p, numPerm + ".all")) {
-					return true;
-				}
-			} else if (this.check(p, numPerm)) {
-				return true;
-			}
-			String namePerm = perm + this.getItemName(id);
-			if (data > 0) {
-				if (this.check(p, namePerm + "." + data)) {
-					return true;
-				}
-				if (this.check(p, namePerm + ".all")) {
-					return true;
-				}
-			} else if (this.check(p, namePerm)) {
-				return true;
-			}
-			return false;
+		return this.has(p, b.getType(), b.getData());
+	}
+
+	public boolean has(Player p, Material mat, short data) {
+		if (perm.equals(ADMIN.perm) || perm.equals(ALLITEMS.perm)
+				|| perm.equals(NOBREW.perm) || perm.equals(ONDEATH.perm)) {
+			throw new UnsupportedOperationException(
+					"Incorrect checking of a permission.");
 		}
-		return true;
-	}
-
-	public boolean has(Player p, String type) {
-		return this.check(p, this.perm + type);
-	}
-
-	private boolean check(Player p, String permission) {
-		Log.debug("Checking Perm: " + permission);
-		if (Vault.vaultPerms) {
-			return Vault.has(p, permission);
+		String namePerm;
+		String numPerm;
+		String allNamePerm = perm + this.getItemName(mat.getId()) + ".all";
+		String allNumPerm = perm + mat.getId() + ".all";
+		if (data > 0) {
+			namePerm = perm + this.getItemName(mat.getId()) + "." + data;
+			numPerm = perm + mat.getId() + "." + data;
 		} else {
-			return p.hasPermission(permission);
+			namePerm = perm + this.getItemName(mat.getId());
+			numPerm = perm + mat.getId();
+		}
+		return this.check(p, namePerm) || this.check(p, numPerm)
+				|| this.check(p, allNamePerm) || this.check(p, allNumPerm);
+	}
+
+	public boolean has(Player p) {
+		if (!perm.equals(ADMIN.perm) || !perm.equals(ALLITEMS.perm)) {
+			throw new UnsupportedOperationException(
+					"Incorrect checking of a permission.");
+		} else {
+			return this.check(p, perm);
+		}
+	}
+	
+	public boolean has(Player p, String recipe) {
+		if(perm.equals(NOBREW.perm) || perm.equals(ONDEATH.perm)) {
+			return this.check(p, perm + "." + recipe);	
+		} else {
+			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		}
 	}
 
