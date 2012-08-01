@@ -4,16 +4,23 @@ import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
+import net.worldoftomorrow.nala.ni.Items.Tools;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.TNTPrimed;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityShootBowEvent;
 import org.bukkit.event.entity.ExplosionPrimeEvent;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.ItemStack;
 
 public class NewNoUseListener implements Listener {
@@ -125,11 +132,53 @@ public class NewNoUseListener implements Listener {
             // TODO: test
         }
     }
-
+    
     @EventHandler
-    public void onTNTPrime(ExplosionPrimeEvent event) {
-        if (event.getEntity() instanceof TNTPrimed) {
-            // TODO: implement
-        }
-    }
+	public void onBucketEmpty(PlayerBucketEmptyEvent event) {
+		Player p = event.getPlayer();
+		int bucketID = event.getBucket().getId();
+		if (Perms.NOUSE.has(p, event.getItemStack())) {
+			event.setCancelled(true);
+			StringHelper.notifyPlayer(p, EventTypes.USE, bucketID);
+			StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
+		}
+	}
+
+	@EventHandler
+	public void onBucketFill(PlayerBucketFillEvent event) {
+		Player p = event.getPlayer();
+		int bucketID = event.getBucket().getId();
+		if (Perms.NOUSE.has(p, event.getItemStack())) {
+			event.setCancelled(true);
+			StringHelper.notifyPlayer(p, EventTypes.USE, bucketID);
+			StringHelper.notifyAdmin(p, EventTypes.USE, event.getItemStack());
+		}
+	}
+
+	@EventHandler
+	public void onPlayerShear(PlayerShearEntityEvent event) {
+		Player p = event.getPlayer();
+		ItemStack shears = new ItemStack(Material.SHEARS);
+		if (Perms.NOUSE.has(p, shears)) {
+			event.setCancelled(true);
+			StringHelper.notifyPlayer(p, EventTypes.USE, shears.getTypeId());
+			StringHelper.notifyAdmin(p, EventTypes.USE, shears);
+		}
+	}
+
+	@EventHandler
+	public void onSwordSwing(EntityDamageByEntityEvent event) {
+		Entity damager = event.getDamager();
+		if (damager instanceof Player) {
+			Player p = (Player) damager;
+			ItemStack stack = new ItemStack(p.getItemInHand());
+			stack.setDurability((short) 0);
+			Material type = stack.getType();
+			if (Tools.isTool(type) && Perms.NOUSE.has(p, stack)) {
+				event.setCancelled(true);
+				StringHelper.notifyPlayer(p, EventTypes.USE, stack.getTypeId());
+				StringHelper.notifyAdmin(p, EventTypes.USE, stack);
+			}
+		}
+	}
 }
