@@ -54,6 +54,9 @@ public enum Perms {
 			throw new UnsupportedOperationException(
 					"Incorrect checking of a permission.");
 		}
+		if(Perms.ALLITEMS.has(p)) {
+			return false;
+		}
 		String namePerm;
 		String numPerm;
 		String allNamePerm = perm + this.getItemName(mat.getId()) + ".all";
@@ -80,6 +83,9 @@ public enum Perms {
 	
 	public boolean has(Player p, String recipe) {
 		if(perm.equals(NOBREW.perm) || perm.equals(ONDEATH.perm)) {
+			if(Perms.ALLITEMS.has(p)) {
+				return false;
+			}
 			return this.check(p, perm + recipe);	
 		} else {
 			throw new UnsupportedOperationException("Incorrect checking of a permission.");
