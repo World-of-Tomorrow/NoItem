@@ -63,11 +63,13 @@ public class CustomBlocks {
 	}
 	
 	public static boolean isCustomBlock(int id) {
+		if(furnaces.isEmpty()) return false;
 		for(CustomBlock block : furnaces) {
 			if(block.getID() == id){
 				return true;
 			}
 		}
+		if(workbenches.isEmpty()) return false;
 		for(CustomBlock block : workbenches) {
 			if(block.getID() == id) {
 				return true;
