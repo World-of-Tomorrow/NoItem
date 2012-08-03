@@ -25,7 +25,7 @@ public class PickupListener implements Listener {
 			Log.debug("Player has the permission node");
 			event.setCancelled(true);
 			event.getItem().setPickupDelay(100);
-			StringHelper.notifyPlayer(p, EventTypes.PICKUP, iid);
+			StringHelper.notifyPlayer(p, EventTypes.PICKUP, stack);
 			StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
 		} else {
 			Log.debug("Player does not have the permission node");

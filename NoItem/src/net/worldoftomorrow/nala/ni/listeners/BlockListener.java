@@ -15,45 +15,46 @@ import org.bukkit.inventory.ItemStack;
 
 public class BlockListener implements Listener {
 
-	@EventHandler
+    @EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Log.debug("BlockBreakEvent fired");
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
 		if (Perms.NOBREAK.has(p, b)) {
 			event.setCancelled(true);
-			StringHelper.notifyPlayer(p, EventTypes.BREAK, b.getTypeId());
-			StringHelper.notifyAdmin(p, b);
+			this.notify(p, EventTypes.BREAK, new ItemStack(b.getType()));
 			return;
 		}
 
 		ItemStack inhand = p.getItemInHand();
 		if (inhand != null && Perms.NOUSE.has(p, inhand)) {
 			event.setCancelled(true);
-			StringHelper.notifyPlayer(p, EventTypes.USE, inhand.getTypeId());
-			StringHelper.notifyAdmin(p, EventTypes.USE, inhand);
+			this.notify(p, EventTypes.USE, new ItemStack(b.getType()));
 			return;
 		}
 	}
 
-	@EventHandler
-	public void onBlockPlace(BlockPlaceEvent event) {
-		Log.debug("BlockPlaceEvent fired");
-		Player p = event.getPlayer();
-		Block b = event.getBlock();
-		if (Perms.NOPLACE.has(p, b)) {
-			event.setCancelled(true);
-			StringHelper.notifyPlayer(p, EventTypes.PLACE, b.getTypeId());
-			StringHelper.notifyAdmin(p, b);
-			return;
-		}
-		
-		ItemStack inhand = event.getItemInHand();
-		if (inhand != null && Perms.NOUSE.has(p, inhand)) {
-			event.setCancelled(true);
-			StringHelper.notifyPlayer(p, EventTypes.USE, inhand.getTypeId());
-			StringHelper.notifyAdmin(p, EventTypes.USE, inhand);
-			return;
-		}
-	}
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event) {
+        Log.debug("BlockPlaceEvent fired");
+        Player p = event.getPlayer();
+        Block b = event.getBlock();
+        if (Perms.NOPLACE.has(p, b)) {
+            event.setCancelled(true);
+            this.notify(p, EventTypes.PLACE, new ItemStack(b.getType()));
+            return;
+        }
+
+        ItemStack inhand = event.getItemInHand();
+        if (inhand != null && Perms.NOUSE.has(p, inhand)) {
+            event.setCancelled(true);
+            this.notify(p, EventTypes.USE, inhand);
+            return;
+        }
+    }
+    
+    private void notify(Player p, EventTypes type, ItemStack stack) {
+        StringHelper.notifyPlayer(p, type, stack);
+        StringHelper.notifyAdmin(p, type, stack);
+    }
 }

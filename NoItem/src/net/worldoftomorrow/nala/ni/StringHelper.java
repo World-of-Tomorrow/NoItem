@@ -118,7 +118,7 @@ public class StringHelper {
 				+ replaceVars(msg, p, recipe));
 	}
 
-	public static void notifyPlayer(Player p, EventTypes type, int id) {
+	public static void notifyPlayer(Player p, EventTypes type, ItemStack stack) {
 		if (type.doNotify()) {
 			String msg;
 			switch (type) {
@@ -160,7 +160,7 @@ public class StringHelper {
 				break;
 			}
 			p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-					+ replaceVars(msg, p, id));
+					+ replaceVars(msg, p, stack.getTypeId()));
 		}
 	}
 

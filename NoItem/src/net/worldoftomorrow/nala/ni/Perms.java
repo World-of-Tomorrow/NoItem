@@ -59,13 +59,13 @@ public enum Perms {
 		}
 		String namePerm;
 		String numPerm;
-		String allNamePerm = perm + this.getItemName(mat.getId()) + ".all";
+		String allNamePerm = perm + this.getItemName(mat.getId(), data) + ".all";
 		String allNumPerm = perm + mat.getId() + ".all";
 		if (data > 0) {
-			namePerm = perm + this.getItemName(mat.getId()) + "." + data;
+			namePerm = perm + this.getItemName(mat.getId(), data) + "." + data;
 			numPerm = perm + mat.getId() + "." + data;
 		} else {
-			namePerm = perm + this.getItemName(mat.getId());
+			namePerm = perm + this.getItemName(mat.getId(), data);
 			numPerm = perm + mat.getId();
 		}
 		return this.check(p, namePerm) || this.check(p, numPerm)
@@ -92,7 +92,7 @@ public enum Perms {
 		}
 	}
 
-	private String getItemName(int id) {
+	private String getItemName(int id, short data) {
 		if (Tools.isTool(id))
 			return Tools.getTool(id).getName();
 		if (Armor.isArmor(id))
@@ -101,6 +101,8 @@ public enum Perms {
 			return Cookable.getItem(id).getName();
 		if (TekkitTools.isTekkitTool(id))
 			return TekkitTools.getTool(id).getName();
+		if (CustomBlocks.isCustomBlock(id, data))
+		        return CustomBlocks.getCustomBlock(id, data).getName();
 		if (Material.getMaterial(id) != null)
 			return Material.getMaterial(id).name().replace("_", "")
 					.toLowerCase();

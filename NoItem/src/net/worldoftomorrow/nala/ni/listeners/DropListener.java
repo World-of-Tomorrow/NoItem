@@ -28,11 +28,10 @@ public class DropListener implements Listener {
 		Log.debug("ItemDropEvent fired.");
 		Player p = event.getPlayer();
 		ItemStack stack = event.getItemDrop().getItemStack();
-		int iid = stack.getTypeId();
 		if (Perms.NODROP.has(p, stack)) {
 			Log.debug("Player has the permission node");
 			event.setCancelled(true);
-			StringHelper.notifyPlayer(p, EventTypes.DROP, iid);
+			StringHelper.notifyPlayer(p, EventTypes.DROP, stack);
 			StringHelper.notifyAdmin(p, EventTypes.DROP, stack);
 		} else {
 			Log.debug("Player does not have the permission node");
