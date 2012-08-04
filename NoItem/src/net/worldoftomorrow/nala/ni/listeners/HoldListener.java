@@ -5,9 +5,12 @@ import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.inventory.ItemStack;
@@ -52,7 +55,24 @@ public class HoldListener implements Listener {
             }
         }
     }
-    
+
+    @EventHandler
+    public void onInvClick(InventoryClickEvent event) {
+        ItemStack clicked = event.getCurrentItem();
+        if (clicked != null && event.isShiftClick()
+                && event.getSlotType() != SlotType.QUICKBAR) {
+            Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
+            int firstEmpty = p.getInventory().firstEmpty();
+            int heldSlot = p.getInventory().getHeldItemSlot();
+            if (firstEmpty >= 0 && firstEmpty <= 8 && heldSlot == firstEmpty) {
+                if (Perms.NOHOLD.has(p, clicked)) {
+                    event.setCancelled(true);
+                    this.notify(p, EventTypes.HOLD, clicked);
+                }
+            }
+        }
+    }
+
     private void notify(Player p, EventTypes type, ItemStack stack) {
         StringHelper.notifyPlayer(p, type, stack);
         StringHelper.notifyAdmin(p, type, stack);
