@@ -18,6 +18,9 @@ public class DebugListeners implements Listener {
         Log.debug("Inventory Click Event:");
         Log.debug("    HeldSlot: " + p.getInventory().getHeldItemSlot());
         Log.debug("    FirstEmpty: " + p.getInventory().firstEmpty());
+        Log.debug("    Clicked: " + event.getSlot());
+        Log.debug("    Raw Slot: " + event.getRawSlot());
+        Log.debug("    View: " + event.getView().getType());
         Log.debug("    Type: " + event.getInventory().getType());
         Log.debug("    Slot: " + event.getSlotType());
         Log.debug("    Cancelled: " + event.isCancelled());

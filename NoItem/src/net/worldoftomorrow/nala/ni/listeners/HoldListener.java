@@ -4,7 +4,6 @@ import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -58,14 +57,9 @@ public class HoldListener implements Listener {
         ItemStack clicked = event.getCurrentItem();
         if (clicked != null && event.isShiftClick()
                 && event.getSlotType() != SlotType.QUICKBAR) {
-            Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-            int firstEmpty = p.getInventory().firstEmpty();
-            int heldSlot = p.getInventory().getHeldItemSlot();
-            if (heldSlot == firstEmpty) {
-                if (Perms.NOHOLD.has(p, clicked)) {
-                    event.setCancelled(true);
-                    this.notify(p, EventTypes.HOLD, clicked);
-                }
+            Player p = (Player) event.getView().getPlayer();
+            if (Perms.NOHOLD.has(p, clicked)) {
+                event.setCursor(clicked);
             }
         }
     }
