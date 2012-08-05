@@ -7,16 +7,17 @@ import java.util.Map;
 import org.bukkit.Material;
 
 public enum Cookable {
-    CHICKEN("chicken", 365, "Chicken", true, Material.RAW_CHICKEN), BEEF(
-            "beef", 363, "Beef", true, Material.RAW_BEEF), PORK("pork", 319,
-            "Porkchop", true, Material.PORK), FISH("fish", 349, "Fish", true,
-            Material.RAW_FISH), LOG("log", 17, "Log", false, Material.LOG), IRON_ORE(
-            "ironore", 15, "Iron Ore", false, Material.IRON_ORE), GOLD_ORE(
-            "goldore", 14, "Gold Ore", false, Material.GOLD_ORE), COBBLESTONE(
-            "cobblestone", 4, "Cobblestone", false, Material.COBBLESTONE), SAND(
-            "sand", 12, "Sand", false, Material.SAND), CLAY("clay", 337,
-            "Clay Ball", false, Material.CLAY_BALL), CACTUS("cactus", 81,
-            "Cactus", false, Material.CACTUS);
+    CHICKEN("chicken", 365, "Chicken", true, Material.RAW_CHICKEN),
+    BEEF("beef", 363, "Beef", true, Material.RAW_BEEF),
+    PORK("pork", 319, "Porkchop", true, Material.PORK),
+    FISH("fish", 349, "Fish", true, Material.RAW_FISH),
+    LOG("log", 17, "Log", false, Material.LOG),
+    IRON_ORE("ironore", 15, "Iron Ore", false, Material.IRON_ORE),
+    GOLD_ORE("goldore", 14, "Gold Ore", false, Material.GOLD_ORE),
+    COBBLESTONE("cobblestone", 4, "Cobblestone", false, Material.COBBLESTONE),
+    SAND("sand", 12, "Sand", false, Material.SAND),
+    CLAY("clay", 337, "Clay Ball", false, Material.CLAY_BALL),
+    CACTUS("cactus", 81, "Cactus", false, Material.CACTUS);
 
     private final String name;
     private final int id;

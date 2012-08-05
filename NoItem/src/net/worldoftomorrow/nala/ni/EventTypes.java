@@ -1,13 +1,18 @@
 package net.worldoftomorrow.nala.ni;
 
 public enum EventTypes {
-    CRAFT("craft", Config.notifyNoCraft()), BREW("brew", Config.notifyNoBrew()), WEAR(
-            "wear", Config.notfiyNoWear()), PICKUP("pick up", Config
-            .notifyNoPickup()), DROP("drop", Config.notifyNoDrop()), USE("use",
-            Config.notifyNoUse()), HOLD("hold", Config.notifyNoHold()), SMELT(
-            "smelt", Config.notifyNoCook()), COOK("cook", Config.notifyNoCook()), BREAK(
-            "break", Config.notifyNoBreak()), // TODO: Make this configurable
-    PLACE("place", Config.notifyNoPlace());
+    CRAFT("craft", Config.notifyNoCraft()),
+    BREW("brew", Config.notifyNoBrew()),
+    WEAR("wear", Config.notfiyNoWear()),
+    PICKUP("pick up", Config.notifyNoPickup()),
+    DROP("drop", Config.notifyNoDrop()),
+    USE("use", Config.notifyNoUse()),
+    HOLD("hold", Config.notifyNoHold()),
+    SMELT("smelt", Config.notifyNoCook()),
+    COOK("cook", Config.notifyNoCook()),
+    BREAK("break", Config.notifyNoBreak()),
+    PLACE("place", Config.notifyNoPlace()),
+    DRINK("drink", Config.notifyNoDrink());
 
     private final String name;
     private final boolean notify;

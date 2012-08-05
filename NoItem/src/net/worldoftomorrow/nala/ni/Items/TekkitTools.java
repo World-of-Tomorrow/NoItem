@@ -5,13 +5,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum TekkitTools {
-    RM_PICK("rmpickaxe", 27564, "RedMatter Pickaxe"), RM_SHOVEL("rmshovel",
-            27565, "RedMatter Shovel"), RM_HOE("rmhoe", 27566, "RedMatter How"), RM_SWORD(
-            "rmsword", 27567, "RedMatter Sword"), RM_AXE("rmaxe", 27568,
-            "RedMatter Axe"), RM_SHEARS("rmshears", 27569, "RedMatter Shears"), RM_HAMMER(
-            "rmhammer", 27570, "RedMatter Hammer"), RM_KATAR("rmkatar", 27572,
-            "RedMatter Katar"), RM_MORNINGSTAR("rmmorningstar", 27573,
-            "RedMatter Morning Star");
+    RM_PICK("rmpickaxe", 27564, "RedMatter Pickaxe"),
+    RM_SHOVEL("rmshovel", 27565, "RedMatter Shovel"),
+    RM_HOE("rmhoe", 27566, "RedMatter How"),
+    RM_SWORD("rmsword", 27567, "RedMatter Sword"),
+    RM_AXE("rmaxe", 27568, "RedMatter Axe"),
+    RM_SHEARS("rmshears", 27569, "RedMatter Shears"),
+    RM_HAMMER("rmhammer", 27570, "RedMatter Hammer"),
+    RM_KATAR("rmkatar", 27572, "RedMatter Katar"),
+    RM_MORNINGSTAR("rmmorningstar", 27573, "RedMatter Morning Star");
 
     private final String name;
     private final int id;

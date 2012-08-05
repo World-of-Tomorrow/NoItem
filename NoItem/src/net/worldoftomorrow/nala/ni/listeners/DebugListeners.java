@@ -31,5 +31,10 @@ public class DebugListeners implements Listener {
         Log.debug(event.getEventName() + ":");
         Log.debug("    Action: " + event.getAction().name());
         Log.debug("    Cancelled: " + event.isCancelled());
+        if (event.getItem() != null) {
+            Log.debug("    In Hand ID: " + event.getItem().getTypeId());
+            Log.debug("    In Hand DV: " + event.getItem().getDurability());
+            Log.debug("    In Hand Name: " + event.getItem().getType().name());
+        }
     }
 }

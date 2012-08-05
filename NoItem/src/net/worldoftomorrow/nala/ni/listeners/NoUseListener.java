@@ -85,6 +85,13 @@ public class NoUseListener implements Listener {
                     return; // return if it should be cancelled
                 }
                 break; // break if not; it could be cancelled later
+            case POTION:
+                if (Perms.NODRINK.has(p, inHand.getDurability())) {
+                    this.handlePotionDrink(p);
+                    event.setCancelled(true);
+                    this.notify(p, EventTypes.DRINK, inHand.getDurability());
+                }
+                break;
             default:
                 break;
             }
@@ -124,7 +131,7 @@ public class NoUseListener implements Listener {
     }
 
     private boolean handleHoe(Player p, ItemStack inHand) {
-        if(inHand == null) {
+        if (inHand == null) {
             return false;
         }
         int id = inHand.getTypeId();
@@ -143,6 +150,14 @@ public class NoUseListener implements Listener {
             return true;
         }
         return false;
+    }
+
+    private void handlePotionDrink(Player p) {
+        int heldSlot = p.getInventory().getHeldItemSlot();
+        ItemStack inHand = p.getInventory().getItem(heldSlot);
+        ItemStack nextItem = p.getInventory().getItem(heldSlot + 1);
+        p.getInventory().setItem(heldSlot, nextItem);
+        p.getInventory().setItem(heldSlot + 1, inHand);
     }
 
     @EventHandler
@@ -205,5 +220,10 @@ public class NoUseListener implements Listener {
     private void notify(Player p, EventTypes type, ItemStack stack) {
         StringHelper.notifyPlayer(p, type, stack);
         StringHelper.notifyAdmin(p, type, stack);
+    }
+
+    private void notify(Player p, EventTypes type, Short data) {
+        StringHelper.notifyPlayer(p, type, Short.toString(data));
+        StringHelper.notifyAdmin(p, type, Short.toString(data));
     }
 }

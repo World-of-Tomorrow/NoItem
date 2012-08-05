@@ -32,6 +32,7 @@ public class Config {
     private boolean notifyNoDrop = true;
     private boolean notifyNoBreak = true;
     private boolean notifyNoPlace = true;
+    private boolean notifyNoDrink = true;
 
     private boolean debugging = false;
     private String pluginChannel = "main";
@@ -47,9 +48,10 @@ public class Config {
     private String noDropMessage = "You are not allowed to drop &4%i.";
     private String noBreakMessage = "You are not allowed to break &4%i.";
     private String noPlaceMessage = "You are not allowed to place &4%i.";
+    private String noDrinkMessage = "You are not allowed to drink that!";
 
-    private List<String> furnaces = new ArrayList<String>();
-    private List<String> workbenches = new ArrayList<String>();
+    //private List<String> furnaces = new ArrayList<String>();
+    //private List<String> workbenches = new ArrayList<String>();
 
     /*----------*/
     private NoItem plugin;
@@ -154,6 +156,8 @@ public class Config {
             out.println("    NoBreakMessage: \'" + noBreakMessage + "\'");
             out.println("    NoPlace: " + notifyNoPlace);
             out.println("    NoPlaceMessage: \'" + noPlaceMessage + "\'");
+            out.println("    NoDrink: " + notifyNoDrink);
+            out.println("    NoDrinkMessage: \'" + noDrinkMessage + "\'");
             out.println();
             out.println("CustomBlocks: ");
             out.println();
@@ -352,6 +356,10 @@ public class Config {
     public static boolean notifyNoPlace() {
         return conf.getBoolean("Notify.NoPlace");
     }
+    
+    public static boolean notifyNoDrink() {
+        return conf.getBoolean("Notify.NoDrink");
+    }
 
     // Misc//
     public static boolean debugging() {
@@ -409,6 +417,10 @@ public class Config {
 
     public static String noPlaceMessage() {
         return conf.getString("Notify.NoPlaceMessage");
+    }
+    
+    public static String noDrinkMessage() {
+        return conf.getString("Notify.NoDrinkMessage");
     }
 
     public static Object getValue(String path) {

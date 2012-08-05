@@ -11,12 +11,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 public enum Perms {
-    ADMIN("noitem.admin"), ALLITEMS("noitem.allitems"), NOCRAFT(
-            "noitem.nocraft."), NOPICKUP("noitem.nopickup."), NODROP(
-            "noitem.nodrop."), NOBREW("noitem.nobrew."), NOUSE("noitem.nouse."), NOHOLD(
-            "noitem.nohold."), NOWEAR("noitem.nowear."), NOCOOK(
-            "noitem.nocook."), NOPLACE("noitem.noplace."), NOBREAK(
-            "noitem.nobreak."), ONDEATH("noitem.ondeath.");
+    ADMIN("noitem.admin"),
+    ALLITEMS("noitem.allitems"),
+    NOCRAFT("noitem.nocraft."),
+    NOPICKUP("noitem.nopickup."),
+    NODROP("noitem.nodrop."),
+    NOBREW("noitem.nobrew."),
+    NOUSE("noitem.nouse."),
+    NOHOLD("noitem.nohold."),
+    NOWEAR("noitem.nowear."),
+    NOCOOK("noitem.nocook."),
+    NOPLACE("noitem.noplace."),
+    NOBREAK("noitem.nobreak."),
+    ONDEATH("noitem.ondeath."),
+    NODRINK("noitem.nodrink.");
 
     private final String perm;
 
@@ -85,6 +93,14 @@ public enum Perms {
             throw new UnsupportedOperationException(
                     "Incorrect checking of a permission.");
         }
+    }
+
+    public boolean has(Player p, short data) {
+        if (!perm.equals(NODRINK.perm)) {
+            throw new UnsupportedOperationException(
+                    "Incorrect checking of a permission.");
+        }
+        return this.check(p, perm + data);
     }
 
     private String getItemName(int id, short data) {

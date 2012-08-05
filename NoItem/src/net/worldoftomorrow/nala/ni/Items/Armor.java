@@ -8,28 +8,34 @@ import org.bukkit.Material;
 
 public enum Armor {
     LEATHER_HELMET("leatherhelmet", 298, "Leather Helmet",
-            Material.LEATHER_HELMET), CHAIN_HELMET("chainhelmet", 302,
-            "Chain Helmet", Material.CHAINMAIL_HELMET), IRON_HELMET(
-            "ironhelmet", 306, "Iron Helmet", Material.IRON_HELMET), DIAMOND_HELMET(
-            "diamondhelmet", 310, "Diamond Helmet", Material.DIAMOND_HELMET), GOLD_HELMET(
-            "goldhelmet", 314, "Golden Helmet", Material.GOLD_HELMET), LEATHER_CHESTPLATE(
-            "leatherchest", 299, "Leather Chestplate",
-            Material.LEATHER_CHESTPLATE), CHAIN_CHESTPLATE("chainchest", 303,
-            "Chain Chestplate", Material.CHAINMAIL_HELMET), IRON_CHESTPLATE(
-            "ironchest", 307, "Iron Chestplate", Material.IRON_CHESTPLATE), DIAMOND_CHESTPLATE(
-            "diamondchest", 311, "Diamond Chestplate",
-            Material.DIAMOND_CHESTPLATE), GOLD_CHESTPLATE("goldchest", 315,
-            "Golden Chestplate", Material.GOLD_CHESTPLATE), LEATHER_PANTS(
-            "leatherpants", 300, "Leather Pants", Material.LEATHER_LEGGINGS), CHAIN_PANTS(
-            "chainpants", 304, "Chain Pants", Material.CHAINMAIL_LEGGINGS), IRON_PANTS(
-            "ironpants", 308, "Iron Pants", Material.IRON_LEGGINGS), DIAMOND_PANTS(
-            "diamondpants", 312, "Diamond Pants", Material.DIAMOND_LEGGINGS), GOLD_PANTS(
-            "goldpants", 316, "Golden Pants", Material.GOLD_LEGGINGS), LEATHER_BOOTS(
-            "leatherboots", 301, "Leather Boots", Material.LEATHER_BOOTS), CHAIN_BOOTS(
-            "chainboots", 305, "Chain Boots", Material.CHAINMAIL_BOOTS), IRON_BOOTS(
-            "ironboots", 309, "Iron Boots", Material.IRON_BOOTS), DIAMOND_BOOTS(
-            "diamondboots", 313, "Diamond Boots", Material.DIAMOND_BOOTS), GOLD_BOOTS(
-            "goldboots", 317, "Golden Boots", Material.GOLD_BOOTS);
+            Material.LEATHER_HELMET),
+    CHAIN_HELMET("chainhelmet", 302, "Chain Helmet", Material.CHAINMAIL_HELMET),
+    IRON_HELMET("ironhelmet", 306, "Iron Helmet", Material.IRON_HELMET),
+    DIAMOND_HELMET("diamondhelmet", 310, "Diamond Helmet",
+            Material.DIAMOND_HELMET),
+    GOLD_HELMET("goldhelmet", 314, "Golden Helmet", Material.GOLD_HELMET),
+    LEATHER_CHESTPLATE("leatherchest", 299, "Leather Chestplate",
+            Material.LEATHER_CHESTPLATE),
+    CHAIN_CHESTPLATE("chainchest", 303, "Chain Chestplate",
+            Material.CHAINMAIL_HELMET),
+    IRON_CHESTPLATE("ironchest", 307, "Iron Chestplate",
+            Material.IRON_CHESTPLATE),
+    DIAMOND_CHESTPLATE("diamondchest", 311, "Diamond Chestplate",
+            Material.DIAMOND_CHESTPLATE),
+    GOLD_CHESTPLATE("goldchest", 315, "Golden Chestplate",
+            Material.GOLD_CHESTPLATE),
+    LEATHER_PANTS("leatherpants", 300, "Leather Pants",
+            Material.LEATHER_LEGGINGS),
+    CHAIN_PANTS("chainpants", 304, "Chain Pants", Material.CHAINMAIL_LEGGINGS),
+    IRON_PANTS("ironpants", 308, "Iron Pants", Material.IRON_LEGGINGS),
+    DIAMOND_PANTS("diamondpants", 312, "Diamond Pants",
+            Material.DIAMOND_LEGGINGS),
+    GOLD_PANTS("goldpants", 316, "Golden Pants", Material.GOLD_LEGGINGS),
+    LEATHER_BOOTS("leatherboots", 301, "Leather Boots", Material.LEATHER_BOOTS),
+    CHAIN_BOOTS("chainboots", 305, "Chain Boots", Material.CHAINMAIL_BOOTS),
+    IRON_BOOTS("ironboots", 309, "Iron Boots", Material.IRON_BOOTS),
+    DIAMOND_BOOTS("diamondboots", 313, "Diamond Boots", Material.DIAMOND_BOOTS),
+    GOLD_BOOTS("goldboots", 317, "Golden Boots", Material.GOLD_BOOTS);
 
     private final String name;
     private final int id;

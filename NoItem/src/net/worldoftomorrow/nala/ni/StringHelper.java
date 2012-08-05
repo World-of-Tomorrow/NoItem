@@ -42,7 +42,7 @@ public class StringHelper {
         return msg;
     }
 
-    public static String replaceVars(String msg, Player p, String recipe) {
+    public static String replaceVars(String msg, EventTypes type, Player p, String recipe) {
         String x = Integer.toString(p.getLocation().getBlockX());
         String y = Integer.toString(p.getLocation().getBlockY());
         String z = Integer.toString(p.getLocation().getBlockZ());
@@ -52,6 +52,7 @@ public class StringHelper {
         msg = msg.replace("%y", y);
         msg = msg.replace("%z", z);
         msg = msg.replace("%i", recipe);
+        msg = msg.replace("%t", type.getName());
         msg = StringHelper.parseColors(msg);
         return msg;
     }
@@ -112,10 +113,21 @@ public class StringHelper {
         return msg;
     }
 
-    public static void notifyPlayer(Player p, String recipe) {
-        String msg = Config.noBrewMessage();
+    public static void notifyPlayer(Player p, EventTypes type, String recipe) {
+        String msg;
+        switch(type) {
+        case BREW:
+            msg = Config.noBrewMessage();
+            break;
+        case DRINK:
+            msg = Config.noDrinkMessage();
+            break;
+        default:
+            msg = "Unknown event type: " + type.name();
+            break;
+        }
         p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-                + replaceVars(msg, p, recipe));
+                + replaceVars(msg, type, p, recipe));
     }
 
     public static void notifyPlayer(Player p, EventTypes type, ItemStack stack) {
@@ -164,10 +176,10 @@ public class StringHelper {
         }
     }
 
-    public static void notifyAdmin(Player p, String recipe) {
+    public static void notifyAdmin(Player p, EventTypes type, String recipe) {
         if (Config.notifyAdmins()) {
             String message = StringHelper.replaceVars(Config.adminMessage(), p,
-                    EventTypes.BREW, recipe);
+                    type, recipe);
             Player[] players = Bukkit.getOnlinePlayers();
             for (Player player : players) {
                 if (Perms.ADMIN.has(player)) {

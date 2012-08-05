@@ -97,8 +97,8 @@ public class InventoryListener implements Listener {
                 if (Perms.NOBREW.has(p, potiondv + "." + ing.getTypeId())) {
                     event.setCancelled(true);
                     String recipe = potiondv + ":" + ing.getTypeId();
-                    StringHelper.notifyPlayer(p, recipe);
-                    StringHelper.notifyAdmin(p, recipe);
+                    StringHelper.notifyPlayer(p, EventTypes.BREW, recipe);
+                    StringHelper.notifyAdmin(p, EventTypes.BREW, recipe);
                     return;
                 }
             }
@@ -170,8 +170,8 @@ public class InventoryListener implements Listener {
                 int dv = stack.getDurability();
                 if (Perms.NOBREW.has(p, dv + "." + oncur.getTypeId())) {
                     String recipe = dv + ":" + oncur.getTypeId();
-                    StringHelper.notifyPlayer(p, recipe);
-                    StringHelper.notifyAdmin(p, recipe);
+                    StringHelper.notifyPlayer(p, EventTypes.BREW, recipe);
+                    StringHelper.notifyAdmin(p, EventTypes.BREW, recipe);
                     return false;
                 }
             }
