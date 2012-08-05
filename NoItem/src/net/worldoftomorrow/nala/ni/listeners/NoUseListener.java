@@ -124,6 +124,9 @@ public class NoUseListener implements Listener {
     }
 
     private boolean handleHoe(Player p, ItemStack inHand) {
+        if(inHand == null) {
+            return false;
+        }
         int id = inHand.getTypeId();
         if (id >= 290 && id <= 294) {
             if (Perms.NOUSE.has(p, inHand)) {
