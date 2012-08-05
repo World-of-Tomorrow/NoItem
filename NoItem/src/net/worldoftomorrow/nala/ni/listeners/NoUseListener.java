@@ -2,7 +2,6 @@ package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
-import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.Items.Tools;
@@ -26,8 +25,6 @@ public class NoUseListener implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
-        Log.debug("Player Interact Event");
-
         Action action = event.getAction();
         if (action.equals(Action.LEFT_CLICK_BLOCK)) {
             this.handleBlockLeftClick(event);
@@ -38,7 +35,6 @@ public class NoUseListener implements Listener {
     }
 
     private void handleBlockLeftClick(PlayerInteractEvent event) {
-        Log.debug("handleBlockLeftClick()");
         Player p = event.getPlayer();
         Block clicked = event.getClickedBlock();
         ItemStack inHand = event.getItem();
@@ -76,7 +72,6 @@ public class NoUseListener implements Listener {
     }
 
     private void handleBlockRightClick(PlayerInteractEvent event) {
-        Log.debug("handleBlockRightClick()");
         Player p = event.getPlayer();
         Block clicked = event.getClickedBlock();
         ItemStack inHand = event.getItem();
@@ -94,7 +89,7 @@ public class NoUseListener implements Listener {
                 break;
             }
         }
-        Log.debug("handleBlockLeftClick()~clicked switch");
+
         switch (clicked.getType()) {
         case GRASS:
         case DIRT:

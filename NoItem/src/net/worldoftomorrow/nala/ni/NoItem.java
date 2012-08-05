@@ -7,6 +7,7 @@ import java.util.Map;
 
 import net.worldoftomorrow.nala.ni.listeners.BlockListener;
 import net.worldoftomorrow.nala.ni.listeners.CommandListener;
+import net.worldoftomorrow.nala.ni.listeners.DebugListeners;
 import net.worldoftomorrow.nala.ni.listeners.DropListener;
 import net.worldoftomorrow.nala.ni.listeners.HoldListener;
 import net.worldoftomorrow.nala.ni.listeners.InventoryListener;
@@ -55,6 +56,10 @@ public class NoItem extends JavaPlugin {
 		pm.registerEvents(new PickupListener(), this);
 		pm.registerEvents(new BlockListener(), this);
 		pm.registerEvents(new JoinListener(), this);
+		if(Config.debugging()) {
+		    pm.registerEvents(new DebugListeners(), this);
+		    Log.info("This plugin is in debugging mode!");
+		}
 
 		try {
 			metrics = new Metrics(this);

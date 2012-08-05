@@ -1,7 +1,6 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.EventTypes;
-import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
@@ -17,7 +16,6 @@ public class BlockListener implements Listener {
 
     @EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
-		Log.debug("BlockBreakEvent fired");
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
 		if (Perms.NOBREAK.has(p, b)) {
@@ -36,7 +34,6 @@ public class BlockListener implements Listener {
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
-        Log.debug("BlockPlaceEvent fired");
         Player p = event.getPlayer();
         Block b = event.getBlock();
         if (Perms.NOPLACE.has(p, b)) {

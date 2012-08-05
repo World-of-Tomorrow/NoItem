@@ -1,7 +1,6 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.EventTypes;
-import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
@@ -13,22 +12,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class PickupListener implements Listener {
 
-	@EventHandler
-	public void onPickup(PlayerPickupItemEvent event) {
+    @EventHandler
+    public void onPickup(PlayerPickupItemEvent event) {
 
-		Player p = event.getPlayer();
-		ItemStack stack = event.getItem().getItemStack();
-		int iid = event.getItem().getItemStack().getTypeId();
-
-		Log.debug("PlayerPickupItemEvent fired. " + iid);
-		if (Perms.NOPICKUP.has(p, stack)) {
-			Log.debug("Player has the permission node");
-			event.setCancelled(true);
-			event.getItem().setPickupDelay(100);
-			StringHelper.notifyPlayer(p, EventTypes.PICKUP, stack);
-			StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
-		} else {
-			Log.debug("Player does not have the permission node");
-		}
-	}
+        Player p = event.getPlayer();
+        ItemStack stack = event.getItem().getItemStack();
+        if (Perms.NOPICKUP.has(p, stack)) {
+            event.setCancelled(true);
+            event.getItem().setPickupDelay(100);
+            StringHelper.notifyPlayer(p, EventTypes.PICKUP, stack);
+            StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
+        }
+    }
 }

@@ -1,7 +1,6 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.EventTypes;
-import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
@@ -19,21 +18,6 @@ public class InventoryListener implements Listener {
     public void onInventoryClick(InventoryClickEvent event) {
         Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
         Inventory inv = event.getInventory();
-
-        int rs = event.getRawSlot();
-        int slot = event.getSlot();
-        int id = -1;
-        int dv = -1;
-        if (rs > 0 && event.getCurrentItem() != null) {
-            id = event.getCurrentItem().getTypeId();
-            dv = event.getCurrentItem().getDurability();
-        }
-
-        Log.debug("InventoryClickEvent\nPlayer: " + p.getName() + "\nSlot: "
-                + slot + "\nRawSlot: " + rs + "\nInvType: "
-                + inv.getType().name() + "\nSlotType: "
-                + event.getSlotType().name() + "\nItemId: " + id
-                + "\nDataValue: " + dv);
 
         switch (inv.getType()) {
         case CRAFTING:

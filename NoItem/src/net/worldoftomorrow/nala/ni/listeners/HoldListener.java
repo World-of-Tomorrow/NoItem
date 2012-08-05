@@ -1,7 +1,6 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.EventTypes;
-import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 
@@ -20,8 +19,6 @@ public class HoldListener implements Listener {
 
     @EventHandler
     public void onItemSwitch(PlayerItemHeldEvent event) {
-        Log.debug("PlayerItemHeldEvent fired");
-
         Player p = event.getPlayer();
         int ns = event.getNewSlot();
         int ps = event.getPreviousSlot();
@@ -64,7 +61,7 @@ public class HoldListener implements Listener {
             Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
             int firstEmpty = p.getInventory().firstEmpty();
             int heldSlot = p.getInventory().getHeldItemSlot();
-            if (firstEmpty >= 0 && firstEmpty <= 8 && heldSlot == firstEmpty) {
+            if (heldSlot == firstEmpty) {
                 if (Perms.NOHOLD.has(p, clicked)) {
                     event.setCancelled(true);
                     this.notify(p, EventTypes.HOLD, clicked);
