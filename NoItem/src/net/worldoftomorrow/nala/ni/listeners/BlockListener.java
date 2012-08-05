@@ -15,22 +15,22 @@ import org.bukkit.inventory.ItemStack;
 public class BlockListener implements Listener {
 
     @EventHandler
-	public void onBlockBreak(BlockBreakEvent event) {
-		Player p = event.getPlayer();
-		Block b = event.getBlock();
-		if (Perms.NOBREAK.has(p, b)) {
-			event.setCancelled(true);
-			this.notify(p, EventTypes.BREAK, new ItemStack(b.getType()));
-			return;
-		}
+    public void onBlockBreak(BlockBreakEvent event) {
+        Player p = event.getPlayer();
+        Block b = event.getBlock();
+        if (Perms.NOBREAK.has(p, b)) {
+            event.setCancelled(true);
+            this.notify(p, EventTypes.BREAK, new ItemStack(b.getType()));
+            return;
+        }
 
-		ItemStack inhand = p.getItemInHand();
-		if (inhand != null && Perms.NOUSE.has(p, inhand)) {
-			event.setCancelled(true);
-			this.notify(p, EventTypes.USE, new ItemStack(b.getType()));
-			return;
-		}
-	}
+        ItemStack inhand = p.getItemInHand();
+        if (inhand != null && Perms.NOUSE.has(p, inhand)) {
+            event.setCancelled(true);
+            this.notify(p, EventTypes.USE, new ItemStack(b.getType()));
+            return;
+        }
+    }
 
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event) {
@@ -49,7 +49,7 @@ public class BlockListener implements Listener {
             return;
         }
     }
-    
+
     private void notify(Player p, EventTypes type, ItemStack stack) {
         StringHelper.notifyPlayer(p, type, stack);
         StringHelper.notifyAdmin(p, type, stack);

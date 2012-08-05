@@ -79,13 +79,13 @@ public class CustomBlocks {
         }
         return false;
     }
-    
+
     public static CustomBlock getCustomBlock(int id, short data) {
-        if(CustomBlocks.getFurnace(id, data) != null) {
+        if (CustomBlocks.getFurnace(id, data) != null) {
             return getFurnace(id, data);
         }
-        
-        if(CustomBlocks.getWorkbench(id, data) != null) {
+
+        if (CustomBlocks.getWorkbench(id, data) != null) {
             return getWorkbench(id, data);
         }
         return null;

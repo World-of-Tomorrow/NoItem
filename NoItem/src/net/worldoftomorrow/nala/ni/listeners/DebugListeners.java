@@ -22,7 +22,7 @@ public class DebugListeners implements Listener {
         Log.debug("    Slot: " + event.getSlotType());
         Log.debug("    Cancelled: " + event.isCancelled());
     }
-    
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Log.debug(event.getEventName() + ":");

@@ -193,7 +193,7 @@ public class InventoryListener implements Listener {
             }
         }
     }
-    
+
     private void notify(Player p, EventTypes type, ItemStack stack) {
         StringHelper.notifyPlayer(p, type, stack);
         StringHelper.notifyAdmin(p, type, stack);
