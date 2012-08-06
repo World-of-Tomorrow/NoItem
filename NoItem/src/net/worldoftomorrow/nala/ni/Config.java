@@ -269,6 +269,9 @@ public class Config {
         if (conf.isSet("Notify.NoPlace")) {
             this.notifyNoPlace = conf.getBoolean("Notify.NoPlace");
         }
+        if(conf.isSet("Notify.NoDrink")) {
+        	this.notifyNoDrink = conf.getBoolean("Notify.NoDrink");
+        }
         if (conf.isSet("Debugging")) {
             this.debugging = conf.getBoolean("Debugging");
         }
@@ -307,6 +310,9 @@ public class Config {
         }
         if (conf.isSet("Notify.NoPlaceMessage")) {
             this.noPlaceMessage = conf.getString("Notify.NoPlaceMessage");
+        }
+        if(conf.isSet("Notify.NoDrinkMessage")) {
+        	this.noDrinkMessage = conf.getString("Notify.NoDrinkMessage");
         }
 
         this.writeConfig(); // Load all the variables that are set in the
