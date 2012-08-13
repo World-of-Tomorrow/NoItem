@@ -20,9 +20,10 @@ public class Updater {
     private String devurl = "http://www.worldoftomorrow.net/noitem/latest_dev.html";
 
     public Updater(String currentVersion) {
-        this.currentMajor = Integer.valueOf(currentVersion.split("\\.")[0]);
-        this.currentMinor = Integer.valueOf(currentVersion.split("\\.")[1]);
-        this.currentBuild = Integer.valueOf(currentVersion.split("\\.")[2]);
+    	String[] cv = currentVersion.split("-");
+        this.currentMajor = Integer.valueOf(cv[0].split("\\.")[0]);
+        this.currentMinor = Integer.valueOf(cv[0].split("\\.")[1]);
+        this.currentBuild = Integer.valueOf(cv[0].split("\\.")[2]);
 
         try {
             URL site;

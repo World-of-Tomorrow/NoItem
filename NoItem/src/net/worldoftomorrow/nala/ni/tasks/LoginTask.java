@@ -11,8 +11,8 @@ public class LoginTask implements Runnable {
     public LoginTask(Player p) {
         this.p = p;
     }
-
-    @Override
+    
+    //@Override
     public void run() {
         World w = p.getWorld();
         ItemStack stack = p.getItemInHand();

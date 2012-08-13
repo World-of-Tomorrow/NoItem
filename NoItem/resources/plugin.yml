@@ -1,8 +1,8 @@
 name: NoItem
-version: 2.0.6
+version: ${project.version}
 website: http://dev.bukkit.org/server-mods/noitem/
 description: Stops certain items from being crafted/picked up, effectivally removing them on the server.
-author: nala3
+authors: [nala3]
 
 main: net.worldoftomorrow.nala.ni.NoItem
 database: false
@@ -24,5 +24,5 @@ permissions:
 
 commands:
     noitem:
-        description: NoItems only command, used to reloading the config.
+        description: NoItems only command, used to relode the config or claim items
         usage: /noitem [reload|claim]
