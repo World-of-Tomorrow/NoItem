@@ -30,6 +30,10 @@ public class CustomBlocks {
         }
         return false;
     }
+    
+    public static boolean isWorkbench(Block b) {
+    	return isWorkbench(b.getTypeId(), b.getData());
+    }
 
     public static boolean isFurnace(int id, short data) {
         for (CustomFurnace f : furnaces) {
@@ -38,6 +42,10 @@ public class CustomBlocks {
             }
         }
         return false;
+    }
+    
+    public static boolean isFurnace(Block b) {
+    	return isFurnace(b.getTypeId(), b.getData());
     }
 
     public static CustomWorkbench getWorkbench(int id, short data) {
@@ -48,6 +56,10 @@ public class CustomBlocks {
         }
         return null;
     }
+    
+    public static CustomWorkbench getWorkbench(Block b) {
+    	return getWorkbench(b.getTypeId(), b.getData());
+    }
 
     public static CustomFurnace getFurnace(int id, short data) {
         for (CustomFurnace f : furnaces) {
@@ -56,6 +68,10 @@ public class CustomBlocks {
             }
         }
         return null;
+    }
+    
+    public static CustomFurnace getFurnace(Block b) {
+    	return getFurnace(b.getTypeId(), b.getData());
     }
 
     public static boolean isCustomBlock(Block b) {
@@ -89,5 +105,9 @@ public class CustomBlocks {
             return getWorkbench(id, data);
         }
         return null;
+    }
+    
+    public static CustomBlock getCustomBlock(Block b) {
+    	return getCustomBlock(b.getTypeId(), b.getData());
     }
 }

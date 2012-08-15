@@ -2,6 +2,7 @@ package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
+import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.Items.Tools;
@@ -31,6 +32,10 @@ public class NoUseListener implements Listener {
         }
         if (action.equals(Action.RIGHT_CLICK_BLOCK)) {
             this.handleBlockRightClick(event);
+        }
+        if(action.equals(Action.LEFT_CLICK_BLOCK) || action.equals(Action.RIGHT_CLICK_BLOCK)) {
+        	NoItem.getPlugin().getLastClickedList().remove(event.getPlayer().getName());
+        	NoItem.getPlugin().getLastClickedList().put(event.getPlayer().getName(), event.getClickedBlock());
         }
     }
 
@@ -168,7 +173,6 @@ public class NoUseListener implements Listener {
             if (Perms.NOUSE.has(p, inHand.getType(), inHand.getDurability())) {
                 event.setCancelled(true);
             }
-            // TODO: test
         }
     }
 
