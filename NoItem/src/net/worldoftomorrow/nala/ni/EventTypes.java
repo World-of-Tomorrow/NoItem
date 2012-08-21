@@ -12,7 +12,8 @@ public enum EventTypes {
     COOK("cook", Config.notifyNoCook()),
     BREAK("break", Config.notifyNoBreak()),
     PLACE("place", Config.notifyNoPlace()),
-    DRINK("drink", Config.notifyNoDrink());
+    DRINK("drink", Config.notifyNoDrink()),
+    OPEN("open", Config.notifyNoOpen());
 
     private final String name;
     private final boolean notify;

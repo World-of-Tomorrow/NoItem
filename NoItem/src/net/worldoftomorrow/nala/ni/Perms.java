@@ -24,7 +24,8 @@ public enum Perms {
     NOPLACE("noitem.noplace."),
     NOBREAK("noitem.nobreak."),
     ONDEATH("noitem.ondeath."),
-    NODRINK("noitem.nodrink.");
+    NODRINK("noitem.nodrink."),
+    NOOPEN("noitem.noopen.");
 
     private final String perm;
 

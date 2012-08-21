@@ -14,10 +14,12 @@ import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
@@ -57,6 +59,21 @@ public class InventoryListener implements Listener {
 		default:
 			this.handleGenericInv(event, p);
 			break;
+		}
+	}
+	
+	@EventHandler
+	public void onInventoryOpen(InventoryOpenEvent event) {
+		HumanEntity entity = event.getPlayer();
+		List<Block> blocks = entity.getLastTwoTargetBlocks(null, 8);
+		if(!blocks.isEmpty() && blocks.size() == 2) {
+			Block target = blocks.get(1);
+			if(Perms.NOOPEN.has(Bukkit.getPlayer(entity.getName()), target)) {
+				event.setCancelled(true);
+				int id = target.getTypeId();
+				byte data = target.getData();
+				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, new ItemStack(id, data));
+			}
 		}
 	}
 
@@ -248,6 +265,11 @@ public class InventoryListener implements Listener {
 	}
 
 	private void notify(Player p, EventTypes type, ItemStack stack) {
+		StringHelper.notifyPlayer(p, type, stack);
+		StringHelper.notifyAdmin(p, type, stack);
+	}
+	
+	private void notify(Player p, EventTypes type, Block b) {
 		StringHelper.notifyPlayer(p, type, stack);
 		StringHelper.notifyAdmin(p, type, stack);
 	}

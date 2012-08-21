@@ -33,6 +33,7 @@ public class Config {
     private boolean notifyNoBreak = true;
     private boolean notifyNoPlace = true;
     private boolean notifyNoDrink = true;
+    private boolean notifyNoOpen = true;
 
     private boolean debugging = false;
     private String pluginChannel = "main";
@@ -49,6 +50,7 @@ public class Config {
     private String noBreakMessage = "You are not allowed to break &4%i.";
     private String noPlaceMessage = "You are not allowed to place &4%i.";
     private String noDrinkMessage = "You are not allowed to drink that!";
+    private String noOpenMessage = "You are not allowed to open that!";
 
     //private List<String> furnaces = new ArrayList<String>();
     //private List<String> workbenches = new ArrayList<String>();
@@ -157,7 +159,9 @@ public class Config {
             out.println("    NoPlace: " + notifyNoPlace);
             out.println("    NoPlaceMessage: \'" + noPlaceMessage + "\'");
             out.println("    NoDrink: " + notifyNoDrink);
-            out.println("    NoDrinkMessage: \'" + noDrinkMessage + "\'");
+			out.println("    NoDrinkMessage: \'" + noDrinkMessage + "\'");
+            out.println("    NoOpen: " + notifyNoOpen);
+            out.println("    NoOpenMessage: \'" + noOpenMessage + "\'");
             out.println();
             out.println("CustomBlocks: ");
             out.println();
@@ -196,17 +200,8 @@ public class Config {
             out.println("# Blaze Powder - 377");
             out.println("# Gun Powder - 289");
             out.println();
-            out.println("# Permissions:");
-            out.println("# noitem.allitems");
-            out.println("# noitem.admin");
-            out.println("# noitem.nopickup.<itemId>[.dataValue]");
-            out.println("# noitem.nocraft.<itemId>[.dataValue]");
-            out.println("# noitem.nobrew.<potionDV>.<IngredientID>");
-            out.println("# noitem.nouse.<itemID> or noitem.nouse.<itemName>");
-            out.println("# noitem.nohold.<itemID> or noitem.nohold.<itemName>");
-            out.println("# noitem.nowear.<itemID> or noitem.nowear.<itemName>");
-            out.println("# noitem.nocook.<itemID> or noitem.nocook.<itemName>");
-            out.println("# noitem.nodrop.<itemID>[.dataValue]");
+            out.println("# Permissions can be found here: ");
+            out.println("# http://dev.bukkit.org/server-mods/noitem/pages/permissions/");
             out.println();
             out.println("#Don't turn this on unless you like getting spammed with messages!");
             out.println("Debugging: " + debugging);
@@ -272,6 +267,9 @@ public class Config {
         if(conf.isSet("Notify.NoDrink")) {
         	this.notifyNoDrink = conf.getBoolean("Notify.NoDrink");
         }
+        if(conf.isSet("Notify.NoOpen")) {
+        	this.notifyNoOpen = conf.getBoolean("Notify.NoOpen");
+        }
         if (conf.isSet("Debugging")) {
             this.debugging = conf.getBoolean("Debugging");
         }
@@ -313,6 +311,9 @@ public class Config {
         }
         if(conf.isSet("Notify.NoDrinkMessage")) {
         	this.noDrinkMessage = conf.getString("Notify.NoDrinkMessage");
+        }
+        if(conf.isSet("Notify.NoOpenMessage")) {
+        	this.noOpenMessage = conf.getString("Notify.NoOpenMessage");
         }
 
         this.writeConfig(); // Load all the variables that are set in the
@@ -365,6 +366,10 @@ public class Config {
     
     public static boolean notifyNoDrink() {
         return conf.getBoolean("Notify.NoDrink");
+    }
+    
+    public static boolean notifyNoOpen() {
+    	return conf.getBoolean("Notify.NoOpen");
     }
 
     // Misc//
@@ -427,6 +432,10 @@ public class Config {
     
     public static String noDrinkMessage() {
         return conf.getString("Notify.NoDrinkMessage");
+    }
+    
+    public static String noOpenMessage() {
+    	return conf.getString("Notify.NoOpenMessage");
     }
 
     public static Object getValue(String path) {
