@@ -73,6 +73,7 @@ public class InventoryListener implements Listener {
 				int id = target.getTypeId();
 				byte data = target.getData();
 				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, new ItemStack(id, data));
+				Log.debug("InventoryOpenEvent cancelled - " + id + " - " + data + " - " + entity.getName());
 			}
 		}
 	}
