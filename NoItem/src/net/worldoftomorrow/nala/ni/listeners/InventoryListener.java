@@ -202,6 +202,7 @@ public class InventoryListener implements Listener {
 					for (Short s : cf.getItemSlots()) {
 						ItemStack item = view.getItem(s);
 						if (item != null && Perms.NOCOOK.has(p, item)) {
+							event.setCancelled(true);
 							this.notify(p, EventTypes.COOK, item);
 						}
 					}
@@ -218,6 +219,7 @@ public class InventoryListener implements Listener {
 						for (Short s : cf.getItemSlots()) {
 							ItemStack item = view.getItem(s);
 							if (item != null && Perms.NOCOOK.has(p, item)) {
+								event.setCancelled(true);
 								this.notify(p, EventTypes.COOK, item);
 							}
 						}
