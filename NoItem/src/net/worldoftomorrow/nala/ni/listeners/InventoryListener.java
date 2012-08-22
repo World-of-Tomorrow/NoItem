@@ -3,6 +3,7 @@ package net.worldoftomorrow.nala.ni.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.server.Packet101CloseWindow;
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
@@ -14,9 +15,11 @@ import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -62,13 +65,14 @@ public class InventoryListener implements Listener {
 		}
 	}
 	
-	@EventHandler
+	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		HumanEntity entity = event.getPlayer();
+		Player p = Bukkit.getPlayer(entity.getName());
 		List<Block> blocks = entity.getLastTwoTargetBlocks(null, 8);
 		if(!blocks.isEmpty() && blocks.size() == 2) {
 			Block target = blocks.get(1);
-			if(Perms.NOOPEN.has(Bukkit.getPlayer(entity.getName()), target)) {
+			if(Perms.NOOPEN.has(p, target)) {
 				event.setCancelled(true);
 				int id = target.getTypeId();
 				byte data = target.getData();

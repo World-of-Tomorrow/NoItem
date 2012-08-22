@@ -67,6 +67,7 @@ public class NoItem extends JavaPlugin {
             metrics = new Metrics(this);
             metrics.start();
         } catch (IOException ex) {
+        	Log.severe("Failed to start metrics!");
         }
     }
 
