@@ -3,8 +3,6 @@ package net.worldoftomorrow.nala.ni.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;

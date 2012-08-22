@@ -102,7 +102,7 @@ public class Config {
             String type = block.getString("type");
             int id = block.getInt("id");
             short data = (short) block.getInt("data");
-            if (type.equalsIgnoreCase("furnaces")
+            if (type.equalsIgnoreCase("furnace")
                     || type.equalsIgnoreCase("oven")) {
                 List<Short> resultSlots = block.getShortList("resultSlots");
                 List<Short> fuelSlots = block.getShortList("fuelSlots");
