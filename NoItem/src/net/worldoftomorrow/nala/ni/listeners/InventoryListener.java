@@ -204,6 +204,7 @@ public class InventoryListener implements Listener {
 						if (item != null && Perms.NOCOOK.has(p, item)) {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.COOK, item);
+							return;
 						}
 					}
 				}
@@ -221,6 +222,7 @@ public class InventoryListener implements Listener {
 							if (item != null && Perms.NOCOOK.has(p, item)) {
 								event.setCancelled(true);
 								this.notify(p, EventTypes.COOK, item);
+								return;
 							}
 						}
 					}
