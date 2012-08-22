@@ -98,7 +98,7 @@ public class Config {
         ArrayList<CustomFurnace> furnaces = new ArrayList<CustomFurnace>();
         ArrayList<CustomWorkbench> workbenches = new ArrayList<CustomWorkbench>();
         for (String key : keys) {
-            ConfigurationSection block = conf.getConfigurationSection(key);
+            ConfigurationSection block = section.getConfigurationSection(key);
             String type = block.getString("type");
             int id = block.getInt("id");
             short data = (short) block.getInt("data");
