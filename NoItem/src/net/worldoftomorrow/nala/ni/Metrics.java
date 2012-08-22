@@ -140,6 +140,8 @@ public class Metrics {
      * Id of the scheduled task
      */
     private volatile int taskId = -1;
+    
+    private final String authors;
 
     public Metrics(final Plugin plugin) throws IOException {
         if (plugin == null) {
@@ -147,7 +149,19 @@ public class Metrics {
         }
 
         this.plugin = plugin;
-
+        
+        String authors = "";
+        int count = 0;
+        for(String author : plugin.getDescription().getAuthors()) {
+        	authors.concat(author);
+        	if(count < plugin.getDescription().getAuthors().size()) {
+        		authors.concat(", ");
+        	}
+        	count++;
+        }
+        
+        this.authors = authors;
+        
         // load the config
         configurationFile = new File(CONFIG_FILE);
         configuration = YamlConfiguration.loadConfiguration(configurationFile);
@@ -374,6 +388,7 @@ public class Metrics {
         // Construct the post data
         final StringBuilder data = new StringBuilder();
         data.append(encode("guid")).append('=').append(encode(guid));
+        encodeDataPair(data, "authors", authors);
         encodeDataPair(data, "version", description.getVersion());
         encodeDataPair(data, "server", Bukkit.getVersion());
         encodeDataPair(data, "players",

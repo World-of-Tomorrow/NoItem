@@ -3,7 +3,8 @@ package net.worldoftomorrow.nala.ni.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.Packet101CloseWindow;
+import net.minecraft.server.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
@@ -15,7 +16,6 @@ import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.entity.CraftPlayer;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -74,6 +74,7 @@ public class InventoryListener implements Listener {
 			Block target = blocks.get(1);
 			if(Perms.NOOPEN.has(p, target)) {
 				event.setCancelled(true);
+				//TODO: find a fix for the chest sticking open
 				int id = target.getTypeId();
 				byte data = target.getData();
 				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, new ItemStack(id, data));
@@ -272,5 +273,17 @@ public class InventoryListener implements Listener {
 	private void notify(Player p, EventTypes type, ItemStack stack) {
 		StringHelper.notifyPlayer(p, type, stack);
 		StringHelper.notifyAdmin(p, type, stack);
+	}
+	
+	private EntityPlayer getEntityPlayer(Player p) {
+		EntityPlayer ep = null;
+		@SuppressWarnings("unchecked")
+		List<EntityPlayer> players = MinecraftServer.getServer()
+				.getServerConfigurationManager().players;
+		for (EntityPlayer entp : players) {
+			if (entp.getName().equals(p.getName()))
+				ep = entp;
+		}
+		return ep;
 	}
 }
