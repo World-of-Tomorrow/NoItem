@@ -242,6 +242,7 @@ public class Config {
         conf = null;
         plugin.reloadConfig();
         conf = plugin.getConfig();
+        this.loadCustomBlocks();
     }
 
     private void updateConfig() {
