@@ -67,24 +67,23 @@ public class Config {
             }
         }
         this.confFile = new File(this.plugin.getDataFolder(), "config.yml");
-        if (!confFile.exists()) { // If the config does not exist
+        if (!confFile.exists()) {
             try {
-                if (confFile.createNewFile()) { // Try to create the file +
-                    // directories
-                    this.writeConfig(); // Write the config
-                    this.loadConfig(); // Load the config
-                } else { // If making the directory fails, give an error
+                if (confFile.createNewFile()) {
+                    this.writeConfig();
+                    this.loadConfig();
+                } else {
                     Log.severe("Could not create configuration file!");
                 }
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        } else { // If the config file does exist
-            this.loadConfig(); // Load possibly old or damaged the config.
-            this.updateConfig(); // Update/Fix it.
-            this.loadConfig(); // Reload the updated config.
+        } else {
+            this.loadConfig();
+            this.loadCustomBlocks();
+            this.updateConfig();
+            this.loadConfig();
         }
-        this.loadCustomBlocks();
     }
 
     private void loadCustomBlocks() {
