@@ -27,7 +27,7 @@ public class CommandListener implements CommandExecutor {
             if (this.isPlayer(sender)) {
                 Player p = (Player) sender;
                 if (!Perms.ADMIN.has(p)) {
-                    p.sendMessage(ChatColor.RED + "[NI] "
+                    sender.sendMessage(ChatColor.RED + "[NI] "
                             + "You do not have permission to use this command!");
                     return true;
                 }
@@ -39,9 +39,8 @@ public class CommandListener implements CommandExecutor {
             return false;
         } else {
             if (args[0].equalsIgnoreCase("reload")) {
-                Player p = (Player) sender;
-                if (!Perms.ADMIN.has(p)) {
-                    p.sendMessage(ChatColor.RED + "[NI] "
+                if (this.isPlayer(sender) && !Perms.ADMIN.has((Player) sender)) {
+                    sender.sendMessage(ChatColor.RED + "[NI] "
                             + "You do not have permission to use this command!");
                     return true;
                 }
@@ -66,14 +65,14 @@ public class CommandListener implements CommandExecutor {
                         }
                     }
                     if (!remainder.isEmpty()) {
-                        p.sendMessage(ChatColor.BLUE + "You still have "
+                        sender.sendMessage(ChatColor.BLUE + "You still have "
                                 + remainder.size() + " unclaimed items!");
-                        p.sendMessage(ChatColor.BLUE
+                        sender.sendMessage(ChatColor.BLUE
                                 + "Type \"/noitem claim\" to get the rest!");
                         plugin.getItemList().put(p.getName(), remainder);
                     }
                 } else {
-                    p.sendMessage(ChatColor.RED
+                    sender.sendMessage(ChatColor.RED
                             + "There are no items for you to claim!");
                 }
                 return true;
