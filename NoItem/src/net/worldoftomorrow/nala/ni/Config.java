@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -51,9 +52,6 @@ public class Config {
     private String noPlaceMessage = "You are not allowed to place &4%i.";
     private String noDrinkMessage = "You are not allowed to drink that!";
     private String noOpenMessage = "You are not allowed to open that!";
-
-    //private List<String> furnaces = new ArrayList<String>();
-    //private List<String> workbenches = new ArrayList<String>();
 
     /*----------*/
     private NoItem plugin;
@@ -164,6 +162,22 @@ public class Config {
             out.println("    NoOpenMessage: \'" + noOpenMessage + "\'");
             out.println();
             out.println("CustomBlocks: ");
+            for(CustomFurnace cf : CustomBlocks.getCustomFurnaces()) {
+            	out.println("    " + cf.getName());
+            	out.println("        id: " + cf.getID());
+            	out.println("        data: " + cf.getData());
+            	out.println("        type: furnace");
+            	out.println("        itemSlots: " + Arrays.toString(cf.getItemSlots().toArray()));
+            	out.println("        fuelSlots: " + Arrays.toString(cf.getFuelSlots().toArray()));
+            	out.println("        resultSlots: " + Arrays.toString(cf.getResultSlots().toArray()));
+            }
+            for(CustomWorkbench cb : CustomBlocks.getCustomWorkbenches()) {
+            	out.println("    " + cb.getName());
+            	out.println("        id: " + cb.getID());
+            	out.println("        data: " + cb.getData());
+            	out.println("        type: workbench");
+            	out.println("        resultSlot: " + cb.getResultSlot());
+            }
             out.println();
             out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
             out.println("# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing");

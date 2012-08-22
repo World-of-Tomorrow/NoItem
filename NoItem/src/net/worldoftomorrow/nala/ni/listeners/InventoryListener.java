@@ -162,6 +162,7 @@ public class InventoryListener implements Listener {
 	}
 
 	private void handleChest(InventoryClickEvent event, Player p) {
+		this.handleGenericInv(event, p);
 		// NoHold
 		this.handleNoHold(event, p);
 	}
@@ -187,9 +188,11 @@ public class InventoryListener implements Listener {
 
 	private void handleGenericInv(InventoryClickEvent event, Player p) {
 		// Crafting table III: 149
-		Block b = NoItem.getPlugin().getLastClickedList().get(p.getName());
+		Block b = p.getTargetBlock(null, 8);
+		Log.debug("TargetBlock: " + b.getTypeId() + ", " + b.getData());
 		// Custom block handling
 		if (CustomBlocks.isCustomBlock(b.getTypeId(), b.getData())) {
+			Log.debug("is a custom block");
 			int clicked = event.getRawSlot();
 			InventoryView view = event.getView();
 			CustomBlock cb = CustomBlocks.getCustomBlock(b.getTypeId(), b.getData());

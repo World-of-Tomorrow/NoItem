@@ -110,4 +110,12 @@ public class CustomBlocks {
     public static CustomBlock getCustomBlock(Block b) {
     	return getCustomBlock(b.getTypeId(), b.getData());
     }
+    
+    public static List<CustomFurnace> getCustomFurnaces() {
+    	return furnaces;
+    }
+    
+    public static List<CustomWorkbench> getCustomWorkbenches() {
+    	return workbenches;
+    }
 }
