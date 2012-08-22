@@ -206,6 +206,7 @@ public class NoUseListener implements Listener {
         }
     }
 
+    //TODO: improve this method
     @EventHandler
     public void onSwordSwing(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();

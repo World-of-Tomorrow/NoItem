@@ -167,6 +167,9 @@ public class StringHelper {
             case PLACE:
                 msg = Config.noPlaceMessage();
                 break;
+            case OPEN:
+            	msg = Config.noOpenMessage();
+            	break;
             default:
                 msg = "Unknown event type: " + type.name();
                 break;
