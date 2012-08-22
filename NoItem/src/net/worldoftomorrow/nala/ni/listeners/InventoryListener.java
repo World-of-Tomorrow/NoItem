@@ -274,16 +274,4 @@ public class InventoryListener implements Listener {
 		StringHelper.notifyPlayer(p, type, stack);
 		StringHelper.notifyAdmin(p, type, stack);
 	}
-	
-	private EntityPlayer getEntityPlayer(Player p) {
-		EntityPlayer ep = null;
-		@SuppressWarnings("unchecked")
-		List<EntityPlayer> players = MinecraftServer.getServer()
-				.getServerConfigurationManager().players;
-		for (EntityPlayer entp : players) {
-			if (entp.getName().equals(p.getName()))
-				ep = entp;
-		}
-		return ep;
-	}
 }
