@@ -162,7 +162,7 @@ public class Config {
             out.println();
             out.println("CustomBlocks: ");
             for(CustomFurnace cf : CustomBlocks.getCustomFurnaces()) {
-            	out.println("    " + cf.getName());
+            	out.println("    " + cf.getName() + ": ");
             	out.println("        id: " + cf.getID());
             	out.println("        data: " + cf.getData());
             	out.println("        type: furnace");
@@ -171,7 +171,7 @@ public class Config {
             	out.println("        resultSlots: " + Arrays.toString(cf.getResultSlots().toArray()));
             }
             for(CustomWorkbench cb : CustomBlocks.getCustomWorkbenches()) {
-            	out.println("    " + cb.getName());
+            	out.println("    " + cb.getName() + ": ");
             	out.println("        id: " + cb.getID());
             	out.println("        data: " + cb.getData());
             	out.println("        type: workbench");
