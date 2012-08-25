@@ -5,9 +5,9 @@ import java.util.List;
 
 import org.bukkit.block.Block;
 
-import net.worldoftomorrow.nala.ni.otherblocks.CustomBlock;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomBlock;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
 
 public class CustomBlocks {
 

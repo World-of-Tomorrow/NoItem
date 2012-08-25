@@ -1,4 +1,4 @@
-package net.worldoftomorrow.nala.ni.otherblocks;
+package net.worldoftomorrow.nala.ni.CustomItems;
 
 import java.util.List;
 

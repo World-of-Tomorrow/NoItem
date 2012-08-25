@@ -8,10 +8,10 @@ import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomBlock;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
 import net.worldoftomorrow.nala.ni.Items.Armor;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomBlock;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -248,6 +248,7 @@ public class InventoryListener implements Listener {
 						return;
 					}
 				}
+				
 				//TODO: I need to watch recipes too, for automatic crafting machines
 				break;
 			default:

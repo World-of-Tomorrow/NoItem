@@ -1,4 +1,4 @@
-package net.worldoftomorrow.nala.ni.otherblocks;
+package net.worldoftomorrow.nala.ni.CustomItems;
 
 public abstract class CustomBlock {
 

@@ -10,9 +10,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomType;
-import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomType;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
 
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
