@@ -10,6 +10,7 @@ import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomBlock;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
+import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -181,12 +182,12 @@ public class InventoryListener implements Listener {
 				return;
 			}
 		}
+		//TODO: fuel slots
 		// NoHold
 		this.handleNoHold(event, p);
 	}
 
 	private void handleGenericInv(InventoryClickEvent event, Player p) {
-		// Crafting table III: 149
 		Block b = p.getTargetBlock(null, 8);
 		Log.debug("TargetBlock: " + b.getTypeId() + ", " + b.getData());
 		// Custom block handling
@@ -198,7 +199,7 @@ public class InventoryListener implements Listener {
 			switch (cb.getType()) {
 			case FURNACE:
 				CustomFurnace cf = (CustomFurnace) cb;
-				if (cf.isFuelSlot((short) clicked)) {
+				if (cf.isFuelSlot((short) clicked) && p.getItemOnCursor() != null) {
 					for (Short s : cf.getItemSlots()) {
 						ItemStack item = view.getItem(s);
 						if (item != null && Perms.NOCOOK.has(p, item)) {
@@ -207,8 +208,7 @@ public class InventoryListener implements Listener {
 							return;
 						}
 					}
-				}
-				if (cf.isItemSlot((short) clicked)) {
+				} else if (cf.isItemSlot((short) clicked) && p.getItemOnCursor() != null) {
 					List<ItemStack> fuels = new ArrayList<ItemStack>();
 					for(Short s : cf.getFuelSlots()) {
 						ItemStack fuel = view.getItem(s);
@@ -229,6 +229,10 @@ public class InventoryListener implements Listener {
 				}
 				break;
 			case WORKBENCH:
+				CustomWorkbench cw = (CustomWorkbench) cb;
+				if(cw.isResultSlot((short) clicked)) {
+					//ItemStack result = view.getItem(clicked);
+				}
 				//TODO: workbench
 				break;
 			default:
