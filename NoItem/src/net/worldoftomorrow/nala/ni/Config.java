@@ -108,9 +108,9 @@ public class Config {
                         resultSlots, fuelSlots, itemSlots, key));
             } else if (type.equalsIgnoreCase("workbench")
                     || type.equalsIgnoreCase("craftingtable")) {
-                short result = (short) block.getInt("resultSlot");
+            	List<Short> resultSlots = block.getShortList("resultSlots");
                 workbenches.add(new CustomWorkbench(id, data,
-                        CustomType.WORKBENCH, result, key));
+                        CustomType.WORKBENCH, resultSlots, key));
             }
         }
         CustomBlocks.setFurnaces(furnaces);
