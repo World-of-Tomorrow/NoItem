@@ -8,6 +8,7 @@ import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
+import net.worldoftomorrow.nala.ni.Items.Armor;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomBlock;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomFurnace;
 import net.worldoftomorrow.nala.ni.otherblocks.CustomWorkbench;
@@ -22,6 +23,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
+import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -31,6 +33,7 @@ public class InventoryListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 		Inventory inv = event.getInventory();
+		ItemStack clicked = event.getCurrentItem();
 
 		switch (inv.getType()) {
 		case CRAFTING:
@@ -60,6 +63,14 @@ public class InventoryListener implements Listener {
 		default:
 			this.handleGenericInv(event, p);
 			break;
+		}
+		
+		if(clicked != null && event.isShiftClick() && Armor.isArmor(clicked.getType())) {
+			if (Perms.NOWEAR.has(p, clicked)) {
+				event.setCancelled(true);
+				this.notify(p, EventTypes.HOLD, clicked);
+				return;
+			}
 		}
 	}
 	
@@ -237,6 +248,7 @@ public class InventoryListener implements Listener {
 						return;
 					}
 				}
+				//TODO: I need to watch recipes too, for automatic crafting machines
 				break;
 			default:
 				Log.severe("Undefined custom block.");

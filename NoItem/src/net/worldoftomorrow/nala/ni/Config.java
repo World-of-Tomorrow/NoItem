@@ -109,8 +109,9 @@ public class Config {
             } else if (type.equalsIgnoreCase("workbench")
                     || type.equalsIgnoreCase("craftingtable")) {
             	List<Short> resultSlots = block.getShortList("resultSlots");
+            	List<Short> recipeSlots = block.getShortList("recipeSlots");
                 workbenches.add(new CustomWorkbench(id, data,
-                        CustomType.WORKBENCH, resultSlots, key));
+                        CustomType.WORKBENCH, resultSlots, recipeSlots, key));
             }
         }
         CustomBlocks.setFurnaces(furnaces);
@@ -176,6 +177,7 @@ public class Config {
             	out.println("        data: " + cw.getData());
             	out.println("        type: workbench");
             	out.println("        resultSlots: " + Arrays.toString(cw.getResultSlots().toArray()));
+            	out.println("        recipeSlots: " + Arrays.toString(cw.getRecipeSlots().toArray()));
             }
             out.println();
             out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
