@@ -1,33 +1,41 @@
 package net.worldoftomorrow.nala.ni.otherblocks;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CustomWorkbench extends CustomBlock {
 
-    private short resultSlot;
-    private boolean hasResultSlot;
+    private final List<Short> resultSlots;
+    private final boolean hasResultSlot;
 
     public CustomWorkbench(int id, short data, CustomType type,
-            short resultSlot, String name) {
+            List<Short> resultSlots, String name) {
         super(id, data, type, name);
-        this.resultSlot = resultSlot;
+        this.resultSlots = resultSlots;
         this.hasResultSlot = true;
     }
 
     public CustomWorkbench(int id, short data, CustomType type, String name) {
         super(id, data, type, name);
         this.hasResultSlot = false;
-        this.resultSlot = -999;
+        this.resultSlots = new ArrayList<Short>();
     }
 
     public boolean hasResultSlot() {
         return this.hasResultSlot;
     }
 
-    public short getResultSlot() {
-        return this.resultSlot;
+    public List<Short> getResultSlots() {
+        return this.resultSlots;
     }
 
     public boolean isResultSlot(short slot) {
-        return slot == this.resultSlot;
+        for (short s : this.resultSlots) {
+            if (s == slot) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

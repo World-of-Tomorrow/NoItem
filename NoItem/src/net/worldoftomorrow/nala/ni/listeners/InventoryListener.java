@@ -230,9 +230,13 @@ public class InventoryListener implements Listener {
 			case WORKBENCH:
 				CustomWorkbench cw = (CustomWorkbench) cb;
 				if(cw.isResultSlot((short) clicked)) {
-					//ItemStack result = view.getItem(clicked);
+					ItemStack result = view.getItem(clicked);
+					if(result != null && Perms.NOCRAFT.has(p, result)) {
+						event.setCancelled(true);
+						this.notify(p, EventTypes.CRAFT, result);
+						return;
+					}
 				}
-				//TODO: workbench
 				break;
 			default:
 				Log.severe("Undefined custom block.");

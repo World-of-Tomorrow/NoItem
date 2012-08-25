@@ -4,9 +4,9 @@ import java.util.List;
 
 public class CustomFurnace extends CustomBlock {
 
-    private List<Short> resultSlots;
-    private List<Short> fuelSlots;
-    private List<Short> itemSlots;
+    private final List<Short> resultSlots;
+    private final List<Short> fuelSlots;
+    private final List<Short> itemSlots;
 
     public CustomFurnace(int id, short data, CustomType type,
             List<Short> resultSlots, List<Short> fuelSlots,

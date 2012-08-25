@@ -170,12 +170,12 @@ public class Config {
             	out.println("        fuelSlots: " + Arrays.toString(cf.getFuelSlots().toArray()));
             	out.println("        resultSlots: " + Arrays.toString(cf.getResultSlots().toArray()));
             }
-            for(CustomWorkbench cb : CustomBlocks.getCustomWorkbenches()) {
-            	out.println("    " + cb.getName() + ": ");
-            	out.println("        id: " + cb.getID());
-            	out.println("        data: " + cb.getData());
+            for(CustomWorkbench cw : CustomBlocks.getCustomWorkbenches()) {
+            	out.println("    " + cw.getName() + ": ");
+            	out.println("        id: " + cw.getID());
+            	out.println("        data: " + cw.getData());
             	out.println("        type: workbench");
-            	out.println("        resultSlot: " + cb.getResultSlot());
+            	out.println("        resultSlots: " + Arrays.toString(cw.getResultSlots().toArray()));
             }
             out.println();
             out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
