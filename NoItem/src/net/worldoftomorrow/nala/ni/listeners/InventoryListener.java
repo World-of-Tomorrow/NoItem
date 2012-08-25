@@ -210,20 +210,19 @@ public class InventoryListener implements Listener {
 					}
 				} else if (cf.isItemSlot((short) clicked) && p.getItemOnCursor() != null) {
 					List<ItemStack> fuels = new ArrayList<ItemStack>();
+					//TODO: this can be optimized to not use a list; if fuel != null, check and return
 					for(Short s : cf.getFuelSlots()) {
 						ItemStack fuel = view.getItem(s);
-						if(s != null) {
+						if(fuel != null) {
 							fuels.add(fuel);
 						}
 					}
 					if(!fuels.isEmpty()) {
-						for (Short s : cf.getItemSlots()) {
-							ItemStack item = view.getItem(s);
-							if (item != null && Perms.NOCOOK.has(p, item)) {
-								event.setCancelled(true);
-								this.notify(p, EventTypes.COOK, item);
-								return;
-							}
+						ItemStack onCur = p.getItemOnCursor();
+						if(Perms.NOCOOK.has(p, onCur)) {
+							event.setCancelled(true);
+							this.notify(p, EventTypes.COOK, onCur);
+							return;
 						}
 					}
 				}
