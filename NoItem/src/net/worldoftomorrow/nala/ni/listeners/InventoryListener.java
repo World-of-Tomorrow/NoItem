@@ -35,7 +35,6 @@ public class InventoryListener implements Listener {
 	public void onInventoryClick(InventoryClickEvent event) {
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 		Inventory inv = event.getInventory();
-		ItemStack clicked = event.getCurrentItem();
 
 		switch (inv.getType()) {
 		case CRAFTING:

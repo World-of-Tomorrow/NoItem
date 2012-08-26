@@ -43,10 +43,12 @@ public class Updater {
                     "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US;     rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 (.NET CLR 3.5.30729)");
             BufferedReader in = new BufferedReader(new InputStreamReader(
                     conn.getInputStream(), "UTF-8"));
-            String latest = in.readLine();
-            this.latestMajor = Integer.valueOf(latest.split("\\.")[0]);
-            this.latestMinor = Integer.valueOf(latest.split("\\.")[1]);
-            this.latestBuild = Integer.valueOf(latest.split("\\.")[2]);
+            String latest = "";
+            while((latest = in.readLine()) != null ){
+                this.latestMajor = Integer.valueOf(latest.split("\\.")[0]);
+                this.latestMinor = Integer.valueOf(latest.split("\\.")[1]);
+                this.latestBuild = Integer.valueOf(latest.split("\\.")[2]);
+            }
             in.close();
         } catch (MalformedURLException e) {
             e.printStackTrace();

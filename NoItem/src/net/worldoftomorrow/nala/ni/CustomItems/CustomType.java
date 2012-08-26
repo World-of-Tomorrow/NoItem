@@ -4,7 +4,7 @@ public enum CustomType {
     FURNACE("furnace", "oven"),
     WORKBENCH("crafting_table", "craftingtable", "workbench");
 
-    private String[] names;
+    public final String[] names;
 
     private CustomType(String... names) {
         this.names = names;

@@ -40,7 +40,7 @@ public class NoCraftTask implements Runnable {
 					for(Short s : cw.getRecipeSlots()) {
 						ItemStack item = view.getItem(s);
 						if(item != null) {
-							ItemStack give = new ItemStack(cstack);
+							ItemStack give = new ItemStack(item);
 							item = null;
 							Collection<ItemStack> left = p.getInventory().addItem(give).values();
 							if(!left.isEmpty()) {
