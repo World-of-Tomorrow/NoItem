@@ -1,9 +1,6 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
 import net.worldoftomorrow.nala.ni.Log;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -14,11 +11,10 @@ public class DebugListeners implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onInvClick(InventoryClickEvent event) {
-        Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
-        Log.debug("Inventory Click Event:");
-        Log.debug("    HeldSlot: " + p.getInventory().getHeldItemSlot());
-        Log.debug("    FirstEmpty: " + p.getInventory().firstEmpty());
-        Log.debug("    Clicked: " + event.getSlot());
+    	int clicked = event.getRawSlot();
+    	String item = event.getCurrentItem() == null ? "empty" : "" + event.getView().getItem(clicked).getType().name();
+        Log.debug("Inventory Click Event: ");
+        Log.debug("    Item: " + item);
         Log.debug("    Raw Slot: " + event.getRawSlot());
         Log.debug("    View: " + event.getView().getType());
         Log.debug("    Type: " + event.getInventory().getType());

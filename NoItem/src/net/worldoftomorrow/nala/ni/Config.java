@@ -110,8 +110,9 @@ public class Config {
                     || type.equalsIgnoreCase("craftingtable")) {
             	List<Short> resultSlots = block.getShortList("resultSlots");
             	List<Short> recipeSlots = block.getShortList("recipeSlots");
+            	boolean fakeRecipeItems = block.getBoolean("fakeRecipeItems");
                 workbenches.add(new CustomWorkbench(id, data,
-                        CustomType.WORKBENCH, resultSlots, recipeSlots, key));
+                        CustomType.WORKBENCH, resultSlots, recipeSlots, key, fakeRecipeItems));
             }
         }
         CustomBlocks.setFurnaces(furnaces);

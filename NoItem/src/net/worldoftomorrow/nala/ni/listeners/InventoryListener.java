@@ -3,15 +3,18 @@ package net.worldoftomorrow.nala.ni.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.server.RecipesCrafting;
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
+import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlock;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
 import net.worldoftomorrow.nala.ni.Items.Armor;
+import net.worldoftomorrow.nala.ni.tasks.NoCraftTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
@@ -23,7 +26,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
-import org.bukkit.event.inventory.PrepareItemCraftEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
@@ -63,14 +65,6 @@ public class InventoryListener implements Listener {
 		default:
 			this.handleGenericInv(event, p);
 			break;
-		}
-		
-		if(clicked != null && event.isShiftClick() && Armor.isArmor(clicked.getType())) {
-			if (Perms.NOWEAR.has(p, clicked)) {
-				event.setCancelled(true);
-				this.notify(p, EventTypes.HOLD, clicked);
-				return;
-			}
 		}
 	}
 	
@@ -112,6 +106,14 @@ public class InventoryListener implements Listener {
 				if (Perms.NOWEAR.has(p, oncur)) {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.HOLD, oncur);
+					return;
+				}
+			}
+			ItemStack clicked = event.getCurrentItem();
+			if(clicked != null && event.isShiftClick()) {
+				if (Perms.NOWEAR.has(p, clicked)) {
+					event.setCancelled(true);
+					this.notify(p, EventTypes.HOLD, clicked);
 					return;
 				}
 			}
@@ -247,9 +249,10 @@ public class InventoryListener implements Listener {
 						this.notify(p, EventTypes.CRAFT, result);
 						return;
 					}
+				} else if (cw.isRecipeSlot((short)clicked)) {
+					Bukkit.getScheduler().scheduleSyncDelayedTask(NoItem.getPlugin(), new NoCraftTask(p, clicked, cw), 1);
+					//Check the recipe
 				}
-				
-				//TODO: I need to watch recipes too, for automatic crafting machines
 				break;
 			default:
 				Log.severe("Undefined custom block.");

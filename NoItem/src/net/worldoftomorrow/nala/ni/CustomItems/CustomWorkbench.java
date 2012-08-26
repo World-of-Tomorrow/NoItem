@@ -7,10 +7,12 @@ public class CustomWorkbench extends CustomBlock {
     private final List<Short> resultSlots;
     private final List<Short> recipeSlots;
     private final boolean hasResultSlot;
+    private final boolean fakeRecipeItems;
 
     public CustomWorkbench(int id, short data, CustomType type,
-            List<Short> resultSlots, List<Short> recipeSlots, String name) {
+            List<Short> resultSlots, List<Short> recipeSlots, String name, boolean fakeRecipeItems) {
         super(id, data, type, name);
+        this.fakeRecipeItems = fakeRecipeItems;
         this.resultSlots = resultSlots;
         this.recipeSlots = recipeSlots;
         this.hasResultSlot = true;
@@ -18,6 +20,10 @@ public class CustomWorkbench extends CustomBlock {
 
     public boolean hasResultSlot() {
         return this.hasResultSlot;
+    }
+    
+    public boolean usesFakeRecipeItems() {
+    	return this.fakeRecipeItems;
     }
 
     public List<Short> getResultSlots() {
