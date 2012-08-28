@@ -38,6 +38,7 @@ public class Config {
 
     private boolean debugging = false;
     private String pluginChannel = "main";
+    private boolean updateCheck = true;
 
     private String adminMessage = "&e%n &9tried to &c%t %i &9in world %w @ &a%x,%y,%z";
     private String noUseMessage = "&9You are not allowed to use a(n) &4%i&9!";
@@ -225,6 +226,7 @@ public class Config {
             out.println("# This is to change whether you recieve update notifications");
             out.println("# for recommended builds or for development builds. (main/dev)");
             out.println("PluginChannel: " + pluginChannel);
+            out.println("CheckForUpdates: " + updateCheck);
             out.println();
             out.println("ConfigurationVersion: " + configVersion);
             out.close();
@@ -332,6 +334,9 @@ public class Config {
         if(conf.isSet("Notify.NoOpenMessage")) {
         	this.noOpenMessage = conf.getString("Notify.NoOpenMessage");
         }
+        if(conf.isSet("CheckForUpdates")) {
+        	this.updateCheck = conf.getBoolean("CheckForUpdates");
+        }
 
         this.writeConfig(); // Load all the variables that are set in the
         // config. Then update it.
@@ -400,6 +405,10 @@ public class Config {
 
     public static String pluginChannel() {
         return conf.getString("PluginChannel");
+    }
+    
+    public static boolean getUpdateCheck() {
+    	return conf.getBoolean("CheckForUpdates");
     }
 
     // Message//
