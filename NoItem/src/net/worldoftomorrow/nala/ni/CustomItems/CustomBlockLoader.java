@@ -20,11 +20,11 @@ public class CustomBlockLoader {
 	private final YamlConfiguration blockConfig;
 	
 	public CustomBlockLoader(NoItem plugin) {
-		this.blockFile = new File(plugin.getDataFolder() + File.pathSeparator + "CustomBlocks.yml");
+		this.blockFile = new File(plugin.getDataFolder(), "CustomBlocks.yml");
 		if(!blockFile.exists()) {
 			try {
-				blockFile.createNewFile();
-				this.writeExample();
+				if(blockFile.createNewFile())
+					this.writeExample();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
