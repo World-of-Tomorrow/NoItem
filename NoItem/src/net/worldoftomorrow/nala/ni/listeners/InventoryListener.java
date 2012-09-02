@@ -3,7 +3,6 @@ package net.worldoftomorrow.nala.ni.listeners;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.server.RecipesCrafting;
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
@@ -13,7 +12,6 @@ import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlock;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
-import net.worldoftomorrow.nala.ni.Items.Armor;
 import net.worldoftomorrow.nala.ni.tasks.NoCraftTask;
 
 import org.bukkit.Bukkit;

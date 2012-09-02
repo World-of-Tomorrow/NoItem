@@ -101,6 +101,8 @@ public enum Perms {
             throw new UnsupportedOperationException(
                     "Incorrect checking of a permission.");
         }
+        if(Perms.ALLITEMS.has(p))
+        	return false;
         return this.check(p, perm + data);
     }
 
