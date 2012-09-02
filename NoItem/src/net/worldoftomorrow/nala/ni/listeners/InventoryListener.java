@@ -107,6 +107,7 @@ public class InventoryListener implements Listener {
 				}
 			}
 		}
+		
 		ItemStack clicked = event.getCurrentItem();
 		if(clicked != null && event.isShiftClick()) {
 			if (Perms.NOWEAR.has(p, clicked)) {
