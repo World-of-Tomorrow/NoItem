@@ -97,7 +97,7 @@ public class InventoryListener implements Listener {
 			return;
 		}
 		// NoWear
-		if (st == SlotType.ARMOR) {
+		if (st.equals(SlotType.ARMOR)) {
 			ItemStack oncur = p.getItemOnCursor();
 			if (oncur != null) {
 				if (Perms.NOWEAR.has(p, oncur)) {
@@ -106,13 +106,13 @@ public class InventoryListener implements Listener {
 					return;
 				}
 			}
-			ItemStack clicked = event.getCurrentItem();
-			if(clicked != null && event.isShiftClick()) {
-				if (Perms.NOWEAR.has(p, clicked)) {
-					event.setCancelled(true);
-					this.notify(p, EventTypes.WEAR, clicked);
-					return;
-				}
+		}
+		ItemStack clicked = event.getCurrentItem();
+		if(clicked != null && event.isShiftClick()) {
+			if (Perms.NOWEAR.has(p, clicked)) {
+				event.setCancelled(true);
+				this.notify(p, EventTypes.WEAR, clicked);
+				return;
 			}
 		}
 		// NoHold
