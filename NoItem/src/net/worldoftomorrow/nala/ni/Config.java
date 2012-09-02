@@ -81,43 +81,9 @@ public class Config {
             }
         } else {
             this.loadConfig();
-            this.loadCustomBlocks();
             this.updateConfig();
             this.loadConfig();
         }
-    }
-
-    private void loadCustomBlocks() {
-        ConfigurationSection section = getCustomBlocks();
-        if (section == null) {
-            return;
-        }
-        Set<String> keys = section.getKeys(false);
-        ArrayList<CustomFurnace> furnaces = new ArrayList<CustomFurnace>();
-        ArrayList<CustomWorkbench> workbenches = new ArrayList<CustomWorkbench>();
-        for (String key : keys) {
-            ConfigurationSection block = section.getConfigurationSection(key);
-            String type = block.getString("type");
-            int id = block.getInt("id");
-            short data = (short) block.getInt("data");
-            if (type.equalsIgnoreCase("furnace")
-                    || type.equalsIgnoreCase("oven")) {
-                List<Short> resultSlots = block.getShortList("resultSlots");
-                List<Short> fuelSlots = block.getShortList("fuelSlots");
-                List<Short> itemSlots = block.getShortList("itemSlots");
-                furnaces.add(new CustomFurnace(id, data, CustomType.FURNACE,
-                        resultSlots, fuelSlots, itemSlots, key));
-            } else if (type.equalsIgnoreCase("workbench")
-                    || type.equalsIgnoreCase("craftingtable")) {
-            	List<Short> resultSlots = block.getShortList("resultSlots");
-            	List<Short> recipeSlots = block.getShortList("recipeSlots");
-            	boolean fakeRecipeItems = block.getBoolean("fakeRecipeItems");
-                workbenches.add(new CustomWorkbench(id, data,
-                        CustomType.WORKBENCH, resultSlots, recipeSlots, key, fakeRecipeItems));
-            }
-        }
-        CustomBlocks.setFurnaces(furnaces);
-        CustomBlocks.setWorkbenches(workbenches);
     }
 
     private void writeConfig() {
@@ -162,25 +128,6 @@ public class Config {
 			out.println("    NoDrinkMessage: \'" + noDrinkMessage + "\'");
             out.println("    NoOpen: " + notifyNoOpen);
             out.println("    NoOpenMessage: \'" + noOpenMessage + "\'");
-            out.println();
-            out.println("CustomBlocks: ");
-            for(CustomFurnace cf : CustomBlocks.getCustomFurnaces()) {
-            	out.println("    " + cf.getName() + ": ");
-            	out.println("        id: " + cf.getID());
-            	out.println("        data: " + cf.getData());
-            	out.println("        type: furnace");
-            	out.println("        itemSlots: " + Arrays.toString(cf.getItemSlots().toArray()));
-            	out.println("        fuelSlots: " + Arrays.toString(cf.getFuelSlots().toArray()));
-            	out.println("        resultSlots: " + Arrays.toString(cf.getResultSlots().toArray()));
-            }
-            for(CustomWorkbench cw : CustomBlocks.getCustomWorkbenches()) {
-            	out.println("    " + cw.getName() + ": ");
-            	out.println("        id: " + cw.getID());
-            	out.println("        data: " + cw.getData());
-            	out.println("        type: workbench");
-            	out.println("        resultSlots: " + Arrays.toString(cw.getResultSlots().toArray()));
-            	out.println("        recipeSlots: " + Arrays.toString(cw.getRecipeSlots().toArray()));
-            }
             out.println();
             out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
             out.println("# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing");
@@ -246,7 +193,6 @@ public class Config {
         conf = null;
         plugin.reloadConfig();
         conf = plugin.getConfig();
-        this.loadCustomBlocks();
     }
 
     private void updateConfig() {
@@ -466,9 +412,5 @@ public class Config {
 
     public static Object getValue(String path) {
         return conf.get(path);
-    }
-
-    public static ConfigurationSection getCustomBlocks() {
-        return conf.getConfigurationSection("CustomBlocks");
     }
 }

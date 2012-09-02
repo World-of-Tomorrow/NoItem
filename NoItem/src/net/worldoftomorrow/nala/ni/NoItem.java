@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.worldoftomorrow.nala.ni.CustomItems.CustomBlockLoader;
 import net.worldoftomorrow.nala.ni.listeners.BlockListener;
 import net.worldoftomorrow.nala.ni.listeners.CommandListener;
 import net.worldoftomorrow.nala.ni.listeners.DebugListeners;
@@ -33,6 +34,7 @@ public class NoItem extends JavaPlugin {
     public void onEnable() {
         plugin = this;
         this.config = new Config(this);
+        new CustomBlockLoader(this).load();
         this.vault = new Vault(this);
         CommandListener cl = new CommandListener(this);
         this.getCommand("noitem").setExecutor(cl);

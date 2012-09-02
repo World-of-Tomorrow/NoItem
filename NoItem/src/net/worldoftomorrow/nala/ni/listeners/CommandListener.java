@@ -6,6 +6,7 @@ import java.util.Map;
 
 import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
+import net.worldoftomorrow.nala.ni.CustomItems.CustomBlockLoader;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -45,6 +46,7 @@ public class CommandListener implements CommandExecutor {
                     return true;
                 }
                 plugin.getConfigClass().reloadConfig();
+                new CustomBlockLoader(plugin).load();
                 sender.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
                         + "Configuration reloaded.");
                 return true;
