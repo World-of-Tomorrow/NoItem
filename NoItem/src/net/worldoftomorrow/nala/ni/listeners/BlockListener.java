@@ -27,7 +27,7 @@ public class BlockListener implements Listener {
         ItemStack inhand = p.getItemInHand();
         if (inhand != null && Perms.NOUSE.has(p, inhand)) {
             event.setCancelled(true);
-            this.notify(p, EventTypes.USE, new ItemStack(b.getType()));
+            this.notify(p, EventTypes.USE, new ItemStack(inhand.getType()));
             return;
         }
     }
