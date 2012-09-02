@@ -103,6 +103,7 @@ public class InventoryListener implements Listener {
 				if (Perms.NOWEAR.has(p, oncur)) {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.WEAR, oncur);
+					event.getView().setItem(event.getRawSlot(), null);
 					return;
 				}
 			}
