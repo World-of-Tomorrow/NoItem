@@ -8,6 +8,7 @@ public class CustomFurnace extends CustomBlock {
     private final List<Short> fuelSlots;
     private final List<Short> itemSlots;
 
+    //TODO: add an option for if it requires fuel or uses power
     public CustomFurnace(int id, short data, CustomType type,
             List<Short> resultSlots, List<Short> fuelSlots,
             List<Short> itemSlots, String name) {

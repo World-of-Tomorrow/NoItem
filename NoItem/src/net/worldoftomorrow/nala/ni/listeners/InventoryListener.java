@@ -104,7 +104,7 @@ public class InventoryListener implements Listener {
 			if (oncur != null) {
 				if (Perms.NOWEAR.has(p, oncur)) {
 					event.setCancelled(true);
-					this.notify(p, EventTypes.HOLD, oncur);
+					this.notify(p, EventTypes.WEAR, oncur);
 					return;
 				}
 			}
@@ -112,7 +112,7 @@ public class InventoryListener implements Listener {
 			if(clicked != null && event.isShiftClick()) {
 				if (Perms.NOWEAR.has(p, clicked)) {
 					event.setCancelled(true);
-					this.notify(p, EventTypes.HOLD, clicked);
+					this.notify(p, EventTypes.WEAR, clicked);
 					return;
 				}
 			}
