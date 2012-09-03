@@ -3,6 +3,7 @@ package net.worldoftomorrow.nala.ni.tasks;
 import java.util.Collection;
 
 import net.worldoftomorrow.nala.ni.EventTypes;
+import net.worldoftomorrow.nala.ni.Log;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
@@ -25,9 +26,11 @@ public class NoCraftTask implements Runnable {
 	}
 
 	public void run() {
+		Log.debug("NoCraftTask");
 		for(Short rs : cw.getResultSlots()) {
 			ItemStack result = view.getItem(rs);
 			if(result != null && Perms.NOCRAFT.has(p, result)) {
+				Log.debug("NoCraftTask 1");
 				ItemStack cstack = view.getItem(clicked);
 				if(cstack != null) {
 					ItemStack give = new ItemStack(cstack);
@@ -40,12 +43,11 @@ public class NoCraftTask implements Runnable {
 					for(Short s : cw.getRecipeSlots()) {
 						ItemStack item = view.getItem(s);
 						if(item != null) {
-							ItemStack give = new ItemStack(item);
-							item = null;
-							Collection<ItemStack> left = p.getInventory().addItem(give).values();
+							Collection<ItemStack> left = p.getInventory().addItem(item).values();
 							if(!left.isEmpty()) {
 								p.getWorld().dropItem(p.getLocation(), left.iterator().next());
 							}
+							view.setItem(s, null);
 						}
 					}
 				}

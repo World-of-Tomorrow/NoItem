@@ -115,7 +115,7 @@ public class CustomBlockLoader {
 			out.println("    resultSlots: [9]");
 			out.println("    recipeSlots: [0, 1, 2, 3, 4, 5, 6, 7, 8]");
 			out.println();
-			out.println("AutomaticCraftingTableMkIIz: ");
+			out.println("AutomaticCraftingTableMkII: ");
 			out.println("    id: 194");
 			out.println("    data: 1");
 			out.println("    type: workbench");

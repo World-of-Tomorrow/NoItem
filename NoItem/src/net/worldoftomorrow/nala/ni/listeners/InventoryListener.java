@@ -1,21 +1,25 @@
 package net.worldoftomorrow.nala.ni.listeners;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.server.Container;
+import net.minecraft.server.CraftingManager;
+import net.minecraft.server.InventoryCraftResult;
+import net.minecraft.server.InventoryCrafting;
 import net.worldoftomorrow.nala.ni.CustomBlocks;
 import net.worldoftomorrow.nala.ni.EventTypes;
 import net.worldoftomorrow.nala.ni.Log;
-import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.StringHelper;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlock;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
-import net.worldoftomorrow.nala.ni.tasks.NoCraftTask;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
+import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -27,6 +31,8 @@ import org.bukkit.event.inventory.InventoryType.SlotType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
+
+import forge.bukkit.ModInventoryView;
 
 public class InventoryListener implements Listener {
 	@EventHandler
@@ -64,21 +70,23 @@ public class InventoryListener implements Listener {
 			break;
 		}
 	}
-	
+
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		HumanEntity entity = event.getPlayer();
 		Player p = Bukkit.getPlayer(entity.getName());
 		List<Block> blocks = entity.getLastTwoTargetBlocks(null, 8);
-		if(!blocks.isEmpty() && blocks.size() == 2) {
+		if (!blocks.isEmpty() && blocks.size() == 2) {
 			Block target = blocks.get(1);
-			if(Perms.NOOPEN.has(p, target)) {
+			if (Perms.NOOPEN.has(p, target)) {
 				event.setCancelled(true);
-				//TODO: find a fix for the chest sticking open
+				// TODO: find a fix for the chest sticking open
 				int id = target.getTypeId();
 				byte data = target.getData();
-				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, new ItemStack(id, data));
-				Log.debug("InventoryOpenEvent cancelled - " + id + " - " + data + " - " + entity.getName());
+				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN,
+						new ItemStack(id, data));
+				Log.debug("InventoryOpenEvent cancelled - " + id + " - " + data
+						+ " - " + entity.getName());
 			}
 		}
 	}
@@ -108,9 +116,9 @@ public class InventoryListener implements Listener {
 				}
 			}
 		}
-		
+
 		ItemStack clicked = event.getCurrentItem();
-		if(clicked != null && event.isShiftClick()) {
+		if (clicked != null && event.isShiftClick()) {
 			if (Perms.NOWEAR.has(p, clicked)) {
 				event.setCancelled(true);
 				this.notify(p, EventTypes.WEAR, clicked);
@@ -194,7 +202,7 @@ public class InventoryListener implements Listener {
 				return;
 			}
 		}
-		//TODO: fuel slots
+		// TODO: fuel slots
 		// NoHold
 		this.handleNoHold(event, p);
 	}
@@ -220,18 +228,20 @@ public class InventoryListener implements Listener {
 							return;
 						}
 					}
-				} else if (cf.isItemSlot((short) clicked) && p.getItemOnCursor() != null) {
+				} else if (cf.isItemSlot((short) clicked)
+						&& p.getItemOnCursor() != null) {
 					List<ItemStack> fuels = new ArrayList<ItemStack>();
-					//TODO: this can be optimized to not use a list; if fuel != null, check and return
-					for(Short s : cf.getFuelSlots()) {
+					// TODO: this can be optimized to not use a list; if fuel !=
+					// null, check and return
+					for (Short s : cf.getFuelSlots()) {
 						ItemStack fuel = view.getItem(s);
-						if(fuel != null) {
+						if (fuel != null) {
 							fuels.add(fuel);
 						}
 					}
-					if(!fuels.isEmpty()) {
+					if (!fuels.isEmpty()) {
 						ItemStack onCur = p.getItemOnCursor();
-						if(Perms.NOCOOK.has(p, onCur)) {
+						if (Perms.NOCOOK.has(p, onCur)) {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.COOK, onCur);
 							return;
@@ -241,16 +251,52 @@ public class InventoryListener implements Listener {
 				break;
 			case WORKBENCH:
 				CustomWorkbench cw = (CustomWorkbench) cb;
-				if(cw.isResultSlot((short) clicked)) {
+				if (cw.isResultSlot((short) clicked)) {
 					ItemStack result = view.getItem(clicked);
-					if(result != null && Perms.NOCRAFT.has(p, result)) {
+					if (result != null && Perms.NOCRAFT.has(p, result)) {
 						event.setCancelled(true);
 						this.notify(p, EventTypes.CRAFT, result);
 						return;
 					}
-				} else if (cw.isRecipeSlot((short)clicked)) {
-					Bukkit.getScheduler().scheduleSyncDelayedTask(NoItem.getPlugin(), new NoCraftTask(p, clicked, cw), 1);
-					//Check the recipe
+				} else if (cw.isRecipeSlot((short) clicked) && view.getItem(clicked) == null) {
+					try {
+						ModInventoryView miv = (ModInventoryView) view;
+						Field fcontainer = view.getClass().getDeclaredField("container");
+						fcontainer.setAccessible(true);
+						Container container = (Container) fcontainer.get(miv);
+						InventoryCrafting craftingInv = new InventoryCrafting(container, 3, 3); //3x3 for now
+						craftingInv.resultInventory = new InventoryCraftResult();
+						
+						for (int i = 0; i < 9; i++) {
+							short slot = (Short) cw.getRecipeSlots().toArray()[i];
+							ItemStack item;
+							if(slot == clicked)
+								item = view.getCursor();
+							else
+								item = view.getItem(slot);
+							
+							if (item == null)
+								continue;
+							net.minecraft.server.ItemStack stack = new net.minecraft.server.ItemStack(
+									item.getTypeId(), item.getAmount(),
+									item.getDurability());
+							craftingInv.setItem(i, stack);
+						}
+						
+						net.minecraft.server.ItemStack mcResult = CraftingManager.getInstance().craft(craftingInv);
+						if (mcResult == null)
+							return;
+
+						ItemStack result = new ItemStack(mcResult.id, mcResult.getData());
+
+						if (Perms.NOCRAFT.has(p, result)) {
+							event.setCancelled(true);
+							this.notify(p, EventTypes.CRAFT, result);
+							return;
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 				break;
 			default:
