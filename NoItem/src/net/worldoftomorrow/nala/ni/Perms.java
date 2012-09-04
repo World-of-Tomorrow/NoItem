@@ -34,7 +34,7 @@ public enum Perms {
     }
 
     private boolean check(Player p, String perm) {
-        Log.debug("Checking Perm: " + perm);
+        //Log.debug("Checking Perm: " + perm);
         if (Vault.vaultPerms) {
             return Vault.has(p, perm);
         } else {

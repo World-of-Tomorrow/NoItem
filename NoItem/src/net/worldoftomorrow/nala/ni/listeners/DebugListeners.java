@@ -22,6 +22,7 @@ public class DebugListeners implements Listener {
         Log.debug("    Cancelled: " + event.isCancelled());
     }
 
+    /*
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent event) {
         Log.debug(event.getEventName() + ":");
@@ -33,4 +34,5 @@ public class DebugListeners implements Listener {
             Log.debug("    In Hand Name: " + event.getItem().getType().name());
         }
     }
+    */
 }

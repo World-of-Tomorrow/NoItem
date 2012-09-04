@@ -83,10 +83,17 @@ public class InventoryListener implements Listener {
 				// TODO: find a fix for the chest sticking open
 				int id = target.getTypeId();
 				byte data = target.getData();
-				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN,
-						new ItemStack(id, data));
-				Log.debug("InventoryOpenEvent cancelled - " + id + " - " + data
-						+ " - " + entity.getName());
+				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, new ItemStack(id, data));
+				return;
+			}
+			//Check for custom items that open without a block
+			ItemStack inHand = p.getItemInHand();
+			if(CustomBlocks.isCustomBlock(inHand.getTypeId(), inHand.getDurability())) {
+				if(Perms.NOOPEN.has(p, inHand)) {
+					event.setCancelled(true);
+					this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, inHand);
+					return;
+				}
 			}
 		}
 	}
@@ -209,10 +216,10 @@ public class InventoryListener implements Listener {
 
 	private void handleGenericInv(InventoryClickEvent event, Player p) {
 		Block b = p.getTargetBlock(null, 8);
-		Log.debug("TargetBlock: " + b.getTypeId() + ", " + b.getData());
+		//Log.debug("TargetBlock: " + b.getTypeId() + ", " + b.getData());
 		// Custom block handling
 		if (CustomBlocks.isCustomBlock(b.getTypeId(), b.getData())) {
-			Log.debug("is a custom block");
+			//Log.debug("is a custom block");
 			int clicked = event.getRawSlot();
 			InventoryView view = event.getView();
 			CustomBlock cb = CustomBlocks.getCustomBlock(b.getTypeId(), b.getData());
