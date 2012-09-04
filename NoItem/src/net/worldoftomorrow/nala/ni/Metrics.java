@@ -153,7 +153,7 @@ public class Metrics {
         String authors = "";
         int count = 0;
         for(String author : plugin.getDescription().getAuthors()) {
-        	authors.concat(author);
+        	authors = authors.concat(author);
         	if(count < plugin.getDescription().getAuthors().size()) {
         		authors.concat(", ");
         	}

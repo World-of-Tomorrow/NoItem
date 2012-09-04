@@ -19,7 +19,6 @@ import net.worldoftomorrow.nala.ni.CustomItems.CustomWorkbench;
 
 import org.bukkit.Bukkit;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.inventory.CraftInventoryView;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

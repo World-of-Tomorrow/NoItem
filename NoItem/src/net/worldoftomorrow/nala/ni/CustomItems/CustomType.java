@@ -11,6 +11,6 @@ public enum CustomType {
     }
 
     public String[] getNames() {
-        return names;
+        return names.clone();
     }
 }
