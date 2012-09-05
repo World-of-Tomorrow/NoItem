@@ -308,7 +308,7 @@ public class Metrics {
     /**
      * Has the server owner denied plugin metrics?
      * 
-     * @return
+     * @return if the server owner has opted out of metrics
      */
     public boolean isOptOut() {
         synchronized (optOutLock) {
@@ -487,7 +487,7 @@ public class Metrics {
      * Check if mineshafter is present. If it is, we need to bypass it to send
      * POST requests
      * 
-     * @return
+     * @return if the server is running mineshafter
      */
     private boolean isMineshafterPresent() {
         try {
@@ -512,7 +512,6 @@ public class Metrics {
      * @param buffer
      * @param key
      * @param value
-     * @return
      */
     private static void encodeDataPair(final StringBuilder buffer,
             final String key, final String value)
@@ -525,7 +524,7 @@ public class Metrics {
      * Encode text as UTF-8
      * 
      * @param text
-     * @return
+     * @return encoded string
      */
     private static String encode(final String text)
             throws UnsupportedEncodingException {
@@ -555,7 +554,7 @@ public class Metrics {
         /**
          * Gets the graph's name
          * 
-         * @return
+         * @return the graphs name
          */
         public String getName() {
             return name;
@@ -582,7 +581,7 @@ public class Metrics {
         /**
          * Gets an <b>unmodifiable</b> set of the plotter objects in the graph
          * 
-         * @return
+         * @return the plotters
          */
         public Set<Plotter> getPlotters() {
             return Collections.unmodifiableSet(plotters);
@@ -641,7 +640,7 @@ public class Metrics {
         /**
          * Get the current value for the plotted point
          * 
-         * @return
+         * @return the current value for the plotted point
          */
         public abstract int getValue();
 
