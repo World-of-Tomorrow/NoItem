@@ -174,6 +174,8 @@ public class InventoryListener implements Listener {
 				if (Perms.NOCRAFT.has(p, stack)) {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.CRAFT, stack);
+					if(event.isShiftClick())
+						p.setItemOnCursor(null);
 				}
 			}
 		}
