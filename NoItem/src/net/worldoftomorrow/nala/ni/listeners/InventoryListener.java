@@ -334,6 +334,8 @@ public class InventoryListener implements Listener {
 	}
 
 	private void handleNoHold(InventoryClickEvent event, Player p) {
+		if(event.isCancelled())
+			return;
 		ItemStack oncur = p.getItemOnCursor();
 		// NoHold
 		if (event.getSlotType() == SlotType.QUICKBAR) {
