@@ -339,14 +339,28 @@ public class InventoryListener implements Listener {
 	private void handleNoHold(InventoryClickEvent event, Player p) {
 		if(event.isCancelled())
 			return;
+
 		ItemStack oncur = p.getItemOnCursor();
-		// NoHold
-		if (event.getSlotType() == SlotType.QUICKBAR) {
+		SlotType st = event.getSlotType();
+		ItemStack clicked = event.getCurrentItem();
+		int slot = event.getSlot();
+		
+		if (st == SlotType.QUICKBAR) {
 			int qbsel = p.getInventory().getHeldItemSlot();
-			if (oncur != null && event.getSlot() == qbsel) {
+			if (oncur != null && slot == qbsel) {
 				if (Perms.NOHOLD.has(p, oncur)) {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.HOLD, oncur);
+					return;
+				}
+			}
+		} else {
+			if(clicked != null && event.isShiftClick()) {
+				if(st == SlotType.RESULT)
+					return;
+				if(Perms.NOHOLD.has(p, clicked)) {
+					event.setCancelled(true);
+					this.notify(p, EventTypes.HOLD, clicked);
 					return;
 				}
 			}

@@ -52,18 +52,6 @@ public class HoldListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onInvClick(InventoryClickEvent event) {
-        ItemStack clicked = event.getCurrentItem();
-        if (clicked != null && event.isShiftClick()
-                && event.getSlotType() != SlotType.QUICKBAR) {
-            Player p = (Player) event.getView().getPlayer();
-            if (Perms.NOHOLD.has(p, clicked)) {
-                event.setCursor(clicked);
-            }
-        }
-    }
-
     private void notify(Player p, EventTypes type, ItemStack stack) {
         StringHelper.notifyPlayer(p, type, stack);
         StringHelper.notifyAdmin(p, type, stack);
