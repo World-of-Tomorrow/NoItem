@@ -24,6 +24,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.inventory.InventoryType.SlotType;
@@ -42,15 +43,12 @@ public class InventoryListener implements Listener {
 		switch (inv.getType()) {
 		case CRAFTING:
 			this.handleCrafting(event, p);
-			// handle nocraft, nowear, nohold
 			break;
 		case BREWING:
 			this.handleBrewing(event, p);
-			// handle brewing, nohold
 			break;
 		case WORKBENCH:
 			this.handleWorkbench(event, p);
-			// handle nocraft, nohold
 			break;
 		case FURNACE:
 			this.handleFurnace(event, p);
@@ -164,23 +162,26 @@ public class InventoryListener implements Listener {
 		this.handleNoHold(event, p);
 	}
 
-	private void handleWorkbench(InventoryClickEvent event, Player p) {
+	@EventHandler
+	public void onItemCraft(CraftItemEvent event) {
 		SlotType st = event.getSlotType();
 		Inventory inv = event.getInventory();
-
+		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
 		if (st == SlotType.RESULT) {
 			if (inv.getItem(0) != null) {
 				ItemStack stack = inv.getItem(0);
 				if (Perms.NOCRAFT.has(p, stack)) {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.CRAFT, stack);
-					if(event.isShiftClick())
-						p.setItemOnCursor(null);
 				}
 			}
 		}
 
 		// NoHold
+		this.handleNoHold(event, p);
+	}
+	
+	private void handleWorkbench(InventoryClickEvent event, Player p) {
 		this.handleNoHold(event, p);
 	}
 
