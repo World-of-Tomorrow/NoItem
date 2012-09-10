@@ -27,6 +27,7 @@ public class NoItem extends JavaPlugin {
     protected Vault vault;
     private static NoItem plugin;
     private Metrics metrics;
+    public DebugListeners debugListener;
 
     private Map<String, List<ItemStack>> itemList = new HashMap<String, List<ItemStack>>();
     private Map<String, Block> playerLastClicked = new HashMap<String, Block>();
@@ -61,7 +62,8 @@ public class NoItem extends JavaPlugin {
         pm.registerEvents(new BlockListener(), this);
         pm.registerEvents(new JoinListener(), this);
         if (Config.debugging()) {
-            pm.registerEvents(new DebugListeners(), this);
+        	this.debugListener = new DebugListeners();
+            pm.registerEvents(this.debugListener, this);
             Log.info("This plugin is in debugging mode!");
         }
 

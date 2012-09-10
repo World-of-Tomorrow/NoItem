@@ -4,16 +4,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import net.worldoftomorrow.nala.ni.Config;
 import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlockLoader;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.HandlerList;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.PluginManager;
 
 public class CommandListener implements CommandExecutor {
     NoItem plugin;
@@ -46,6 +50,14 @@ public class CommandListener implements CommandExecutor {
                     return true;
                 }
                 plugin.getConfigClass().reloadConfig();
+                if(Config.debugging() && plugin.debugListener == null) {
+                    PluginManager pm = this.plugin.getServer().getPluginManager();
+                    plugin.debugListener = new DebugListeners();
+                	pm.registerEvents(plugin.debugListener, plugin);
+                } else if (!Config.debugging() && plugin.debugListener != null) {
+                	HandlerList.unregisterAll(plugin.debugListener);
+                	plugin.debugListener = null;
+                }
                 new CustomBlockLoader(plugin).load();
                 sender.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
                         + "Configuration reloaded.");
