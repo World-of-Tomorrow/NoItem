@@ -58,7 +58,7 @@ public class CustomFurnace extends CustomBlock {
 		}
 		return false;
 	}
-	
+
 	public boolean usesFuel() {
 		return this.usesFuel;
 	}

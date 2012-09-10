@@ -13,14 +13,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitScheduler;
 
 public class JoinListener implements Listener {
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event) {
-        Player p = event.getPlayer();
-        ItemStack stack = p.getItemInHand();
-        BukkitScheduler scheduler = Bukkit.getScheduler();
-        if (Perms.NOHOLD.has(p, stack)) {
-            scheduler.scheduleSyncDelayedTask(NoItem.getPlugin(),
-                    new LoginTask(p), 60L);
-        }
-    }
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Player p = event.getPlayer();
+		ItemStack stack = p.getItemInHand();
+		BukkitScheduler scheduler = Bukkit.getScheduler();
+		if (Perms.NOHOLD.has(p, stack)) {
+			scheduler.scheduleSyncDelayedTask(NoItem.getPlugin(), new LoginTask(p),
+					60L);
+		}
+	}
 }

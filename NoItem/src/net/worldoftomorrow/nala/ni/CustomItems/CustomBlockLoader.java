@@ -18,12 +18,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 public class CustomBlockLoader {
 	private final File blockFile;
 	private final YamlConfiguration blockConfig;
-	
+
 	public CustomBlockLoader(NoItem plugin) {
 		this.blockFile = new File(plugin.getDataFolder(), "CustomBlocks.yml");
-		if(!blockFile.exists()) {
+		if (!blockFile.exists()) {
 			try {
-				if(blockFile.createNewFile())
+				if (blockFile.createNewFile())
 					this.writeExample();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -31,43 +31,45 @@ public class CustomBlockLoader {
 		}
 		this.blockConfig = YamlConfiguration.loadConfiguration(blockFile);
 	}
-	
-    public void load() {
-        Set<String> keys = blockConfig.getKeys(false);
-        ArrayList<CustomFurnace> furnaces = new ArrayList<CustomFurnace>();
-        ArrayList<CustomWorkbench> workbenches = new ArrayList<CustomWorkbench>();
-        
-        for (String key : keys) {
-            ConfigurationSection block = blockConfig.getConfigurationSection(key);
-            String type = block.getString("type");
-            int id = block.getInt("id");
-            short data = (short) block.getInt("data");
-            
-            if (type.equalsIgnoreCase("furnace")) {
-                List<Short> resultSlots = block.getShortList("resultSlots");
-                List<Short> itemSlots = block.getShortList("itemSlots");
-                boolean usesFuel = block.getBoolean("usesFuel");
-                List<Short> fuelSlots;
-                if(usesFuel) {
-                     fuelSlots = block.getShortList("fuelSlots");
-                } else {
-                	fuelSlots = new ArrayList<Short>();
-                }
-                furnaces.add(new CustomFurnace(id, data, CustomType.FURNACE, resultSlots, fuelSlots, itemSlots, key, usesFuel));
-                
-            } else if (type.equalsIgnoreCase("workbench")) {
-            	List<Short> resultSlots = block.getShortList("resultSlots");
-            	List<Short> recipeSlots = block.getShortList("recipeSlots");
-            	boolean fakeRecipeItems = block.getBoolean("fakeRecipeItems");
-                workbenches.add(new CustomWorkbench(id, data, CustomType.WORKBENCH, resultSlots, recipeSlots, key, fakeRecipeItems));
-            }
-        }
-        CustomBlocks.setFurnaces(furnaces);
-        CustomBlocks.setWorkbenches(workbenches);
-    }
-    
-    public void writeExample() {
-    	try {
+
+	public void load() {
+		Set<String> keys = blockConfig.getKeys(false);
+		ArrayList<CustomFurnace> furnaces = new ArrayList<CustomFurnace>();
+		ArrayList<CustomWorkbench> workbenches = new ArrayList<CustomWorkbench>();
+
+		for (String key : keys) {
+			ConfigurationSection block = blockConfig.getConfigurationSection(key);
+			String type = block.getString("type");
+			int id = block.getInt("id");
+			short data = (short) block.getInt("data");
+
+			if (type.equalsIgnoreCase("furnace")) {
+				List<Short> resultSlots = block.getShortList("resultSlots");
+				List<Short> itemSlots = block.getShortList("itemSlots");
+				boolean usesFuel = block.getBoolean("usesFuel");
+				List<Short> fuelSlots;
+				if (usesFuel) {
+					fuelSlots = block.getShortList("fuelSlots");
+				} else {
+					fuelSlots = new ArrayList<Short>();
+				}
+				furnaces.add(new CustomFurnace(id, data, CustomType.FURNACE,
+						resultSlots, fuelSlots, itemSlots, key, usesFuel));
+
+			} else if (type.equalsIgnoreCase("workbench")) {
+				List<Short> resultSlots = block.getShortList("resultSlots");
+				List<Short> recipeSlots = block.getShortList("recipeSlots");
+				boolean fakeRecipeItems = block.getBoolean("fakeRecipeItems");
+				workbenches.add(new CustomWorkbench(id, data, CustomType.WORKBENCH,
+						resultSlots, recipeSlots, key, fakeRecipeItems));
+			}
+		}
+		CustomBlocks.setFurnaces(furnaces);
+		CustomBlocks.setWorkbenches(workbenches);
+	}
+
+	public void writeExample() {
+		try {
 			PrintWriter out = new PrintWriter(this.blockFile, "UTF-8");
 			out.println("# For more information on how to set up custom blocks");
 			out.println("# Go here -> http://dev.bukkit.org/server-mods/noitem/pages/configuring-custom-blocks/");
@@ -129,5 +131,5 @@ public class CustomBlockLoader {
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
-    }
+	}
 }

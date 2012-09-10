@@ -80,15 +80,18 @@ public class InventoryListener implements Listener {
 				// TODO: find a fix for the chest sticking open
 				int id = target.getTypeId();
 				byte data = target.getData();
-				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, new ItemStack(id, data));
+				this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN,
+						new ItemStack(id, data));
 				return;
 			}
-			//Check for custom items that open without a block
+			// Check for custom items that open without a block
 			ItemStack inHand = p.getItemInHand();
-			if(CustomBlocks.isCustomBlock(inHand.getTypeId(), inHand.getDurability())) {
-				if(Perms.NOOPEN.has(p, inHand)) {
+			if (CustomBlocks.isCustomBlock(inHand.getTypeId(),
+					inHand.getDurability())) {
+				if (Perms.NOOPEN.has(p, inHand)) {
 					event.setCancelled(true);
-					this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN, inHand);
+					this.notify(Bukkit.getPlayer(entity.getName()), EventTypes.OPEN,
+							inHand);
 					return;
 				}
 			}
@@ -180,7 +183,7 @@ public class InventoryListener implements Listener {
 		// NoHold
 		this.handleNoHold(event, p);
 	}
-	
+
 	private void handleWorkbench(InventoryClickEvent event, Player p) {
 		this.handleNoHold(event, p);
 	}
@@ -218,10 +221,10 @@ public class InventoryListener implements Listener {
 
 	private void handleGenericInv(InventoryClickEvent event, Player p) {
 		Block b = p.getTargetBlock(null, 8);
-		//Log.debug("TargetBlock: " + b.getTypeId() + ", " + b.getData());
+		// Log.debug("TargetBlock: " + b.getTypeId() + ", " + b.getData());
 		// Custom block handling
 		if (CustomBlocks.isCustomBlock(b.getTypeId(), b.getData())) {
-			//Log.debug("is a custom block");
+			// Log.debug("is a custom block");
 			int clicked = event.getRawSlot();
 			InventoryView view = event.getView();
 			CustomBlock cb = CustomBlocks.getCustomBlock(b.getTypeId(), b.getData());
@@ -267,23 +270,26 @@ public class InventoryListener implements Listener {
 						this.notify(p, EventTypes.CRAFT, result);
 						return;
 					}
-				} else if (cw.isRecipeSlot((short) clicked) && view.getItem(clicked) == null) {
+				} else if (cw.isRecipeSlot((short) clicked)
+						&& view.getItem(clicked) == null) {
 					try {
 						ModInventoryView miv = (ModInventoryView) view;
-						Field fcontainer = view.getClass().getDeclaredField("container");
+						Field fcontainer = view.getClass().getDeclaredField(
+								"container");
 						fcontainer.setAccessible(true);
 						Container container = (Container) fcontainer.get(miv);
-						InventoryCrafting craftingInv = new InventoryCrafting(container, 3, 3); //3x3 for now
+						InventoryCrafting craftingInv = new InventoryCrafting(
+								container, 3, 3); // 3x3 for now
 						craftingInv.resultInventory = new InventoryCraftResult();
-						
+
 						for (int i = 0; i < 9; i++) {
 							short slot = (Short) cw.getRecipeSlots().toArray()[i];
 							ItemStack item;
-							if(slot == clicked)
+							if (slot == clicked)
 								item = view.getCursor();
 							else
 								item = view.getItem(slot);
-							
+
 							if (item == null)
 								continue;
 							net.minecraft.server.ItemStack stack = new net.minecraft.server.ItemStack(
@@ -291,12 +297,14 @@ public class InventoryListener implements Listener {
 									item.getDurability());
 							craftingInv.setItem(i, stack);
 						}
-						
-						net.minecraft.server.ItemStack mcResult = CraftingManager.getInstance().craft(craftingInv);
+
+						net.minecraft.server.ItemStack mcResult = CraftingManager
+								.getInstance().craft(craftingInv);
 						if (mcResult == null)
 							return;
 
-						ItemStack result = new ItemStack(mcResult.id, mcResult.getData());
+						ItemStack result = new ItemStack(mcResult.id,
+								mcResult.getData());
 
 						if (Perms.NOCRAFT.has(p, result)) {
 							event.setCancelled(true);
@@ -337,14 +345,14 @@ public class InventoryListener implements Listener {
 	}
 
 	private void handleNoHold(InventoryClickEvent event, Player p) {
-		if(event.isCancelled())
+		if (event.isCancelled())
 			return;
 
 		ItemStack oncur = p.getItemOnCursor();
 		SlotType st = event.getSlotType();
 		ItemStack clicked = event.getCurrentItem();
 		int slot = event.getSlot();
-		
+
 		if (st == SlotType.QUICKBAR) {
 			int qbsel = p.getInventory().getHeldItemSlot();
 			if (oncur != null && slot == qbsel) {
@@ -355,10 +363,10 @@ public class InventoryListener implements Listener {
 				}
 			}
 		} else {
-			if(clicked != null && event.isShiftClick()) {
-				if(st == SlotType.RESULT)
+			if (clicked != null && event.isShiftClick()) {
+				if (st == SlotType.RESULT)
 					return;
-				if(Perms.NOHOLD.has(p, clicked)) {
+				if (Perms.NOHOLD.has(p, clicked)) {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.HOLD, clicked);
 					return;

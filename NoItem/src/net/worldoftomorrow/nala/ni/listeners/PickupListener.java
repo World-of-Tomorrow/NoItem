@@ -12,16 +12,16 @@ import org.bukkit.inventory.ItemStack;
 
 public class PickupListener implements Listener {
 
-    @EventHandler
-    public void onPickup(PlayerPickupItemEvent event) {
+	@EventHandler
+	public void onPickup(PlayerPickupItemEvent event) {
 
-        Player p = event.getPlayer();
-        ItemStack stack = event.getItem().getItemStack();
-        if (Perms.NOPICKUP.has(p, stack)) {
-            event.setCancelled(true);
-            event.getItem().setPickupDelay(100);
-            StringHelper.notifyPlayer(p, EventTypes.PICKUP, stack);
-            StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
-        }
-    }
+		Player p = event.getPlayer();
+		ItemStack stack = event.getItem().getItemStack();
+		if (Perms.NOPICKUP.has(p, stack)) {
+			event.setCancelled(true);
+			event.getItem().setPickupDelay(100);
+			StringHelper.notifyPlayer(p, EventTypes.PICKUP, stack);
+			StringHelper.notifyAdmin(p, EventTypes.PICKUP, stack);
+		}
+	}
 }
