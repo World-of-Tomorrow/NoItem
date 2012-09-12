@@ -126,8 +126,7 @@ public class StringHelper {
 			msg = "Unknown event type: " + type.name();
 			break;
 		}
-		p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-				+ replaceVars(msg, type, p, recipe));
+		p.sendMessage(ChatColor.BLUE + replaceVars(msg, type, p, recipe));
 	}
 
 	public static void notifyPlayer(Player p, EventTypes type, ItemStack stack) {
@@ -174,8 +173,7 @@ public class StringHelper {
 				msg = "Unknown event type: " + type.name();
 				break;
 			}
-			p.sendMessage(ChatColor.RED + "[NI] " + ChatColor.BLUE
-					+ replaceVars(msg, p, stack.getTypeId()));
+			p.sendMessage(ChatColor.BLUE + replaceVars(msg, p, stack.getTypeId()));
 		}
 	}
 
