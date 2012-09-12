@@ -251,13 +251,16 @@ public class InventoryListener implements Listener {
 							fuels.add(fuel);
 						}
 					}
-					if (!fuels.isEmpty()) {
-						ItemStack onCur = p.getItemOnCursor();
-						if (Perms.NOCOOK.has(p, onCur)) {
-							event.setCancelled(true);
-							this.notify(p, EventTypes.COOK, onCur);
-							return;
-						}
+					ItemStack onCur = p.getItemOnCursor();
+					if (!fuels.isEmpty() && Perms.NOCOOK.has(p, onCur)) {
+						event.setCancelled(true);
+						this.notify(p, EventTypes.COOK, onCur);
+						return;
+					}
+					if (!cf.usesFuel() && Perms.NOCOOK.has(p, onCur)) {
+						event.setCancelled(true);
+						this.notify(p, EventTypes.COOK, onCur);
+						return;
 					}
 				}
 				break;

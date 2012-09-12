@@ -4,6 +4,7 @@ import net.worldoftomorrow.nala.ni.Log;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 public class DebugListeners implements Listener {
@@ -22,14 +23,11 @@ public class DebugListeners implements Listener {
 		Log.debug("    Cancelled: " + event.isCancelled());
 	}
 
-	/*
-	 * @EventHandler(priority = EventPriority.MONITOR) public void
-	 * onPlayerInteract(PlayerInteractEvent event) {
-	 * Log.debug(event.getEventName() + ":"); Log.debug("    Action: " +
-	 * event.getAction().name()); Log.debug("    Cancelled: " +
-	 * event.isCancelled()); if (event.getItem() != null) {
-	 * Log.debug("    In Hand ID: " + event.getItem().getTypeId());
-	 * Log.debug("    In Hand DV: " + event.getItem().getDurability());
-	 * Log.debug("    In Hand Name: " + event.getItem().getType().name()); } }
-	 */
+	//@EventHandler(priority = EventPriority.MONITOR)
+	public void onBlockPlace(BlockPlaceEvent event) {
+		Log.debug("Block Place Event: ");
+		Log.debug("    ID: " + event.getBlock().getTypeId());
+		Log.debug("    DV: " + event.getBlock().getData());
+		Log.debug("    Cancelled: " + event.isCancelled());
+	}
 }
