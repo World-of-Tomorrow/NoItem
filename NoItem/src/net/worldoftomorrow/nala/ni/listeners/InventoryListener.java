@@ -214,6 +214,14 @@ public class InventoryListener implements Listener {
 				return;
 			}
 		}
+		if(rs != 0 && event.isShiftClick()) {
+			ItemStack current = event.getCurrentItem();
+			if (Perms.NOCOOK.has(p, current)) {
+				event.setCancelled(true);
+				this.notify(p, EventTypes.COOK, current);
+				return;
+			}
+		}
 		// TODO: fuel slots
 		// NoHold
 		this.handleNoHold(event, p);
