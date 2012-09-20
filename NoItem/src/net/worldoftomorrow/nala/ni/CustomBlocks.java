@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.block.Block;
+import org.bukkit.inventory.ItemStack;
 
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlock;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomFurnace;
@@ -59,6 +60,10 @@ public class CustomBlocks {
 
 	public static CustomWorkbench getWorkbench(Block b) {
 		return getWorkbench(b.getTypeId(), b.getData());
+	}
+	
+	public static CustomWorkbench getWorkbench(ItemStack stack) {
+		return getWorkbench(stack.getTypeId(), stack.getDurability());
 	}
 
 	public static CustomFurnace getFurnace(int id, short data) {

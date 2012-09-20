@@ -25,7 +25,9 @@ public enum Perms {
 	NOBREAK("noitem.nobreak."),
 	ONDEATH("noitem.ondeath."),
 	NODRINK("noitem.nodrink."),
-	NOOPEN("noitem.noopen.");
+	NOOPEN("noitem.noopen."),
+	NOHAVE("noitem.nohave."),
+	NOENCHANT("noitem.noenchant.");
 
 	private final String perm;
 
@@ -84,7 +86,8 @@ public enum Perms {
 	}
 
 	public boolean has(Player p, String recipe) {
-		if (perm.equals(NOBREW.perm) || perm.equals(ONDEATH.perm)) {
+		if (perm.equals(NOBREW.perm)
+				|| perm.equals(ONDEATH.perm)) {
 			if (Perms.ALLITEMS.has(p)) {
 				return false;
 			}
@@ -93,6 +96,16 @@ public enum Perms {
 			throw new UnsupportedOperationException(
 					"Incorrect checking of a permission.");
 		}
+	}
+	
+	public boolean has(Player p, String enchantment, ItemStack item) {
+		if(!perm.equals(NOENCHANT.perm))
+			throw new UnsupportedOperationException("Incorrect checking of a permission.");
+		if(Perms.ALLITEMS.has(p))
+			return false;
+		String numperm = perm + enchantment + "." + item.getTypeId();
+		String nameperm = perm + enchantment + "." + this.getItemName(item);
+		return this.check(p, nameperm) || this.check(p, numperm);
 	}
 
 	public boolean has(Player p, short data) {
@@ -104,7 +117,11 @@ public enum Perms {
 			return false;
 		return this.check(p, perm + data);
 	}
-
+	
+	private String getItemName(ItemStack item) {
+		return this.getItemName(item.getTypeId(), item.getDurability());
+	}
+	
 	private String getItemName(int id, short data) {
 		if (Tools.isTool(id))
 			return Tools.getTool(id).getName();

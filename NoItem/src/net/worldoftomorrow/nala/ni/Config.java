@@ -25,6 +25,8 @@ public class Config {
 	private boolean notifyNoPlace = true;
 	private boolean notifyNoDrink = true;
 	private boolean notifyNoOpen = true;
+	private boolean notifyNoHave = true;
+	private boolean notifyNoEnchant = true;
 
 	private boolean debugging = false;
 	private String pluginChannel = "main";
@@ -43,6 +45,8 @@ public class Config {
 	private String noPlaceMessage = "You are not allowed to place &4%i.";
 	private String noDrinkMessage = "You are not allowed to drink that!";
 	private String noOpenMessage = "You are not allowed to open that!";
+	private String noHaveMessage = "You are not allowed to have that item!";
+	private String noEnchantMessage = "You are not allowed to use the enchantment &4%i";
 
 	/*----------*/
 	private NoItem plugin;
@@ -118,6 +122,10 @@ public class Config {
 			out.println("    NoDrinkMessage: \'" + noDrinkMessage + "\'");
 			out.println("    NoOpen: " + notifyNoOpen);
 			out.println("    NoOpenMessage: \'" + noOpenMessage + "\'");
+			out.println("    NoHave: " + notifyNoHave);
+			out.println("    NoHaveMessage: \'" + noHaveMessage + "\'");
+			out.println("    NoEnchant: " + notifyNoEnchant);
+			out.println("    NoEnchantMessage: \'" + noEnchantMessage + "\'");
 			out.println();
 			out.println("# To block a potion, you must enter the damage value of the potion and ingredient needed.");
 			out.println("# Recipes can be found here: http://www.minecraftwiki.net/wiki/Brewing");
@@ -270,6 +278,18 @@ public class Config {
 		if (conf.isSet("Notify.NoOpenMessage")) {
 			this.noOpenMessage = conf.getString("Notify.NoOpenMessage");
 		}
+		if(conf.isSet("Notify.NoHave")) {
+			this.notifyNoHave = conf.getBoolean("Notify.NoHave");
+		}
+		if(conf.isSet("Notify.NoHaveMessage")) {
+			this.noHaveMessage = conf.getString("Notify.NoHaveMessage");
+		}
+		if(conf.isSet("Notify.NoEnchant")) {
+			this.notifyNoHave = conf.getBoolean("Notify.NoEnchant");
+		}
+		if(conf.isSet("Notify.NoEnchantMessage")) {
+			this.noHaveMessage = conf.getString("Notify.NoEnchantMessage");
+		}
 		if (conf.isSet("CheckForUpdates")) {
 			this.updateCheck = conf.getBoolean("CheckForUpdates");
 		}
@@ -328,6 +348,10 @@ public class Config {
 
 	public static boolean notifyNoOpen() {
 		return conf.getBoolean("Notify.NoOpen");
+	}
+	
+	public static boolean notifyNoHave() {
+		return conf.getBoolean("Notify.NoHave");
 	}
 
 	// Misc//
@@ -399,7 +423,19 @@ public class Config {
 	public static String noOpenMessage() {
 		return conf.getString("Notify.NoOpenMessage");
 	}
-
+	
+	public static String noHaveMessage() {
+		return conf.getString("Notify.NoHaveMessage");
+	}
+	
+	public static String noEnchantMessage() {
+		return conf.getString("Notify.NoEnchantMessage");
+	}
+	
+	public static boolean notifyNoEnchant() {
+		return conf.getBoolean("Notify.NoEnchant");
+	}
+	
 	public static Object getValue(String path) {
 		return conf.get(path);
 	}

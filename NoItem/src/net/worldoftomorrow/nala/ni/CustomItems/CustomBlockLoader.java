@@ -60,8 +60,9 @@ public class CustomBlockLoader {
 				List<Short> resultSlots = block.getShortList("resultSlots");
 				List<Short> recipeSlots = block.getShortList("recipeSlots");
 				boolean fakeRecipeItems = block.getBoolean("fakeRecipeItems");
+				boolean isNotBlock = block.getBoolean("isNotBlock");
 				workbenches.add(new CustomWorkbench(id, data, CustomType.WORKBENCH,
-						resultSlots, recipeSlots, key, fakeRecipeItems));
+						resultSlots, recipeSlots, key, fakeRecipeItems, isNotBlock));
 			}
 		}
 		CustomBlocks.setFurnaces(furnaces);
@@ -91,6 +92,7 @@ public class CustomBlockLoader {
 			out.println("#     recipeSlots: ");
 			out.println("#     resultSlots: ");
 			out.println("#     fakeRecipeItems: ");
+			out.println("#     isNotBlock: ");
 			out.println();
 			out.println("# Here is an example of each #");
 			out.println();

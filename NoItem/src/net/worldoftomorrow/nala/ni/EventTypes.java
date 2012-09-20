@@ -13,7 +13,9 @@ public enum EventTypes {
 	BREAK("break", Config.notifyNoBreak()),
 	PLACE("place", Config.notifyNoPlace()),
 	DRINK("drink", Config.notifyNoDrink()),
-	OPEN("open", Config.notifyNoOpen());
+	OPEN("open", Config.notifyNoOpen()),
+	HAVE("have", Config.notifyNoHave()),
+	ENCHANT("enchant", Config.notifyNoEnchant());
 
 	private final String name;
 	private final boolean notify;

@@ -169,6 +169,12 @@ public class StringHelper {
 			case OPEN:
 				msg = Config.noOpenMessage();
 				break;
+			case HAVE:
+				msg = Config.noHaveMessage();
+				break;
+			case ENCHANT:
+				msg = Config.noEnchantMessage();
+				break;
 			default:
 				msg = "Unknown event type: " + type.name();
 				break;
