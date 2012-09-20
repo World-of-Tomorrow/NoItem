@@ -156,8 +156,8 @@ public class EventListener implements Listener {
 		Player p = event.getPlayer();
 		Map<String, List<ItemStack>> itemList = plugin.getItemList();
 		if (itemList.containsKey(p.getName())) {
-			Map<Integer, ItemStack> r = p.getInventory().addItem(
-					(ItemStack[]) itemList.get(p.getName()).toArray());
+			List<ItemStack> items = itemList.get(p.getName());
+			Map<Integer, ItemStack> r = p.getInventory().addItem(items.toArray(new ItemStack[items.size()]));
 			if(!r.values().isEmpty()) {
 				itemList.put(p.getName(), new ArrayList<ItemStack>(r.values()));
 				p.sendMessage(ChatColor.BLUE + "You have " + r.size() + " unclaimed items!");
@@ -329,7 +329,7 @@ public class EventListener implements Listener {
 				Log.severe("Undefined custom block.");
 				break;
 			}
-			
+			break;
 		}
 		//NoHold handling
 		if(event.getSlotType() == SlotType.QUICKBAR
@@ -347,7 +347,7 @@ public class EventListener implements Listener {
 			if(binv instanceof PlayerInventory) {
 				for(int i = 0; i < 9; i++) {
 					ItemStack stack = binv.getItem(i);
-					if(stack == null) {
+					if(stack != null) {
 						event.setCancelled(true);
 						this.notify(p, EventTypes.HOLD, stack);
 						continue;
