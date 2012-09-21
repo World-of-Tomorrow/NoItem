@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.worldoftomorrow.nala.ni.Config;
+import net.worldoftomorrow.nala.ni.DebugDump;
 import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlockLoader;
@@ -88,6 +89,11 @@ public class CommandListener implements CommandExecutor {
 							+ "There are no items for you to claim!");
 				}
 				return true;
+			} else if (args.length >= 2 && args[0].equalsIgnoreCase("debug") && args[1].equalsIgnoreCase("dump")) {
+				if((this.isPlayer(sender) && Perms.ADMIN.has((Player) sender)) || !this.isPlayer(sender)) {
+					DebugDump.dump(plugin);
+				}
+					return true;
 			} else {
 				return false;
 			}

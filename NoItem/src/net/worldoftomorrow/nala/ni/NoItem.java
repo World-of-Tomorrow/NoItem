@@ -10,7 +10,6 @@ import net.worldoftomorrow.nala.ni.listeners.CommandListener;
 import net.worldoftomorrow.nala.ni.listeners.DebugListeners;
 import net.worldoftomorrow.nala.ni.listeners.EventListener;
 
-import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -24,7 +23,6 @@ public class NoItem extends JavaPlugin {
 	public DebugListeners debugListener;
 
 	private Map<String, List<ItemStack>> itemList = new HashMap<String, List<ItemStack>>();
-	private Map<String, Block> playerLastClicked = new HashMap<String, Block>();
 
 	@Override
 	public void onEnable() {
@@ -82,9 +80,5 @@ public class NoItem extends JavaPlugin {
 
 	public Map<String, List<ItemStack>> getItemList() {
 		return this.itemList;
-	}
-
-	public Map<String, Block> getLastClickedList() {
-		return this.playerLastClicked;
 	}
 }
