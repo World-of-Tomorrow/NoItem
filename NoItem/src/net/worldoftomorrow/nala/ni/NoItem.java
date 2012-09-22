@@ -39,7 +39,7 @@ public class NoItem extends JavaPlugin {
 			Log.info("There is a new version ( " + updater.getLatest()
 					+ " ) available.");
 			Log.info("Download it at: " + this.getDescription().getWebsite());
-			if (Config.pluginChannel().equalsIgnoreCase("dev")) {
+			if (Config.getString("PluginChannel").equalsIgnoreCase("dev")) {
 				Log.info("You are using the development version channel!");
 			}
 			Log.info("-----------------------------------------------");
@@ -48,7 +48,7 @@ public class NoItem extends JavaPlugin {
 		PluginManager pm = getServer().getPluginManager();
 
 		pm.registerEvents(new EventListener(this), this);
-		if (Config.debugging()) {
+		if (Config.getBoolean("Debugging")) {
 			this.debugListener = new DebugListeners();
 			pm.registerEvents(this.debugListener, this);
 			Log.info("This plugin is in debugging mode!");

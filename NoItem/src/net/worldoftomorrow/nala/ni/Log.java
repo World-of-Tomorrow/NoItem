@@ -27,13 +27,13 @@ public class Log {
 	}
 
 	public static void debug(String s) {
-		if (Config.debugging()) {
+		if (Config.getBoolean("Debugging")) {
 			log.log(Level.INFO, s);
 		}
 	}
 
 	public static void debug(String s, Exception e) {
-		if (Config.debugging()) {
+		if (Config.getBoolean("Debugging")) {
 			log.log(Level.INFO, s);
 			e.printStackTrace();
 		}

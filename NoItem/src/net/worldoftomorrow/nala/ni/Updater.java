@@ -21,7 +21,7 @@ public class Updater {
 
 	public Updater(String currentVersion) {
 
-		if (!Config.getUpdateCheck()) {
+		if (!Config.getBoolean("CheckForUpdates")) {
 			return;
 		}
 
@@ -32,10 +32,10 @@ public class Updater {
 
 		try {
 			URL site;
-			if (Config.pluginChannel().equalsIgnoreCase("main")) {
+			if (Config.getString("PluginChannel").equalsIgnoreCase("main")) {
 				site = new URL(recurl);
 			}
-			if (Config.pluginChannel().equalsIgnoreCase("dev")) {
+			if (Config.getString("PluginChannel").equalsIgnoreCase("dev")) {
 				site = new URL(devurl);
 			} else {
 				site = new URL(recurl);

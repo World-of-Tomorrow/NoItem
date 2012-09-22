@@ -115,6 +115,7 @@ public class EventListener implements Listener {
 			this.notify(p, EventTypes.PICKUP, item);
 		} else if (Perms.NOHAVE.has(p, item)) {
 			event.setCancelled(true);
+			event.getItem().setPickupDelay(200);
 			this.notify(p, EventTypes.HAVE, item);
 		} else if (Perms.NOHOLD.has(p, item)) {
 			PlayerInventory inv = p.getInventory();
@@ -357,8 +358,8 @@ public class EventListener implements Listener {
 		}
 		//NoHave handling
 		if(current != null && Perms.NOHAVE.has(p, current)) {
-			current = null;
 			this.notify(p, EventTypes.HAVE, current);
+			p.getInventory().remove(current.getType());
 		}
 	}
 
@@ -403,8 +404,8 @@ public class EventListener implements Listener {
 				this.notify(p, EventTypes.HOLD, notAllowed);
 			}
 			if(Perms.NOHAVE.has(p, notAllowed)) {
-				notAllowed = null;
 				this.notify(p, EventTypes.HAVE, notAllowed);
+				p.getInventory().remove(notAllowed.getType());
 			}
 		}
 	}
@@ -430,13 +431,13 @@ public class EventListener implements Listener {
 			if(Perms.NOUSE.has(p, b)) {
 				event.setCancelled(true);
 				this.notify(p, EventTypes.USE, b);
-			} else if (Perms.NOUSE.has(p, inHand)) {
+			} else if (inHand != null && Perms.NOUSE.has(p, inHand)) {
 				event.setCancelled(true);
 				this.notify(p, EventTypes.USE, inHand);
 			}
 			break;
 		case RIGHT_CLICK_AIR:
-			if(Perms.NOUSE.has(p, inHand)) {
+			if(inHand != null && Perms.NOUSE.has(p, inHand)) {
 				event.setCancelled(true);
 				this.notify(p, EventTypes.USE, inHand);
 			}
@@ -450,10 +451,10 @@ public class EventListener implements Listener {
 			}
 			
 		}
-		if(Perms.NOHAVE.has(p, inHand)) {
+		if(inHand != null && Perms.NOHAVE.has(p, inHand)) {
 			event.setCancelled(true);
 			this.notify(p, EventTypes.HAVE, inHand);
-			inHand = null; //Remove the item
+			p.getInventory().remove(inHand.getType());
 		}
 	}
 

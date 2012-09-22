@@ -28,7 +28,7 @@ public class DebugDump {
 			out.println("Max Players: " + plugin.getServer().getMaxPlayers());
 			out.println("Online Players: " + plugin.getServer().getOnlinePlayers().length);
 			out.println("Online Mode: " + plugin.getServer().getOnlineMode());
-			out.println("Using Vault:" + Vault.vaultPerms);
+			out.println("Using Vault: " + Vault.vaultPerms);
 			SimpleDateFormat sdf = new SimpleDateFormat("MMM dd, yyyy - HH:mm:ss zzzz");
 			out.println("Date/Time: " + sdf.format(new Date(System.currentTimeMillis())));
 			out.println("=================================");
@@ -47,7 +47,14 @@ public class DebugDump {
 			for(Plugin p : plugins) {
 				out.println("- " + p.getName() + " - " + p.getDescription().getVersion());
 			}
+			out.println("=================================");
+			out.println("--- Config Options ---");
+			for(String key : Config.getValues().keySet()) {
+				out.println(key + " - " + Config.getString(key));
+			}
+			out.println("=================================");
 			out.println("--- END DEBUG DUMP ---");
+			out.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

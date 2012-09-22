@@ -114,78 +114,20 @@ public class StringHelper {
 	}
 
 	public static void notifyPlayer(Player p, EventTypes type, String recipe) {
-		String msg;
-		switch (type) {
-		case BREW:
-			msg = Config.noBrewMessage();
-			break;
-		case DRINK:
-			msg = Config.noDrinkMessage();
-			break;
-		default:
-			msg = "Unknown event type: " + type.name();
-			break;
-		}
+		String msg = type.getMessage();
 		p.sendMessage(ChatColor.BLUE + replaceVars(msg, type, p, recipe));
 	}
 
 	public static void notifyPlayer(Player p, EventTypes type, ItemStack stack) {
 		if (type.doNotify()) {
-			String msg;
-			switch (type) {
-			case CRAFT:
-				msg = Config.noCraftMessage();
-				break;
-			case BREW:
-				msg = Config.noBrewMessage();
-				break;
-			case WEAR:
-				msg = Config.noWearMessage();
-				break;
-			case PICKUP:
-				msg = Config.noPickupMessage();
-				break;
-			case USE:
-				msg = Config.noUseMessage();
-				break;
-			case HOLD:
-				msg = Config.noHoldMessage();
-				break;
-			case SMELT:
-				msg = Config.noCookMessage();
-				break;
-			case COOK:
-				msg = Config.noCookMessage();
-				break;
-			case DROP:
-				msg = Config.noDropMessage();
-				break;
-			case BREAK:
-				msg = Config.noBreakMessage();
-				break;
-			case PLACE:
-				msg = Config.noPlaceMessage();
-				break;
-			case OPEN:
-				msg = Config.noOpenMessage();
-				break;
-			case HAVE:
-				msg = Config.noHaveMessage();
-				break;
-			case ENCHANT:
-				msg = Config.noEnchantMessage();
-				break;
-			default:
-				msg = "Unknown event type: " + type.name();
-				break;
-			}
+			String msg = type.getMessage();
 			p.sendMessage(ChatColor.BLUE + replaceVars(msg, p, stack.getTypeId()));
 		}
 	}
 
 	public static void notifyAdmin(Player p, EventTypes type, String recipe) {
-		if (Config.notifyAdmins()) {
-			String message = StringHelper.replaceVars(Config.adminMessage(), p,
+		if (Config.getBoolean("Notify.Admin")) {
+			String message = StringHelper.replaceVars(Config.getString("Messages.Admin"), p,
 					type, recipe);
 			Player[] players = Bukkit.getOnlinePlayers();
 			for (Player player : players) {
@@ -198,8 +140,8 @@ public class StringHelper {
 	}
 
 	public static void notifyAdmin(Player p, EventTypes type, ItemStack stack) {
-		if (Config.notifyAdmins()) {
-			String message = StringHelper.replaceVars(Config.adminMessage(), p,
+		if (Config.getBoolean("Notify.Admin")) {
+			String message = StringHelper.replaceVars(Config.getString("Messages.Admin"), p,
 					type, stack);
 			// log.log(message);
 			Player[] players = Bukkit.getOnlinePlayers();
@@ -213,8 +155,8 @@ public class StringHelper {
 	}
 
 	public static void notifyAdmin(Player p, Block b) {
-		if (Config.notifyAdmins()) {
-			String message = StringHelper.replaceVars(Config.adminMessage(), p,
+		if (Config.getBoolean("Notify.Admin")) {
+			String message = StringHelper.replaceVars(Config.getString("Messages.Admin"), p,
 					EventTypes.BREAK, b.getTypeId());
 			// log.log(message);
 			Player[] players = Bukkit.getOnlinePlayers();

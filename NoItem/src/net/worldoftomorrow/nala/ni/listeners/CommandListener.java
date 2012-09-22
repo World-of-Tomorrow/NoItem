@@ -48,12 +48,12 @@ public class CommandListener implements CommandExecutor {
 							+ "You do not have permission to use this command!");
 					return true;
 				}
-				plugin.getConfigClass().reloadConfig();
-				if (Config.debugging() && plugin.debugListener == null) {
+				plugin.getConfigClass().loadConfig();
+				if (Config.getBoolean("Debugging") && plugin.debugListener == null) {
 					PluginManager pm = this.plugin.getServer().getPluginManager();
 					plugin.debugListener = new DebugListeners();
 					pm.registerEvents(plugin.debugListener, plugin);
-				} else if (!Config.debugging() && plugin.debugListener != null) {
+				} else if (!Config.getBoolean("Debugging") && plugin.debugListener != null) {
 					HandlerList.unregisterAll(plugin.debugListener);
 					plugin.debugListener = null;
 				}
