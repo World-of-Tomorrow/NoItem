@@ -20,7 +20,7 @@ public class DebugDump {
 				Log.severe("Could not create dump file!");
 				Log.info("----------------------------");
 			}
-			PrintWriter out = new PrintWriter(dump);
+			PrintWriter out = new PrintWriter(dump, "UTF-8");
 			out.println("---- NoItem Debug Dump File ----");
 			out.println("Plugin Version: " + plugin.getDescription().getVersion());
 			out.println("CraftBukkit Version: " + plugin.getServer().getBukkitVersion());
