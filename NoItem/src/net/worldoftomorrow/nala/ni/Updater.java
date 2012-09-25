@@ -10,71 +10,56 @@ import java.net.UnknownHostException;
 
 public class Updater {
 
-	private int currentMajor = 0;
-	private int currentMinor = 0;
-	private int currentBuild = 0;
-	private int latestMajor = 0;
-	private int latestMinor = 0;
-	private int latestBuild = 0;
-	private String recurl = "http://www.worldoftomorrow.net/noitem/latest.html";
-	private String devurl = "http://www.worldoftomorrow.net/noitem/latest_dev.html";
+	private int current = 0;
+	private int latest = 0;
+	private final String recurl = "http://ci.worldoftomorrow.net/job/NoItem/RecommendedBuild/buildNumber";
+	private final String devurl = "http://ci.worldoftomorrow.net/job/NoItem/lastSuccessfulBuild/buildNumber";
 
-	public Updater(String currentVersion) {
-
+	public Updater(NoItem plugin) {
 		if (!Config.getBoolean("CheckForUpdates")) {
 			return;
 		}
-
-		String[] cv = currentVersion.split("-");
-		this.currentMajor = Integer.valueOf(cv[0].split("\\.")[0]);
-		this.currentMinor = Integer.valueOf(cv[0].split("\\.")[1]);
-		this.currentBuild = Integer.valueOf(cv[0].split("\\.")[2]);
-
+		
+		String[] parts = plugin.getDescription().getVersion().split("-");
+		if(parts.length == 2) {
+			//Release version
+			this.current = Integer.parseInt(parts[1]);
+		} else if (parts.length == 3) {
+			//Snapshot or beta build
+			this.current = Integer.parseInt(parts[2]);
+		}
+		
 		try {
 			URL site;
-			if (Config.getString("PluginChannel").equalsIgnoreCase("main")) {
+			final String channel = Config.getString("PluginChannel");
+			if (channel.equalsIgnoreCase("main")) {
 				site = new URL(recurl);
-			}
-			if (Config.getString("PluginChannel").equalsIgnoreCase("dev")) {
+			} else if (channel.equalsIgnoreCase("dev")) {
 				site = new URL(devurl);
-			} else {
+		    } else {
+				Log.warn("The configuration has an invalid value for \"PluginChannel\", assuming main.");
 				site = new URL(recurl);
 			}
 			URLConnection conn = site.openConnection();
-			// Fake the request to make it look like it is coming from a browser
-			// since my server doesn't like Java connecting :P
-			conn.setRequestProperty(
-					"User-Agent",
-					"Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US;     rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 (.NET CLR 3.5.30729)");
-			BufferedReader in = new BufferedReader(new InputStreamReader(
-					conn.getInputStream(), "UTF-8"));
-			String latest = "";
-			while ((latest = in.readLine()) != null) {
-				this.latestMajor = Integer.valueOf(latest.split("\\.")[0]);
-				this.latestMinor = Integer.valueOf(latest.split("\\.")[1]);
-				this.latestBuild = Integer.valueOf(latest.split("\\.")[2]);
+			//conn.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows; U; Windows NT 6.1; en-US;     rv:1.9.2.13) Gecko/20101203 Firefox/3.6.13 (.NET CLR 3.5.30729)");
+			BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				this.latest = Integer.parseInt(line);
+				break;
 			}
 			in.close();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (UnknownHostException e) {
-			Log.warn("[NoItem] Could not connect to update site");
+			Log.warn("[NoItem] Could not check for update.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
 	}
 
-	public String getLatest() {
-		return this.latestMajor + "." + this.latestMinor + "." + this.latestBuild;
-	}
-
 	public boolean isLatest() {
-		if (currentMajor >= latestMajor && currentMinor >= latestMinor
-				&& currentBuild >= latestBuild) {
-			return true;
-		} else {
-			return false;
-		}
+		return this.latest == this.current;
 	}
 }

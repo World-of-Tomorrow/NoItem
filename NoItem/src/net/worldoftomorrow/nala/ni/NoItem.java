@@ -33,14 +33,17 @@ public class NoItem extends JavaPlugin {
 		CommandListener cl = new CommandListener(this);
 		this.getCommand("noitem").setExecutor(cl);
 
-		Updater updater = new Updater(this.getDescription().getVersion());
+		Updater updater = new Updater(this);
 		if (!updater.isLatest()) {
-			Log.info("--------------------No Item--------------------");
-			Log.info("There is a new version ( " + updater.getLatest()
-					+ " ) available.");
-			Log.info("Download it at: " + this.getDescription().getWebsite());
-			if (Config.getString("PluginChannel").equalsIgnoreCase("dev")) {
-				Log.info("You are using the development version channel!");
+			String ch = Config.getString("PluginChannel");
+			Log.info("------------------- No Item -------------------");
+			Log.info("There is an update available to download!");
+			if(ch.equalsIgnoreCase("main"))
+			Log.info("Get it at: " + this.getDescription().getWebsite());
+			else if (ch.equalsIgnoreCase("dev")) {
+				Log.info("Get it at: http://ci.worldoftomorrow.net/job/NoItem/lastSuccessfulBuild/");
+			} else {
+				Log.info("Get it at: " + this.getDescription().getWebsite());
 			}
 			Log.info("-----------------------------------------------");
 		}

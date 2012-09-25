@@ -66,8 +66,10 @@ public class EventListener implements Listener {
 	}
 
 	/**
+	 * <p>
 	 * Check for the following: <br />
 	 * NoHold
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -82,8 +84,10 @@ public class EventListener implements Listener {
 	}
 
 	/**
+	 * <p>
 	 * Check for the following: <br />
 	 * NoDrop
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -98,10 +102,12 @@ public class EventListener implements Listener {
 	}
 
 	/**
+	 * <p>
 	 * Check for the following: <br />
-	 * NoPickup
-	 * NoHave
-	 * NoHold
+	 * NoPickup<br />
+	 * NoHave<br />
+	 * NoHold<br />
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -129,8 +135,10 @@ public class EventListener implements Listener {
 	}
 
 	/**
+	 * <p>
 	 * Check for the following: <br />
 	 * OnDeath
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -147,8 +155,10 @@ public class EventListener implements Listener {
 	}
 	
 	/**
+	 * <p>
 	 * Check for the following: <br />
 	 * OnDeath
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -168,8 +178,10 @@ public class EventListener implements Listener {
 	}
 	
 	/**
+	 * <p>
 	 * Check for the following: <br />
 	 * NoBreak
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -184,8 +196,10 @@ public class EventListener implements Listener {
 	}
 
 	/**
+	 * <p>
 	 * Check for the following: <br />
 	 * NoPlace
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -200,13 +214,15 @@ public class EventListener implements Listener {
 	}
 
 	/**
+	 * <p>
 	 * Check for the following: <br />
-	 * NoHold
-	 * NoHave
-	 * NoWear
-	 * NoCook
-	 * NoCraft
-	 * NoBrew
+	 * NoHold<br />
+	 * NoHave<br />
+	 * NoWear<br />
+	 * NoCook<br />
+	 * NoCraft<br />
+	 * NoBrew<br />
+	 * </p>
 	 * 
 	 * @param event
 	 */
@@ -362,7 +378,14 @@ public class EventListener implements Listener {
 			p.getInventory().remove(current.getType());
 		}
 	}
-
+	
+	/**
+	 * <p>
+	 * Check for the following: <br />
+	 * NoOpen
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onInventoryOpen(InventoryOpenEvent event) {
 		Player p = Bukkit.getPlayer(event.getPlayer().getName());
@@ -386,9 +409,12 @@ public class EventListener implements Listener {
 	}
 	
 	/**
+	 * <p>
 	 * Check for the following: <br />
-	 * NoHold
-	 * NoHave
+	 * NoHold<br />
+	 * NoHave<br />
+	 * </p>
+	 * 
 	 * @param event
 	 */
 	@EventHandler
@@ -409,7 +435,14 @@ public class EventListener implements Listener {
 			}
 		}
 	}
-
+	
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoCraft
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onItemCraft(CraftItemEvent event) {
 		Player p = Bukkit.getPlayer(event.getWhoClicked().getName());
@@ -420,6 +453,14 @@ public class EventListener implements Listener {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoUse<br />
+	 * NoHave<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
@@ -457,7 +498,14 @@ public class EventListener implements Listener {
 			p.getInventory().remove(inHand.getType());
 		}
 	}
-
+	
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoUse<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onBowShoot(EntityShootBowEvent event) {
 		Entity e = event.getEntity();
@@ -472,6 +520,13 @@ public class EventListener implements Listener {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoUse<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onBucketEmpty(PlayerBucketEmptyEvent event) {
 		Player p = event.getPlayer();
@@ -482,6 +537,13 @@ public class EventListener implements Listener {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoUse<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onBucketFill(PlayerBucketFillEvent event) {
 		Player p = event.getPlayer();
@@ -492,6 +554,13 @@ public class EventListener implements Listener {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoUse<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onShear(PlayerShearEntityEvent event) {
 		Player p = event.getPlayer();
@@ -501,6 +570,13 @@ public class EventListener implements Listener {
 		}
 	}
 
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoUse<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onPlayerAttack(EntityDamageByEntityEvent event) {
 		Entity damager = event.getDamager();
@@ -514,6 +590,13 @@ public class EventListener implements Listener {
 		}
 	}
 	
+	/**
+	 * <p>
+	 * Check for the following:<br />
+	 * NoEnchant<br />
+	 * </p>
+	 * @param event
+	 */
 	@EventHandler
 	public void onItemEnchant(EnchantItemEvent event) {
 		Player p = event.getEnchanter();
