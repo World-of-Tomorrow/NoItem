@@ -267,7 +267,7 @@ public class EventListener implements Listener {
 		default:
 			Block b = p.getTargetBlock(null, 8);
 			if(!CustomBlocks.isCustomBlock(b))
-				return;
+				break;;
 			CustomBlock cb = CustomBlocks.getCustomBlock(b);
 			switch(cb.getType()) {
 			case FURNACE:
@@ -314,7 +314,7 @@ public class EventListener implements Listener {
 							craftingInv.setItem(i, stack);
 						}
 						net.minecraft.server.ItemStack mcResult = CraftingManager.getInstance().craft(craftingInv);
-						if(mcResult == null) return;
+						if(mcResult == null) break;
 						ItemStack result = new ItemStack(mcResult.id, mcResult.getData());
 						if (Perms.NOCRAFT.has(p, result)) {
 							event.setCancelled(true);
