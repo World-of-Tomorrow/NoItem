@@ -60,6 +60,10 @@ public class Updater {
 	}
 
 	public boolean isLatest() {
-		return this.latest == this.current;
+		if(this.current < this.latest) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
