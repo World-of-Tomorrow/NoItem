@@ -12,8 +12,8 @@ public class Updater {
 
 	private int current = 0;
 	private int latest = 0;
-	private final String recurl = "http://ci.worldoftomorrow.net/job/NoItem/RecommendedBuild/buildNumber";
-	private final String devurl = "http://ci.worldoftomorrow.net/job/NoItem/lastSuccessfulBuild/buildNumber";
+	private static final String recurl = "http://ci.worldoftomorrow.net/job/NoItem/RecommendedBuild/buildNumber";
+	private static final String devurl = "http://ci.worldoftomorrow.net/job/NoItem/lastSuccessfulBuild/buildNumber";
 
 	public Updater(NoItem plugin) {
 		if (!Config.getBoolean("CheckForUpdates")) {

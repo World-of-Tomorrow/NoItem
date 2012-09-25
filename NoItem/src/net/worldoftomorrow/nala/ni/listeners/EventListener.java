@@ -280,6 +280,7 @@ public class EventListener implements Listener {
 					this.notify(p, EventTypes.COOK, current);
 				}
 			}
+			break;
 		default:
 			Block b = p.getTargetBlock(null, 8);
 			if(!CustomBlocks.isCustomBlock(b))
