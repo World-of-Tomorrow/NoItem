@@ -33,6 +33,7 @@ public class NoItem extends JavaPlugin {
 		CommandListener cl = new CommandListener(this);
 		this.getCommand("noitem").setExecutor(cl);
 
+		/*
 		Updater updater = new Updater(this);
 		if (!updater.isLatest()) {
 			String ch = Config.getString("PluginChannel");
@@ -46,6 +47,15 @@ public class NoItem extends JavaPlugin {
 				Log.info("Get it at: " + this.getDescription().getWebsite());
 			}
 			Log.info("-----------------------------------------------");
+		}
+		*/
+		if(Config.getBoolean("CheckForUpdates")) {
+			String slug = "NoItem";
+			if(Config.getBoolean("Auto-Download-Updates")) {
+				AutoUpdater updater = new AutoUpdater(this, slug, this.getFile(), AutoUpdater.UpdateType.DEFAULT, false);
+			} else {
+				AutoUpdater updater = new AutoUpdater(this, slug, this.getFile(), AutoUpdater.UpdateType.NO_DOWNLOAD, false);
+			}
 		}
 
 		PluginManager pm = getServer().getPluginManager();

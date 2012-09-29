@@ -69,6 +69,7 @@ public class Config {
 		values.put("Debugging", false);
 		values.put("PluginChannel", "main");
 		values.put("CheckForUpdates", true);
+		values.put("Auto-Download-Updates", true);
 		values.put("ConfigurationVersion", "1.2");
 		
 		this.plugin = plugin;
