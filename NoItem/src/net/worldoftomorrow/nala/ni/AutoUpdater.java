@@ -287,9 +287,11 @@ public class AutoUpdater {
 			result = AutoUpdater.UpdateResult.FAIL_DOWNLOAD;
 		} finally {
 			try {
-				in.close();
-				fout.close();
-			} catch (Exception ex) {
+				if(fout != null)
+					fout.close();
+				if(in != null)
+					in.close();
+			} catch (IOException e) {
 			}
 		}
 	}
@@ -354,9 +356,13 @@ public class AutoUpdater {
 							}
 							if (!found) {
 								// Move the new file into the current dir
-								cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()));
+								if(!cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()))) {
+									Log.warn("Auto-Updater could not rename the cFile! Uhh ohh.");
+								}
 							} else {
-								cFile.delete();
+								if(!cFile.delete()) {
+									Log.warn("Auto-Updater could not delete the cFile! Woopsies.");
+								}
 							}
 						}
 					}

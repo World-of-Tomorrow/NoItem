@@ -52,9 +52,9 @@ public class NoItem extends JavaPlugin {
 		if(Config.getBoolean("CheckForUpdates")) {
 			String slug = "NoItem";
 			if(Config.getBoolean("Auto-Download-Updates")) {
-				AutoUpdater updater = new AutoUpdater(this, slug, this.getFile(), AutoUpdater.UpdateType.DEFAULT, false);
+				new AutoUpdater(this, slug, this.getFile(), AutoUpdater.UpdateType.DEFAULT, false);
 			} else {
-				AutoUpdater updater = new AutoUpdater(this, slug, this.getFile(), AutoUpdater.UpdateType.NO_DOWNLOAD, false);
+				new AutoUpdater(this, slug, this.getFile(), AutoUpdater.UpdateType.NO_DOWNLOAD, false);
 			}
 		}
 
