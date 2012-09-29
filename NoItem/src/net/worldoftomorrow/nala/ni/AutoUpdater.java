@@ -371,10 +371,9 @@ public class AutoUpdater {
 					Log.warn("Auto-Updater Could not delete destnation file!");
 				}
 			}
-			if(!new File(zipPath).delete()) {
+			if(!new File(zipPath).delete() || fSourceZip.delete()) {
 				Log.warn("Auto-Updater could not delete the zip file! Ohh Noes!");
 			}
-			fSourceZip.delete();
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			Log.warn("The auto-updater tried to unzip a new update file, but was unsuccessful.");
