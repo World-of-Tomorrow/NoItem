@@ -43,7 +43,7 @@ public class AutoUpdater {
 	private String versionTitle;
 	private String versionLink;
 	private long totalSize; // Holds the total size of the file
-	private double downloadedSize; // TODO: Holds the number of bytes received
+	//private double downloadedSize; // TODO: Holds the number of bytes received
 	private int sizeLine; // Used for detecting file size
 	private int multiplier; // Used for determining when to broadcast download updates
 	private boolean announce; // Whether to announce file downloads
@@ -53,8 +53,7 @@ public class AutoUpdater {
 	// If the version number contains one of these, don't update.
 	private String[] noUpdateTag = { "-DEV", "-PRE", "-BETA" };
 	private static final int BYTE_SIZE = 1024; // Used for downloading files
-	private String updateFolder = YamlConfiguration.loadConfiguration(
-			new File("bukkit.yml")).getString("settings.update-folder");
+	private String updateFolder = YamlConfiguration.loadConfiguration(new File("bukkit.yml")).getString("settings.update-folder");
 	private AutoUpdater.UpdateResult result = AutoUpdater.UpdateResult.SUCCESS;
 
 	// Strings for reading RSS
@@ -243,8 +242,8 @@ public class AutoUpdater {
 	 * Save an update from dev.bukkit.org into the server's update folder.
 	 */
 	private void saveFile(File folder, String file, String u) {
-		if (!folder.exists()) {
-			folder.mkdir();
+		if (!folder.exists() && !folder.mkdir()) {
+			Log.warn("Auto-Updater could not create directory to save file!");
 		}
 		BufferedInputStream in = null;
 		FileOutputStream fout = null;
@@ -258,24 +257,21 @@ public class AutoUpdater {
 			byte[] data = new byte[BYTE_SIZE];
 			int count;
 			if (announce)
-				plugin.getLogger().info(
-						"About to download a new update: " + versionTitle);
+				Log.info("About to download a new update: " + versionTitle);
 			long downloaded = 0;
 			while ((count = in.read(data, 0, BYTE_SIZE)) != -1) {
 				downloaded += count;
 				fout.write(data, 0, count);
 				int percent = (int) (downloaded * 100 / fileLength);
-				if (announce & (percent % 10 == 0)) {
-					plugin.getLogger().info(
-							"Downloading update: " + percent + "% of " + fileLength
-									+ " bytes.");
+				if (announce && (percent % 10 == 0)) {
+					Log.info("Downloading update: " + percent + "% of " + fileLength + " bytes.");
 				}
 			}
 			// Just a quick check to make sure we didn't leave any files from
 			// last time...
 			for (File xFile : new File("plugins/" + updateFolder).listFiles()) {
-				if (xFile.getName().endsWith(".zip")) {
-					xFile.delete();
+				if (xFile.getName().endsWith(".zip") && !xFile.delete()) {
+					Log.warn("Auto-Updater could not delete the zip file!");
 				}
 			}
 			// Check to see if it's a zip file, if it is, unzip it.
@@ -286,19 +282,13 @@ public class AutoUpdater {
 			}
 			if (announce)
 				plugin.getLogger().info("Finished updating.");
-		} catch (Exception ex) {
-			plugin.getLogger()
-					.warning(
-							"The auto-updater tried to download a new update, but was unsuccessful.");
+		} catch (IOException ex) {
+			Log.warn("The auto-updater tried to download a new update, but was unsuccessful.");
 			result = AutoUpdater.UpdateResult.FAIL_DOWNLOAD;
 		} finally {
 			try {
-				if (in != null) {
-					in.close();
-				}
-				if (fout != null) {
-					fout.close();
-				}
+				in.close();
+				fout.close();
 			} catch (Exception ex) {
 			}
 		}
@@ -316,17 +306,18 @@ public class AutoUpdater {
 			while (e.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) e.nextElement();
 				File destinationFilePath = new File(zipPath, entry.getName());
-				destinationFilePath.getParentFile().mkdirs();
+				File destFileParent = destinationFilePath.getParentFile();
+				if(!destFileParent.exists() && !destFileParent.mkdirs()) {
+					Log.warn("Auto-Updater Could not create destination file parent directories!");
+				}
 				if (entry.isDirectory()) {
 					continue;
 				} else {
-					BufferedInputStream bis = new BufferedInputStream(
-							zipFile.getInputStream(entry));
+					BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
 					int b;
 					byte buffer[] = new byte[BYTE_SIZE];
 					FileOutputStream fos = new FileOutputStream(destinationFilePath);
-					BufferedOutputStream bos = new BufferedOutputStream(fos,
-							BYTE_SIZE);
+					BufferedOutputStream bos = new BufferedOutputStream(fos, BYTE_SIZE);
 					while ((b = bis.read(buffer, 0, BYTE_SIZE)) != -1) {
 						bos.write(buffer, 0, b);
 					}
@@ -335,8 +326,9 @@ public class AutoUpdater {
 					bis.close();
 					String name = destinationFilePath.getName();
 					if (name.endsWith(".jar") && pluginFile(name)) {
-						destinationFilePath.renameTo(new File("plugins/"
-								+ updateFolder + "/" + name));
+						if(!destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name)))
+								Log.warn("Auto-Updater Could not rename destination file!");
+						
 					}
 				}
 				entry = null;
@@ -350,20 +342,11 @@ public class AutoUpdater {
 			for (File dFile : new File(zipPath).listFiles()) {
 				if (dFile.isDirectory()) {
 					if (pluginFile(dFile.getName())) {
-						File oFile = new File("plugins/" + dFile.getName()); // Get
-																				// current
-																				// dir
-						File[] contents = oFile.listFiles(); // List of existing
-																// files in the
-																// current dir
-						for (File cFile : dFile.listFiles()) // Loop through all
-																// the files in
-																// the new dir
-						{
+						File oFile = new File("plugins/" + dFile.getName()); 
+						File[] contents = oFile.listFiles();
+						for (File cFile : dFile.listFiles()) {
 							boolean found = false;
-							for (File xFile : contents) // Loop through contents
-														// to see if it exists
-							{
+							for (File xFile : contents) {
 								if (xFile.getName().equals(cFile.getName())) {
 									found = true;
 									break;
@@ -371,28 +354,28 @@ public class AutoUpdater {
 							}
 							if (!found) {
 								// Move the new file into the current dir
-								cFile.renameTo(new File(oFile.getCanonicalFile()
-										+ "/" + cFile.getName()));
+								cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()));
 							} else {
-								// This file already exists, so we don't need it
-								// anymore.
 								cFile.delete();
 							}
 						}
 					}
 				}
-				dFile.delete();
+				if(!dFile.delete()) {
+					Log.warn("Auto-Updater Could not delete destnation file!");
+				}
 			}
 			new File(zipPath).delete();
 			fSourceZip.delete();
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			plugin.getLogger()
-					.warning(
-							"The auto-updater tried to unzip a new update file, but was unsuccessful.");
+			Log.warn("The auto-updater tried to unzip a new update file, but was unsuccessful.");
 			result = AutoUpdater.UpdateResult.FAIL_DOWNLOAD;
 		}
-		new File(file).delete();
+		if(!new File(file).delete()) {
+			Log.warn("Auto - Updater could not delete file!");
+			Log.warn("Useful error code - 0x20545e0");
+		}
 	}
 
 	/**
@@ -417,8 +400,7 @@ public class AutoUpdater {
 			// Open a connection to the page
 			URL url = new URL(link);
 			URLConnection urlConn = url.openConnection();
-			InputStreamReader inStream = new InputStreamReader(
-					urlConn.getInputStream());
+			InputStreamReader inStream = new InputStreamReader(urlConn.getInputStream(), "UTF-8");
 			BufferedReader buff = new BufferedReader(inStream);
 
 			int counter = 0;
@@ -447,9 +429,7 @@ public class AutoUpdater {
 			buff = null;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			plugin.getLogger()
-					.warning(
-							"The auto-updater tried to contact dev.bukkit.org, but was unsuccessful.");
+			Log.warn("The auto-updater tried to contact dev.bukkit.org, but was unsuccessful.");
 			result = AutoUpdater.UpdateResult.FAIL_DBO;
 			return null;
 		}
