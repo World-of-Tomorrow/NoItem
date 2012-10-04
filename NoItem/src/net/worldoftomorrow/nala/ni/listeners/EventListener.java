@@ -315,16 +315,15 @@ public class EventListener implements Listener {
 			case WORKBENCH:
 				CustomWorkbench cw = (CustomWorkbench) cb;
 				if(cw.isResultSlot((short) rs)) {
-					if(current != null) {
-						try {
+					try {
 						ModInventoryView miv = (ModInventoryView) view;
 						Field fcontainer = view.getClass().getDeclaredField("container");
 						fcontainer.setAccessible(true);
 						Container container = (Container) fcontainer.get(miv);
 						InventoryCrafting craftingInv = new InventoryCrafting(container, 3, 3);
 						craftingInv.resultInventory = new InventoryCraftResult();
-						for(int i = 1; i < 10; i++) {
-							short slot = (Short) cw.getRecipeSlots().toArray()[i-1];
+						for(int i = 0; i <= 8; i++) {
+							short slot = (Short) cw.getRecipeSlots().toArray()[i];
 							ItemStack item = slot == rs ? oncur : view.getItem(slot);
 							if(item == null) continue;
 							net.minecraft.server.ItemStack stack = new net.minecraft.server.ItemStack(item.getTypeId(), item.getAmount(), item.getDurability());
@@ -337,9 +336,8 @@ public class EventListener implements Listener {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.CRAFT, result);
 						}
-						} catch (Exception e) {
-							e.printStackTrace();
-						}
+					} catch (Exception e) {
+						e.printStackTrace();
 					}
 				}
 				break;

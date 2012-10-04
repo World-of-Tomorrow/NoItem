@@ -1,0 +1,47 @@
+# ############################
+# ### NoItem Configuration ###
+# ############################
+# 
+# ###########################
+# ### General Information ###
+# ###########################
+# To block a potion, you must enter the damage value of the potion and ingredient needed.
+# POTION RECIPES:     http://www.minecraftwiki.net/wiki/Brewing#Recipes
+# POTION DATA VALUES: http://www.minecraftwiki.net/wiki/Potions#Data_value_table
+# INGREDIENTS:        http://www.minecraftwiki.net/wiki/Brewing#Base_Ingredients
+# PERMISSIONS:        http://dev.bukkit.org/server-mods/noitem/pages/permissions/
+# 
+# ################
+# ### Messages ###
+# ################
+# These are the messages used by the plugin, you can change them
+# for easy localization. However, be sure to use single quotes
+# around them to avoid any problems. ( ' )
+# 
+# These are some variables you can use in the messages.
+# # Notify Message Variables ###
+# %n = Player name
+# %i = Item/Recipe
+# %x = X location
+# %y = Y location
+# %z = Z location
+# %w = World
+# Admin Message Specific Variables:
+# %t = Event type (i.e. BREW, CRAFT, SMELT)
+# 
+Messages:
+  NoDrink: You are not allowed to drink that!
+  Admin: '&e%n &9tried to &c%t %i &9in world %w @ &a%x,%y,%z'
+  NoDrop: You are not allowed to drop &4%i.
+  NoBreak: You are not allowed to break &4%i.
+  NoEnchant: You are not allowed to use the enchantment &4%i
+  NoPickup: You are not allowed to pick that up! (%i)
+  NoCook: You are not allowed to cook &4%i&9.
+  NoCraft: You are not allowed to craft &4%i&9.
+  NoHave: You are not allowed to have that item!
+  NoWear: You are not allowed to wear &4%i&9!
+  NoOpen: You are not allowed to open that!
+  NoHold: You are not allowed to hold &4%i&9!
+  NoPlace: You are not allowed to place &4%i.
+  NoBrew: You are not allowed to brew that potion! &4(%i)
+  NoUse: '&9You are not allowed to use a(n) &4%i&9!'

@@ -52,6 +52,15 @@
 				<directory>${basedir}/resources/</directory>
 				<filtering>true</filtering>
 			</resource>
+			<resource>
+				<includes>
+					<include>messages.yml</include>
+					<include>misc.yml</include>
+					<include>notify.yml</include>
+				</includes>
+				<directory>${basedir}/resources/</directory>
+				<filtering>true</filtering>
+			</resource>
 		</resources>
 	</build>
 	<properties>

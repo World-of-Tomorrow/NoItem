@@ -48,7 +48,7 @@ public class CommandListener implements CommandExecutor {
 							+ "You do not have permission to use this command!");
 					return true;
 				}
-				plugin.getConfigClass().loadConfig();
+				//plugin.getConfigClass().loadConfig();
 				if (Config.getBoolean("Debugging") && plugin.debugListener == null) {
 					PluginManager pm = this.plugin.getServer().getPluginManager();
 					plugin.debugListener = new DebugListeners();
