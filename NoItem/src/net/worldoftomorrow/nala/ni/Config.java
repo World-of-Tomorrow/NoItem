@@ -31,15 +31,6 @@ public class Config {
 			return;
 		} else {
 			final Map<String, Object> values = plugin.getConfig().getValues(true);
-			for(String key : values.keySet()) {
-				if(key.startsWith("Messages")) {
-					this.messages.set(key, values.get(key));
-				} else if (key.startsWith("Notify")) {
-					this.notify.set(key, values.get(key));
-				} else {
-					this.misc.set(key, values.get(key));
-				}
-			}
 			for(Entry<String, Object> entry : values.entrySet()) {
 				String key = entry.getKey();
 				if(key.startsWith("Messages")) {
