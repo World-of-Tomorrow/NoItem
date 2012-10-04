@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -39,6 +40,16 @@ public class Config {
 					this.misc.set(key, values.get(key));
 				}
 			}
+			for(Entry<String, Object> entry : values.entrySet()) {
+				String key = entry.getKey();
+				if(key.startsWith("Messages")) {
+					this.messages.set(key, entry.getValue());
+				} else if (key.startsWith("Notify")) {
+					this.notify.set(key, entry.getValue());
+				} else {
+					this.misc.set(key, entry.getValue());
+				}
+			}
 			this.copyDefaultFile(false);
 		}
 	}
@@ -48,7 +59,7 @@ public class Config {
 			if(create && !plugin.getDataFolder().mkdir() && !config.createNewFile()) {
 				Log.severe("Could not create configuration file!");
 			}
-			PrintWriter out = new PrintWriter(config);
+			PrintWriter out = new PrintWriter(config, "UTF-8");
 			out.write(this.messages.saveToString());
 			out.write(this.notify.saveToString());
 			out.write(this.misc.saveToString());
