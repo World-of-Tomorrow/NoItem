@@ -53,10 +53,11 @@ public enum Perms {
 	}
 
 	public boolean has(Player p, Material mat, short data) {
-		if (perm.equals(ADMIN.perm) || perm.equals(ALLITEMS.perm)
-				|| perm.equals(NOBREW.perm) || perm.equals(ONDEATH.perm)) {
-			throw new UnsupportedOperationException(
-					"Incorrect checking of a permission.");
+		if (perm.equals(ADMIN.perm)
+				|| perm.equals(ALLITEMS.perm)
+				|| perm.equals(NOBREW.perm)
+				|| perm.equals(ONDEATH.perm)) {
+			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		}
 		if (Perms.ALLITEMS.has(p)) {
 			return false;
@@ -72,14 +73,16 @@ public enum Perms {
 			namePerm = perm + this.getItemName(mat.getId(), data);
 			numPerm = perm + mat.getId();
 		}
-		return this.check(p, namePerm) || this.check(p, numPerm)
-				|| this.check(p, allNamePerm) || this.check(p, allNumPerm);
+		return this.check(p, namePerm)
+				|| this.check(p, numPerm)
+				|| this.check(p, allNamePerm)
+				|| this.check(p, allNumPerm);
 	}
 
 	public boolean has(Player p) {
-		if (!perm.equals(ADMIN.perm) && !perm.equals(ALLITEMS.perm)) {
-			throw new UnsupportedOperationException(
-					"Incorrect checking of a permission.");
+		if (!perm.equals(ADMIN.perm)
+				&& !perm.equals(ALLITEMS.perm)) {
+			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		} else {
 			return this.check(p, perm);
 		}

@@ -235,7 +235,7 @@ public class EventListener implements Listener {
 		int rs = event.getRawSlot();
 		InventoryView view = event.getView();
 		
-		switch(inv.getType()) {
+		switch(view.getType()) {
 		case CRAFTING:
 			if(event.getSlotType() == SlotType.ARMOR) {
 				if(oncur != null && Perms.NOWEAR.has(p, oncur)) {
@@ -284,10 +284,11 @@ public class EventListener implements Listener {
 		default:
 			Block b = p.getTargetBlock(null, 8);
 			if(!CustomBlocks.isCustomBlock(b))
-				break;;
+				break;
 			CustomBlock cb = CustomBlocks.getCustomBlock(b);
 			switch(cb.getType()) {
 			case FURNACE:
+				Log.debug("Is a furnace");
 				CustomFurnace cf = (CustomFurnace) cb;
 				if(cf.isFuelSlot((short) rs) && oncur != null) {
 					for(Short s : cf.getItemSlots()) {
@@ -314,7 +315,7 @@ public class EventListener implements Listener {
 				break;
 			case WORKBENCH:
 				CustomWorkbench cw = (CustomWorkbench) cb;
-				if(cw.isResultSlot((short) rs)) {
+				if(cw.isRecipeSlot((short) rs)) {
 					try {
 						ModInventoryView miv = (ModInventoryView) view;
 						Field fcontainer = view.getClass().getDeclaredField("container");
@@ -331,7 +332,7 @@ public class EventListener implements Listener {
 						}
 						net.minecraft.server.ItemStack mcResult = CraftingManager.getInstance().craft(craftingInv);
 						if(mcResult == null) break;
-						ItemStack result = new ItemStack(mcResult.id, mcResult.getData());
+						ItemStack result = new ItemStack(mcResult.id, 1, (short) mcResult.getData());
 						if (Perms.NOCRAFT.has(p, result)) {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.CRAFT, result);
