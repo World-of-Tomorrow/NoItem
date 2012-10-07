@@ -38,6 +38,8 @@ public class Config {
 				} else if (key.startsWith("Notify")) {
 					this.notify.set(key, entry.getValue());
 				} else {
+					if(key.equalsIgnoreCase("ConfigurationVersion"))
+						continue;
 					this.misc.set(key, entry.getValue());
 				}
 			}
@@ -47,8 +49,15 @@ public class Config {
 
 	private void copyDefaultFile(boolean create) {
 		try {
-			if(create && !plugin.getDataFolder().mkdir() && !config.createNewFile()) {
+			if(create
+					&& !plugin.getDataFolder().mkdir()
+					&& !config.createNewFile()) {
 				Log.severe("Could not create configuration file!");
+			}
+			if(!create
+					&& plugin.getConfig().isSet("ConfigurationVersion")) {
+				if(!config.delete() || !config.createNewFile())
+					Log.severe("Could not delete old configuration file.");
 			}
 			PrintWriter out = new PrintWriter(config, "UTF-8");
 			out.write(this.messages.saveToString());
