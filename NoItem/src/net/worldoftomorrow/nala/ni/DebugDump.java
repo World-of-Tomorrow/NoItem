@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.bukkit.plugin.Plugin;
 
@@ -44,7 +46,19 @@ public class DebugDump {
 			out.println("=================================");
 			out.println("--- Installed Plugins ---");
 			Plugin[] plugins = plugin.getServer().getPluginManager().getPlugins();
+			List<Plugin> mods = new ArrayList<Plugin>();
 			for(Plugin p : plugins) {
+				String name = p.getName();
+				String ver = p.getDescription().getVersion();
+				if(name.startsWith("mod_") || ver.equalsIgnoreCase("forgemod")) {
+					mods.add(p);
+				} else {
+					out.println("- " + name + " - " + ver);
+				}
+			}
+			out.println("=================================");
+			out.println("--- Installed Mods ---");
+			for(Plugin p : mods) {
 				out.println("- " + p.getName() + " - " + p.getDescription().getVersion());
 			}
 			out.println("=================================");
