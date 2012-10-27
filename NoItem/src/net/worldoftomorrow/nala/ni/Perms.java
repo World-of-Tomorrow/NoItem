@@ -123,8 +123,9 @@ public enum Perms {
 	private String getItemName(int id, short data) {
 		if (CustomBlocks.isCustomBlock(id, data))
 			return CustomBlocks.getCustomBlock(id, data).getName();
-		if (Material.getMaterial(id) != null)
-			return Material.getMaterial(id).name().replace("_", "").toLowerCase();
+		Material mat = Material.getMaterial(id);
+		if (mat != null)
+			return mat.name().replace("_", "").toLowerCase();
 		return Integer.toString(id);
 	}
 }

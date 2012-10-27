@@ -54,8 +54,8 @@ public class StringHelper {
 		String x = Integer.toString(p.getLocation().getBlockX());
 		String y = Integer.toString(p.getLocation().getBlockY());
 		String z = Integer.toString(p.getLocation().getBlockZ());
-		if (Material.getMaterial(id) != null) {
-			Material mat = Material.getMaterial(id);
+		Material mat = Material.getMaterial(id);
+		if (mat != null) {
 			String name = mat.name().toLowerCase().replace("_", " ");
 			msg = msg.replace("%i", name);
 		} else {

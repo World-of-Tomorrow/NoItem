@@ -6,19 +6,18 @@ import org.bukkit.inventory.ItemStack;
 
 public class LoginTask implements Runnable {
 
-	Player p;
+	final Player p;
 
 	public LoginTask(Player p) {
 		this.p = p;
 	}
 
-	// @Override
 	public void run() {
 		World w = p.getWorld();
-		ItemStack stack = p.getItemInHand();
-		ItemStack drop = new ItemStack(stack);
-		p.getInventory().setItem(0, null); // Don't hardcode this after 1.3
-		w.dropItemNaturally(p.getLocation(), drop);
+		ItemStack stack = new ItemStack(p.getItemInHand());
+		int heldSlot = p.getInventory().getHeldItemSlot();
+		p.getInventory().setItem(heldSlot, null);
+		w.dropItemNaturally(p.getLocation(), stack);
 	}
 
 }
