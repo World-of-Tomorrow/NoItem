@@ -7,11 +7,6 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import net.worldoftomorrow.nala.ni.Items.Armor;
-import net.worldoftomorrow.nala.ni.Items.Cookable;
-import net.worldoftomorrow.nala.ni.Items.TekkitTools;
-import net.worldoftomorrow.nala.ni.Items.Tools;
-
 public class StringHelper {
 	public static String replaceVars(String msg, Player p, int id) {
 		String x = Integer.toString(p.getLocation().getBlockX());
@@ -22,15 +17,7 @@ public class StringHelper {
 		msg = msg.replace("%x", x);
 		msg = msg.replace("%y", y);
 		msg = msg.replace("%z", z);
-		if (Tools.isTool(id)) {
-			msg = msg.replace("%i", Tools.getTool(id).getRealName());
-		} else if (Armor.isArmor(id)) {
-			msg = msg.replace("%i", Armor.getArmour(id).getRealName());
-		} else if (Cookable.isCookable(id)) {
-			msg = msg.replace("%i", Cookable.getItem(id).getRealName());
-		} else if (TekkitTools.isTekkitTool(id)) {
-			msg = msg.replace("%i", TekkitTools.getTool(id).getRealName());
-		} else if (Material.getMaterial(id) != null) {
+		if (Material.getMaterial(id) != null) {
 			Material mat = Material.getMaterial(id);
 			String name = mat.name().toLowerCase().replace("_", " ");
 			msg = msg.replace("%i", name);
@@ -67,17 +54,7 @@ public class StringHelper {
 		String x = Integer.toString(p.getLocation().getBlockX());
 		String y = Integer.toString(p.getLocation().getBlockY());
 		String z = Integer.toString(p.getLocation().getBlockZ());
-
-		if (Tools.isTool(id)) { // Check if it is a tool
-			msg = msg.replace("%i", Tools.getTool(id).getRealName());
-		} else if (Armor.isArmor(id)) { // Check if it is Armor
-			msg = msg.replace("%i", Armor.getArmour(id).getRealName());
-		} else if (Cookable.isCookable(id)) { // Check if it is a cookable item
-			msg = msg.replace("%i", Cookable.getItem(id).getRealName());
-		} else if (TekkitTools.isTekkitTool(id)) { // Check if it a known
-													// TekkitTool
-			msg = msg.replace("%i", TekkitTools.getTool(id).getRealName());
-		} else if (Material.getMaterial(id) != null) {
+		if (Material.getMaterial(id) != null) {
 			Material mat = Material.getMaterial(id);
 			String name = mat.name().toLowerCase().replace("_", " ");
 			msg = msg.replace("%i", name);

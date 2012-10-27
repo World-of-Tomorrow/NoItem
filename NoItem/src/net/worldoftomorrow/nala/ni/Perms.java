@@ -1,10 +1,5 @@
 package net.worldoftomorrow.nala.ni;
 
-import net.worldoftomorrow.nala.ni.Items.Armor;
-import net.worldoftomorrow.nala.ni.Items.Cookable;
-import net.worldoftomorrow.nala.ni.Items.TekkitTools;
-import net.worldoftomorrow.nala.ni.Items.Tools;
-
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -126,14 +121,6 @@ public enum Perms {
 	}
 	
 	private String getItemName(int id, short data) {
-		if (Tools.isTool(id))
-			return Tools.getTool(id).getName();
-		if (Armor.isArmor(id))
-			return Armor.getArmour(id).getName();
-		if (Cookable.isCookable(id))
-			return Cookable.getItem(id).getName();
-		if (TekkitTools.isTekkitTool(id))
-			return TekkitTools.getTool(id).getName();
 		if (CustomBlocks.isCustomBlock(id, data))
 			return CustomBlocks.getCustomBlock(id, data).getName();
 		if (Material.getMaterial(id) != null)
