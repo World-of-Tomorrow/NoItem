@@ -30,13 +30,22 @@ public enum Perms {
 		this.perm = perm;
 	}
 
-	private boolean check(Player p, String perm) {
+	private boolean check(Player p, String perm, boolean exempt) {
 		// Log.debug("Checking Perm: " + perm);
+		final boolean value;
 		if (Vault.vaultPerms) {
-			return Vault.has(p, perm);
+			value = Vault.has(p, perm);
 		} else {
-			return p.hasPermission(perm);
+			value = p.hasPermission(perm);
 		}
+		// If we are using the permissions as a white-list, return the opposite value.
+		// If we are using them as a blacklist, return the true value.
+		// Or if the permission is exempt, return the true value
+		return (!exempt && Config.getBoolean("PermsAsWhiteList")) ? !value : value;
+	}
+	
+	private boolean check(Player p, String perm) {
+		return this.check(p, perm, false);
 	}
 
 	public boolean has(Player p, ItemStack stack) {
@@ -75,24 +84,22 @@ public enum Perms {
 	}
 
 	public boolean has(Player p) {
-		if (!perm.equals(ADMIN.perm)
-				&& !perm.equals(ALLITEMS.perm)) {
+		if (!perm.equals(ADMIN.perm) && !perm.equals(ALLITEMS.perm)) {
 			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		} else {
-			return this.check(p, perm);
+			return this.check(p, perm, true);
 		}
 	}
 
 	public boolean has(Player p, String recipe) {
-		if (perm.equals(NOBREW.perm)
-				|| perm.equals(ONDEATH.perm)) {
-			if (Perms.ALLITEMS.has(p)) {
-				return false;
-			}
-			return this.check(p, perm + recipe);
+		if (perm.equals(NOBREW.perm)|| perm.equals(ONDEATH.perm)) {
+			
+			if (Perms.ALLITEMS.has(p)) return false;
+			final boolean value = this.check(p, perm + recipe);
+			// If is the ondeath permission & permissions are a white-list, return the opposite value.
+			return (perm.equals(ONDEATH.perm) && Config.getBoolean("PermsAsWhiteList")) ? !value : value;
 		} else {
-			throw new UnsupportedOperationException(
-					"Incorrect checking of a permission.");
+			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		}
 	}
 	
