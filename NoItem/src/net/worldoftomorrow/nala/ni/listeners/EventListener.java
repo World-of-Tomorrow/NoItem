@@ -189,7 +189,8 @@ public class EventListener implements Listener {
 	public void onBlockBreak(BlockBreakEvent event) {
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
-		if(Perms.NOBREAK.has(p, b)) {
+		// Null check for certain custom blocks that show null
+		if(b != null && Perms.NOBREAK.has(p, b)) {
 			event.setCancelled(true);
 			this.notify(p, EventTypes.BREAK, b);
 		}
@@ -207,7 +208,8 @@ public class EventListener implements Listener {
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
-		if(Perms.NOPLACE.has(p, b)) {
+		// Null check for certain custom blocks that show null
+		if(b != null && Perms.NOPLACE.has(p, b)) {
 			event.setCancelled(true);
 			this.notify(p, EventTypes.PLACE, b);
 		}

@@ -49,13 +49,10 @@ public class Config {
 
 	private void copyDefaultFile(boolean create) {
 		try {
-			if(create
-					&& !plugin.getDataFolder().mkdir()
-					&& !config.createNewFile()) {
+			if(create && !plugin.getDataFolder().mkdir() && !config.createNewFile()) {
 				Log.severe("Could not create configuration file!");
 			}
-			if(!create
-					&& plugin.getConfig().isSet("ConfigurationVersion")) {
+			if(!create && plugin.getConfig().isSet("ConfigurationVersion")) {
 				if(!config.delete() || !config.createNewFile())
 					Log.severe("Could not delete old configuration file.");
 			}
