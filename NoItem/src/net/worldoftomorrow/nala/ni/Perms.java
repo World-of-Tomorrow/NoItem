@@ -77,7 +77,8 @@ public enum Perms {
 			namePerm = perm + this.getItemName(mat.getId(), data);
 			numPerm = perm + mat.getId();
 		}
-		return this.check(p, namePerm)
+		return this.check(p, perm + "*")
+				|| this.check(p, namePerm)
 				|| this.check(p, numPerm)
 				|| this.check(p, allNamePerm)
 				|| this.check(p, allNumPerm);
@@ -93,9 +94,9 @@ public enum Perms {
 
 	public boolean has(Player p, String recipe) {
 		if (perm.equals(NOBREW.perm)|| perm.equals(ONDEATH.perm)) {
-			
-			if (Perms.ALLITEMS.has(p)) return false;
-			final boolean value = this.check(p, perm + recipe);
+
+			if (Perms.ALLITEMS.has(p) && !perm.equals(ONDEATH.perm)) return false;
+			final boolean value = this.check(p, perm + "*") || this.check(p, perm + recipe);
 			// If is the ondeath permission & permissions are a white-list, return the opposite value.
 			return (perm.equals(ONDEATH.perm) && Config.getBoolean("PermsAsWhiteList")) ? !value : value;
 		} else {
@@ -108,9 +109,10 @@ public enum Perms {
 			throw new UnsupportedOperationException("Incorrect checking of a permission.");
 		if(Perms.ALLITEMS.has(p))
 			return false;
+		String allperm = perm + "*";
 		String numperm = perm + enchantment + "." + item.getTypeId();
 		String nameperm = perm + enchantment + "." + this.getItemName(item);
-		return this.check(p, nameperm) || this.check(p, numperm);
+		return this.check(p, allperm) || this.check(p, nameperm) || this.check(p, numperm);
 	}
 
 	public boolean has(Player p, short data) {
@@ -120,7 +122,7 @@ public enum Perms {
 		}
 		if (Perms.ALLITEMS.has(p))
 			return false;
-		return this.check(p, perm + data);
+		return this.check(p, perm + "*") || this.check(p, perm + data);
 	}
 	
 	private String getItemName(ItemStack item) {
