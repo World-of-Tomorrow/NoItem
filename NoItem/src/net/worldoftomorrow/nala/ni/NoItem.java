@@ -59,10 +59,6 @@ public class NoItem extends JavaPlugin {
 		}
 	}
 
-	@Override
-	public void onDisable() {
-	}
-
 	public static NoItem getPlugin() {
 		return plugin;
 	}

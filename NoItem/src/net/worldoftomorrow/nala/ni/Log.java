@@ -7,7 +7,7 @@ public class Log {
 	private static Logger log = NoItem.getPlugin().getLogger();
 
 	public static void info(String s) {
-		log.log(Level.INFO, s);
+		log.info(s);
 	}
 
 	public static void severe(String s, Exception e) {
@@ -15,11 +15,11 @@ public class Log {
 	}
 
 	public static void severe(String s) {
-		log.log(Level.SEVERE, s);
+		log.severe(s);
 	}
 
 	public static void warn(String s) {
-		log.log(Level.WARNING, s);
+		log.warning(s);
 	}
 
 	public static void warn(String s, Exception e) {
@@ -27,15 +27,12 @@ public class Log {
 	}
 
 	public static void debug(String s) {
-		if (Config.getBoolean("Debugging")) {
-			log.log(Level.INFO, s);
-		}
+		if (Config.getBoolean("Debugging"))
+			log.info(s);
 	}
 
 	public static void debug(String s, Exception e) {
-		if (Config.getBoolean("Debugging")) {
-			log.log(Level.INFO, s);
-			e.printStackTrace();
-		}
+		if (Config.getBoolean("Debugging"))
+			log.log(Level.INFO, s, e);
 	}
 }
