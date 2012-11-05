@@ -332,7 +332,8 @@ public class EventListener implements Listener {
 							net.minecraft.server.ItemStack stack = new net.minecraft.server.ItemStack(item.getTypeId(), item.getAmount(), item.getDurability());
 							craftingInv.setItem(i, stack);
 						}
-						net.minecraft.server.ItemStack mcResult = CraftingManager.getInstance().craft(craftingInv);
+						//TODO: this is probably broken completely. I need to get the NMS World not Bukkit World; This also breaks new builds with Tekkit
+						net.minecraft.server.ItemStack mcResult = CraftingManager.getInstance().craft(craftingInv, null);
 						if(mcResult == null) break;
 						ItemStack result = new ItemStack(mcResult.id, 1, (short) mcResult.getData());
 						if (Perms.NOCRAFT.has(p, result)) {
