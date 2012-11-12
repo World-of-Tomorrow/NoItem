@@ -26,7 +26,7 @@ public class NoItem extends JavaPlugin {
 
 	@Override
 	public void onEnable() {
-		plugin = this;
+		setupStatic(this);
 		this.config = new Config(this);
 		new CustomBlockLoader(this).load();
 		this.vault = new Vault(this);
@@ -57,6 +57,10 @@ public class NoItem extends JavaPlugin {
 		} catch (IOException ex) {
 			Log.severe("Failed to start metrics!");
 		}
+	}
+	
+	private static void setupStatic(NoItem plugin) {
+		NoItem.plugin = plugin;
 	}
 
 	public static NoItem getPlugin() {
