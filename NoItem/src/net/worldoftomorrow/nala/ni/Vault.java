@@ -12,7 +12,7 @@ public class Vault {
 
 	public Vault(NoItem plugin) {
 		this.plugin = plugin;
-		vaultPerms = this.setupPerms();
+		setVaultPerms(this.setupPerms());
 	}
 
 	private static Permission permission = null;
@@ -32,6 +32,10 @@ public class Vault {
 		return permission != null;
 	}
 
+	private static void setVaultPerms(boolean val) {
+		vaultPerms = val;
+	}
+	
 	protected static boolean has(Player p, String perm) {
 		return permission.has(p, perm);
 	}
