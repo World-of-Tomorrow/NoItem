@@ -56,6 +56,11 @@ public enum Perms {
 		return this.has(p, b.getType(), b.getData());
 	}
 
+    // Returns true only if a permission is defined and explicitly set to false rather than not set and false by default
+    public boolean checkFalse(Player p, String perm) {
+        return p.isPermissionSet(perm) && !check(p, perm, true);
+    }
+
 	public boolean has(Player p, Material mat, short data) {
 		if (perm.equals(ADMIN.perm)
 				|| perm.equals(ALLITEMS.perm)
@@ -77,11 +82,23 @@ public enum Perms {
 			namePerm = perm + this.getItemName(mat.getId(), data);
 			numPerm = perm + mat.getId();
 		}
-		return this.check(p, perm + "*")
-				|| this.check(p, namePerm)
-				|| this.check(p, numPerm)
-				|| this.check(p, allNamePerm)
-				|| this.check(p, allNumPerm);
+
+        // Have we got a name or num node explicitly defined to false as an override of a more general case?
+        if (checkFalse(p, namePerm) || checkFalse(p, numPerm)) {
+            return Config.getBoolean("PermsAsWhiteList");
+        } else if (check(p, namePerm, true) || check(p, numPerm, true)) { // What about explicitly disallowing?
+            return !Config.getBoolean("PermsAsWhiteList");
+        }
+
+        // Lets try for the more general .all case
+        if (checkFalse(p, allNamePerm) || checkFalse(p, allNumPerm)) {
+            return Config.getBoolean("PermsAsWhiteList");
+        } else if (check(p, allNamePerm, true) || check(p, allNumPerm, true)) {
+            return !Config.getBoolean("PermsAsWhiteList");
+        }
+
+        // No nodes set explicitly, lets try the wildcard node.
+        return this.check(p, perm + "*");
 	}
 
 	public boolean has(Player p) {

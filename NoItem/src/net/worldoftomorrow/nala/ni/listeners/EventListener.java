@@ -378,7 +378,7 @@ public class EventListener implements Listener {
 		//NoHave handling
 		if(current != null && Perms.NOHAVE.has(p, current)) {
 			this.notify(p, EventTypes.HAVE, current);
-			p.getInventory().remove(current.getType());
+			p.getInventory().remove(current);
 		}
 	}
 	
@@ -434,8 +434,8 @@ public class EventListener implements Listener {
 			}
 			if(Perms.NOHAVE.has(p, notAllowed)) {
 				this.notify(p, EventTypes.HAVE, notAllowed);
-				p.getInventory().remove(notAllowed.getType());
-			}
+                p.getInventory().remove(notAllowed);
+            }
 		}
 	}
 	
@@ -498,7 +498,7 @@ public class EventListener implements Listener {
 		if(inHand != null && Perms.NOHAVE.has(p, inHand)) {
 			event.setCancelled(true);
 			this.notify(p, EventTypes.HAVE, inHand);
-			p.getInventory().remove(inHand.getType());
+			p.getInventory().remove(inHand);
 		}
 	}
 	
