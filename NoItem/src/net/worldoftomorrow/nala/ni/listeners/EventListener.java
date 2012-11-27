@@ -293,6 +293,7 @@ public class EventListener implements Listener {
 						if(item != null && Perms.NOBREW.has(p, item.getDurability() + "." + current.getTypeId())) {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.BREW, item.getDurability() + "." + current.getTypeId());
+							break;
 						}
 					}
 				}
