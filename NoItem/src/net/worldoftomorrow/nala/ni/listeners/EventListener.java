@@ -250,6 +250,7 @@ public class EventListener implements Listener {
 			}
 			break;
 		case BREWING:
+			// Ingredient slot
 			if(rs == 3 && oncur != null) {
 				for(ItemStack item : inv.getContents()) {
 					if(item != null) {
@@ -261,6 +262,7 @@ public class EventListener implements Listener {
 						}
 					}
 				}
+			// Potion Slots
 			} else if (rs < 3 && rs >= 0) {
 				ItemStack ing = inv.getItem(3);
 				if(ing != null && oncur != null) {
@@ -269,6 +271,29 @@ public class EventListener implements Listener {
 					if (Perms.NOBREW.has(p, dv + "." + id)) {
 						event.setCancelled(true);
 						this.notify(p, EventTypes.BREW, dv + ":" + id);
+					}
+				}
+			// Inventory Slot (shift clicking)
+			} else if (event.isShiftClick() && current != null) {
+				ItemStack ing = inv.getItem(3);
+				if(current.getType() == Material.POTION && ing != null) {
+					ItemStack item;
+					for(int i = 0; i < 3; i++) {
+						item = view.getItem(i);
+						if(item == null && Perms.NOBREW.has(p, ing.getDurability() + "." + current.getTypeId())) {
+							event.setCancelled(true);
+							this.notify(p, EventTypes.BREW, ing.getDurability() + "." + current.getTypeId());
+							break;
+						}
+					}
+				} else if (ing == null && current.getType() != Material.POTION) {
+					ItemStack item;
+					for(int i = 0; i < 3; i++) {
+						item = view.getItem(i);
+						if(item != null && Perms.NOBREW.has(p, item.getDurability() + "." + current.getTypeId())) {
+							event.setCancelled(true);
+							this.notify(p, EventTypes.BREW, item.getDurability() + "." + current.getTypeId());
+						}
 					}
 				}
 			}
