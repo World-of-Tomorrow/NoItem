@@ -78,7 +78,7 @@ public class EventListener implements Listener {
 		Player p = event.getPlayer();
 		ItemStack inhand = p.getItemInHand();
 		BukkitScheduler scheduler = plugin.getServer().getScheduler();
-		if (Perms.NOHOLD.has(p, inhand)) {
+		if (inhand.getType() != Material.AIR && Perms.NOHOLD.has(p, inhand)) {
 			scheduler.scheduleSyncDelayedTask(plugin, new LoginTask(p), 60L);
 		}
 	}
@@ -244,6 +244,9 @@ public class EventListener implements Listener {
 					event.setCancelled(true);
 					this.notify(p, EventTypes.WEAR, oncur);
 				}
+			} else if (event.isShiftClick() && current != null && Perms.NOWEAR.has(p, current)) {
+				event.setCancelled(true);
+				this.notify(p, EventTypes.WEAR, oncur);
 			}
 			break;
 		case BREWING:
