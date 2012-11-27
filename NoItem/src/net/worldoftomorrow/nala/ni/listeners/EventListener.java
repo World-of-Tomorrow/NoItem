@@ -280,17 +280,17 @@ public class EventListener implements Listener {
 					ItemStack item;
 					for(int i = 0; i < 3; i++) {
 						item = view.getItem(i);
-						if(item == null && Perms.NOBREW.has(p, ing.getDurability() + "." + current.getTypeId())) {
+						if(item.getType() == Material.AIR && Perms.NOBREW.has(p, ing.getDurability() + "." + current.getTypeId())) {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.BREW, ing.getDurability() + "." + current.getTypeId());
 							break;
 						}
 					}
-				} else if (ing == null && current.getType() != Material.POTION) {
+				} else if (ing.getType() == Material.AIR && current.getType() != Material.POTION) {
 					ItemStack item;
 					for(int i = 0; i < 3; i++) {
 						item = view.getItem(i);
-						if(item != null && Perms.NOBREW.has(p, item.getDurability() + "." + current.getTypeId())) {
+						if(item.getType() != Material.AIR && Perms.NOBREW.has(p, item.getDurability() + "." + current.getTypeId())) {
 							event.setCancelled(true);
 							this.notify(p, EventTypes.BREW, item.getDurability() + "." + current.getTypeId());
 							break;
