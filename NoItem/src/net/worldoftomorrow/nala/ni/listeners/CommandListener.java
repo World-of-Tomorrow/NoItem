@@ -10,6 +10,7 @@ import net.worldoftomorrow.nala.ni.NoItem;
 import net.worldoftomorrow.nala.ni.Perms;
 import net.worldoftomorrow.nala.ni.CustomItems.CustomBlockLoader;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -94,6 +95,22 @@ public class CommandListener implements CommandExecutor {
 					DebugDump.dump(plugin);
 				}
 					return true;
+			} else if (args.length > 0 && args[0].equalsIgnoreCase("check")) {
+				// If a player is not specified check them all
+				if(args.length > 1) {
+					for(int i = 1; i <= args.length - 1; i++) {
+						Player p = Bukkit.getPlayer(args[i]);
+						if (p != null) {
+							//Check the players permissions
+						} else {
+							sender.sendMessage(ChatColor.RED + "[NI] Player \"" + args[i] + "\" not found.");
+						}
+					}
+					return true;
+				} else {
+					return true;
+					// Check the permissions of every player on the server.
+				}
 			} else {
 				return false;
 			}
@@ -102,5 +119,14 @@ public class CommandListener implements CommandExecutor {
 
 	public boolean isPlayer(CommandSender sender) {
 		return sender instanceof Player;
+	}
+	
+	/**
+	 * Checks permission of player vs inventory items
+	 * @param p
+	 * @return true if they are okay.
+	 */
+	private boolean permCheck(Player p) {
+		return false;
 	}
 }

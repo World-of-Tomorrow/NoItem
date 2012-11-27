@@ -34,11 +34,11 @@
 			<optional>false</optional>
 		</dependency>
 		<dependency>
-		<systemPath>${basedir}/depend/Tekkit.jar</systemPath>
-		<groupId>TechnicPack.Tekkit</groupId>
-		<version>1.0.0</version>
-		<artifactId>tekkit</artifactId>
-		<scope>system</scope>
+			<systemPath>${basedir}/depend/Tekkit.jar</systemPath>
+			<groupId>TechnicPack.Tekkit</groupId>
+			<version>1.0.0</version>
+			<artifactId>tekkit</artifactId>
+			<scope>system</scope>
 		</dependency>
 	</dependencies>
 	<build>

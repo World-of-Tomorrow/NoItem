@@ -47,6 +47,11 @@ public enum Perms {
 	private boolean check(Player p, String perm) {
 		return this.check(p, perm, false);
 	}
+	
+    // Returns true only if a permission is defined and explicitly set to false rather than not set and false by default
+    public boolean checkFalse(Player p, String perm) {
+        return p.isPermissionSet(perm) && !check(p, perm, true); 
+    }
 
 	public boolean has(Player p, ItemStack stack) {
 		return this.has(p, stack.getType(), stack.getDurability());
@@ -55,11 +60,6 @@ public enum Perms {
 	public boolean has(Player p, Block b) {
 		return this.has(p, b.getType(), b.getData());
 	}
-
-    // Returns true only if a permission is defined and explicitly set to false rather than not set and false by default
-    public boolean checkFalse(Player p, String perm) {
-        return p.isPermissionSet(perm) && !check(p, perm, true);
-    }
 
 	public boolean has(Player p, Material mat, short data) {
 		if (perm.equals(ADMIN.perm)
