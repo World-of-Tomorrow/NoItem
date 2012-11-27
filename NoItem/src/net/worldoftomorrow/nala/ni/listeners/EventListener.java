@@ -276,7 +276,7 @@ public class EventListener implements Listener {
 			// Inventory Slot (shift clicking)
 			} else if (event.isShiftClick() && current != null) {
 				ItemStack ing = inv.getItem(3);
-				if(current.getType() == Material.POTION && ing != null) {
+				if(current.getType() == Material.POTION && ing.getType() != Material.AIR) {
 					ItemStack item;
 					for(int i = 0; i < 3; i++) {
 						item = view.getItem(i);
