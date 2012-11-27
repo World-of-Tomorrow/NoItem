@@ -246,7 +246,7 @@ public class EventListener implements Listener {
 				}
 			} else if (event.isShiftClick() && current != null && Perms.NOWEAR.has(p, current)) {
 				event.setCancelled(true);
-				this.notify(p, EventTypes.WEAR, oncur);
+				this.notify(p, EventTypes.WEAR, current);
 			}
 			break;
 		case BREWING:
