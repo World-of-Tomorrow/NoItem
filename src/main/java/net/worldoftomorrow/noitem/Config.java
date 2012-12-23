@@ -42,10 +42,10 @@ public class Config {
 	
 	private void writeConfig() throws IOException {
 		// Use a short-circuit operator here so that both methods are always run
-		if(!config.delete() & !config.createNewFile()) {
+		if(!config.delete() && !config.createNewFile()) {
 			plugin.getLogger().severe("Could not create configuration file! - 002");
 		}
-		PrintWriter o = new PrintWriter(config);
+		PrintWriter o = new PrintWriter(config, "UTF-8");
 		o.write(messages.saveToString());
 		o.write(notify.saveToString());
 		o.write(misc.saveToString());

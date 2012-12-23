@@ -47,7 +47,7 @@ public abstract class YamlFile {
 					}
 				}
 				// Write the config file to the disk
-				PrintWriter o = new PrintWriter(file);
+				PrintWriter o = new PrintWriter(file, "UTF-8");
 				o.write(confile.saveToString());
 				o.close();
 				return confile;
