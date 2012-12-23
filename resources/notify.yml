@@ -1,0 +1,19 @@
+# #
+# Change these to true / false to set whether a player should be notified if an action is not allowed.
+# #
+Notify:
+  NoEnchant: true
+  NoCook: true
+  Admins: false
+  NoUse: true
+  NoWear: true
+  NoCraft: true
+  NoDrink: true
+  NoPlace: true
+  NoHave: true
+  NoBreak: true
+  NoOpen: true
+  NoHold: true
+  NoPickup: true
+  NoBrew: true
+  NoDrop: true
