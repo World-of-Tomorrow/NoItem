@@ -1,9 +1,0 @@
-# 
-# #####################
-# ### Miscellaneous ###
-# #####################
-# 
-PermsAsWhiteList: false
-Debugging: false
-CheckForUpdates: true
-Auto-Download-Updates: false
