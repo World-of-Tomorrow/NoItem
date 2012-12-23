@@ -58,7 +58,7 @@ public class Handlers {
 	
 	protected static void handleNoHoldPickup(PlayerPickupItemEvent event) {
 		ItemStack item = event.getItem().getItemStack();
-		Player p = event.getPlayer();
+		Player p = event.getPlayer();	
 		PlayerInventory inv = p.getInventory();
 		if(inv.firstEmpty() == inv.getHeldItemSlot() && NoItem.getPermsManager().has(p, Perm.HOLD, item)) {
 			Messenger.sendMessage(p, AlertType.HOLD, item);

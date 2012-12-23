@@ -49,7 +49,7 @@
 	
 	<build>
 		<defaultGoal>clean compile package</defaultGoal>
-		<sourceDirectory>${basedir}/src/</sourceDirectory>
+		<sourceDirectory>${basedir}/src/main/java/</sourceDirectory>
 		<resources>
 			<resource>
 				<includes>
