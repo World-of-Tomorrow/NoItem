@@ -4,3 +4,11 @@
 *.jar
 *.war
 *.ear
+
+# IDE / Maven Files #
+/.classpath
+
+/.project
+/.settings/
+/bin
+/target
