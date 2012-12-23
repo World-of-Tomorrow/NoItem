@@ -1,0 +1,13 @@
+name: NoItem
+version: ${project.version}-${BUILD_NUMBER}
+website: http://dev.bukkit.org/server-mods/noitem/
+description: An advanced item control plugin which also supports custom blocks.
+authors: [nala3]
+
+main: net.worldoftomorrow.noitem.NoItem
+database: false
+
+commands:
+    noitem:
+        description: NoItems only command, used to reload the config or claim items
+        usage: /noitem [reload|claim]
