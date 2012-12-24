@@ -57,6 +57,7 @@ public class PermMan {
 	 * @return
 	 */
 	private boolean check(Player p, Permission[] perm) {
+		if(p.isOp()) return false;
 		if(permSetFalse(p, perm[0]) || permSetFalse(p, perm[1])) {
 			return false;
 		} else if(p.hasPermission(perm[0]) || p.hasPermission(perm[1]) || p.hasPermission(perm[3])) {
