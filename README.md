@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # NoItem #
 ## Description ##
 <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NoItem was originally created just to stop players from crafting certain items, but it has gained many new features since then 
@@ -54,7 +53,3 @@ is great however for Role-Playing servers though. Say you only want miners to be
 <tr><td>cobblestone</td>            <td>goldore</td>                        </tr>
 <tr><td>ironore</td>                <td></td>                               </tr>
 </table>
-=======
-NoItem-Dev
-==========
->>>>>>> origin/production
