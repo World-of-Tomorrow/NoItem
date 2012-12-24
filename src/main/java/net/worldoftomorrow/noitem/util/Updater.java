@@ -229,8 +229,8 @@ public class Updater {
 	 * Save an update from dev.bukkit.org into the server's update folder.
 	 */
 	private void saveFile(File folder, String file, String u) {
-		if (!folder.exists()) {
-			folder.mkdir();
+		if (!folder.exists() && !folder.mkdir()) {
+			plugin.getLogger().severe("Could not save update!");
 		}
 		BufferedInputStream in = null;
 		FileOutputStream fout = null;
@@ -251,17 +251,15 @@ public class Updater {
 				downloaded += count;
 				fout.write(data, 0, count);
 				int percent = (int) (downloaded * 100 / fileLength);
-				if (announce & (percent % 10 == 0)) {
-					plugin.getLogger().info(
-							"Downloading update: " + percent + "% of "
-									+ fileLength + " bytes.");
+				if (announce && (percent % 10 == 0)) {
+					plugin.getLogger().info("Downloading update: " + percent + "% of " + fileLength + " bytes.");
 				}
 			}
 			// Just a quick check to make sure we didn't leave any files from
 			// last time...
 			for (File xFile : new File("plugins/" + updateFolder).listFiles()) {
-				if (xFile.getName().endsWith(".zip")) {
-					xFile.delete();
+				if (xFile.getName().endsWith(".zip") && !xFile.delete()) {
+					plugin.getLogger().warning("Could not delete zip file! Try deleting it manually.");
 				}
 			}
 			// Check to see if it's a zip file, if it is, unzip it.
@@ -272,10 +270,8 @@ public class Updater {
 			}
 			if (announce)
 				plugin.getLogger().info("Finished updating.");
-		} catch (Exception ex) {
-			plugin.getLogger()
-					.warning(
-							"The auto-updater tried to download a new update, but was unsuccessful.");
+		} catch (IOException ex) {
+			plugin.getLogger().warning("The auto-updater tried to download a new update, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DOWNLOAD;
 		} finally {
 			try {
@@ -306,14 +302,11 @@ public class Updater {
 				if (entry.isDirectory()) {
 					continue;
 				} else {
-					BufferedInputStream bis = new BufferedInputStream(
-							zipFile.getInputStream(entry));
+					BufferedInputStream bis = new BufferedInputStream(zipFile.getInputStream(entry));
 					int b;
 					byte buffer[] = new byte[BYTE_SIZE];
-					FileOutputStream fos = new FileOutputStream(
-							destinationFilePath);
-					BufferedOutputStream bos = new BufferedOutputStream(fos,
-							BYTE_SIZE);
+					FileOutputStream fos = new FileOutputStream(destinationFilePath);
+					BufferedOutputStream bos = new BufferedOutputStream(fos, BYTE_SIZE);
 					while ((b = bis.read(buffer, 0, BYTE_SIZE)) != -1) {
 						bos.write(buffer, 0, b);
 					}
@@ -322,8 +315,7 @@ public class Updater {
 					bis.close();
 					String name = destinationFilePath.getName();
 					if (name.endsWith(".jar") && pluginFile(name)) {
-						destinationFilePath.renameTo(new File("plugins/"
-								+ updateFolder + "/" + name));
+						destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name));
 					}
 				}
 				entry = null;
@@ -337,20 +329,11 @@ public class Updater {
 			for (File dFile : new File(zipPath).listFiles()) {
 				if (dFile.isDirectory()) {
 					if (pluginFile(dFile.getName())) {
-						File oFile = new File("plugins/" + dFile.getName()); // Get
-																				// current
-																				// dir
-						File[] contents = oFile.listFiles(); // List of existing
-																// files in the
-																// current dir
-						for (File cFile : dFile.listFiles()) // Loop through all
-																// the files in
-																// the new dir
-						{
+						File oFile = new File("plugins/" + dFile.getName());
+						File[] contents = oFile.listFiles();
+						for (File cFile : dFile.listFiles()) {
 							boolean found = false;
-							for (File xFile : contents) // Loop through contents
-														// to see if it exists
-							{
+							for (File xFile : contents) {
 								if (xFile.getName().equals(cFile.getName())) {
 									found = true;
 									break;
@@ -358,14 +341,10 @@ public class Updater {
 							}
 							if (!found) {
 								// Move the new file into the current dir
-								cFile.renameTo(new File(oFile
-										.getCanonicalFile()
-										+ "/"
-										+ cFile.getName()));
-							} else {
-								// This file already exists, so we don't need it
-								// anymore.
-								cFile.delete();
+								cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()));
+							} else if (!cFile.delete()){
+								// This file already exists, so we don't need it anymore.
+								plugin.getLogger().warning("Could not delete a ");
 							}
 						}
 					}
@@ -406,8 +385,7 @@ public class Updater {
 			// Open a connection to the page
 			URL url = new URL(link);
 			URLConnection urlConn = url.openConnection();
-			InputStreamReader inStream = new InputStreamReader(
-					urlConn.getInputStream());
+			InputStreamReader inStream = new InputStreamReader(urlConn.getInputStream(), "UTF-8");
 			BufferedReader buff = new BufferedReader(inStream);
 
 			int counter = 0;
@@ -454,12 +432,7 @@ public class Updater {
 		if (type != UpdateType.NO_VERSION_CHECK) {
 			String version = plugin.getDescription().getVersion();
 			if (title.split(" v").length == 2) {
-				String remoteVersion = title.split(" v")[1].split(" ")[0]; // Get
-																			// the
-																			// newest
-																			// file's
-																			// version
-																			// number
+				String remoteVersion = title.split(" v")[1].split(" ")[0];
 				int remVer = -1, curVer = 0;
 				try {
 					remVer = calVer(remoteVersion);
@@ -476,14 +449,9 @@ public class Updater {
 				}
 			} else {
 				// The file's name did not contain the string 'vVersion'
-				plugin.getLogger()
-						.warning(
-								"The author of this plugin has misconfigured their Auto Update system");
-				plugin.getLogger()
-						.warning(
-								"Files uploaded to BukkitDev should contain the version number, seperated from the name by a 'v', such as PluginName v1.0");
-				plugin.getLogger().warning(
-						"Please notify the author ("
+				plugin.getLogger().warning("The author of this plugin has misconfigured their Auto Update system");
+				plugin.getLogger().warning("Files uploaded to BukkitDev should contain the version number, seperated from the name by a 'v', such as PluginName v1.0");
+				plugin.getLogger().warning("Please notify the author ("
 								+ plugin.getDescription().getAuthors().get(0)
 								+ ") of this error.");
 				result = Updater.UpdateResult.FAIL_NOVERSION;
