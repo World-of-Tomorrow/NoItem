@@ -10,10 +10,10 @@ public final class VaultHook {
 	protected static boolean loaded;
 	
 	public VaultHook() {
-		loaded = setupPermissions();
+		setupPermissions();
 	}
 
-	private static boolean setupPermissions() {
+	private static void setupPermissions() {
 		try {
 			RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(
 							net.milkbowl.vault.permission.Permission.class);
@@ -22,8 +22,8 @@ public final class VaultHook {
 			}
 		} catch (NoClassDefFoundError e) {
 			// Do nothing, vault just isn't loaded.
-			return false;
+			loaded = false;
 		}
-		return (permission != null);
+		loaded = (permission != null);
 	}
 }
