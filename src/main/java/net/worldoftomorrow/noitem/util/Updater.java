@@ -367,7 +367,9 @@ public class Updater {
 			plugin.getLogger().warning("The auto-updater tried to unzip a new update file, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DOWNLOAD;
 		}
-		new File(file).delete();
+		if(!new File(file).delete()) {
+			plugin.getLogger().severe("Could not delete the file 'file'.");
+		}
 	}
 
 	/**
