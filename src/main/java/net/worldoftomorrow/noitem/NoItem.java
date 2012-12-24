@@ -1,9 +1,12 @@
 package net.worldoftomorrow.noitem;
 
+import java.io.IOException;
+
 import net.worldoftomorrow.noitem.events.Listeners;
 import net.worldoftomorrow.noitem.lists.Lists;
 import net.worldoftomorrow.noitem.permissions.PermMan;
 import net.worldoftomorrow.noitem.permissions.VaultHook;
+import net.worldoftomorrow.noitem.util.Metrics;
 import net.worldoftomorrow.noitem.util.Updater;
 
 import org.bukkit.plugin.PluginManager;
@@ -27,6 +30,11 @@ public class NoItem extends JavaPlugin {
 			new Updater(this, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
 		}
 		new VaultHook();
+		try {
+			new Metrics(this);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static NoItem getInstance() {
