@@ -64,6 +64,10 @@ public class PermMan {
 		}
 	}
 	
+	private boolean checkVault(Player p, Permission[] perm) {
+		return false;
+	}
+	
 	// Constructs an array of permissions with parents added
 	private Permission[] construct(String perm, Object o) {
 		if(perm.equals(Perm.ADMIN)
