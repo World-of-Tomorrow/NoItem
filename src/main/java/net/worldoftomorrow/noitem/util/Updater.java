@@ -345,7 +345,9 @@ public class Updater {
 							}
 							if (!found) {
 								// Move the new file into the current dir
-								cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()));
+								if(!cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()))) {
+									plugin.getLogger().severe("Could not rename cFile!");
+								}
 							} else if (!cFile.delete()){
 								// This file already exists, so we don't need it anymore.
 								plugin.getLogger().warning("Could not delete a file.");
@@ -357,8 +359,9 @@ public class Updater {
 					plugin.getLogger().severe("Could not delete dFile.");
 				}
 			}
-			new File(zipPath).delete();
-			fSourceZip.delete();
+			if(!new File(zipPath).delete() || !fSourceZip.delete()) {
+				plugin.getLogger().severe("Could not delete file 'zipPath' or 'fSourceZip'");
+			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
 			plugin.getLogger().warning("The auto-updater tried to unzip a new update file, but was unsuccessful.");
