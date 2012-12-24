@@ -1,5 +1,9 @@
 package net.worldoftomorrow.noitem.events;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 import net.minecraft.server.v1_4_6.RecipesFurnace;
 import net.minecraft.server.v1_4_6.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
@@ -18,6 +22,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -27,11 +33,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class Handlers {
+public final class Handlers {
+	
+	private static final Map<String, ArrayList<ItemStack>> playerItems = new HashMap<String, ArrayList<ItemStack>>();
 
 	// Begin - PlayerPickupItemEvent //
 	protected static void handleItemPickup(PlayerPickupItemEvent event) {
@@ -351,6 +360,42 @@ public class Handlers {
 		}
 	}
 	// End - CraftItemEvent //
+	
+	// Start - PlayerDeathEvent //
+	protected static void handlePlayerDeath(PlayerDeathEvent event) {
+		Player p = event.getEntity();
+		if(NoItem.getPermsManager().has(p, Perm.ONDEATH)) {
+			// Save a copy of the drops and map it to the players name
+			// TODO: Improve this to preserve item order and location.
+			Handlers.playerItems.put(p.getName(), new ArrayList<ItemStack>(event.getDrops()));
+			event.getDrops().clear(); // Clear the drops;
+		}
+	}
+	// End - PlayerDeathEvent //
+	
+	// Start - PlayerRespawnEvent //
+	protected static void handlePlayerSpawn(PlayerRespawnEvent event) {
+		Player p = event.getPlayer();
+		if(Handlers.playerItems.containsKey(p.getName())) {
+			for(ItemStack stack : playerItems.get(p.getName())) {
+				p.getInventory().addItem(stack);
+			}
+			Handlers.playerItems.remove(p.getName());
+		}
+	}
+	// End - PlayerRespawnEvent //
+	
+	// Start - EnchantItemEvent //
+	protected static void handleEnchantItem(EnchantItemEvent event) {
+		Player p = event.getEnchanter();
+		ItemStack item = event.getItem();
+		if(NoItem.getPermsManager().has(p, Perm.ENCHANT, item)) {
+			event.setCancelled(true);
+			Messenger.sendMessage(p, AlertType.ENCHANT, item);
+			Messenger.alertAdmins(p, AlertType.ENCHANT, item);
+		}
+	}
+	// End - EnchantItemEvent //
 	
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {

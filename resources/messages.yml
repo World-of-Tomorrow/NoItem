@@ -45,3 +45,4 @@ Messages:
   NoPlace: You are not allowed to place &4%i.
   NoBrew: You are not allowed to brew that potion! &4(%i)
   NoInteract: '&9You are not allowed to use a(n) &4%i&9!'
+  ItemsWaiting: You have items waiting to be claimed!

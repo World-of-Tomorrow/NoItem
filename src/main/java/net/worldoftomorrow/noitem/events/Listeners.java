@@ -1,19 +1,19 @@
 package net.worldoftomorrow.noitem.events;
 
-import net.worldoftomorrow.noitem.NoItem;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 
 public class Listeners implements Listener {
 	
@@ -69,9 +69,17 @@ public class Listeners implements Listener {
 	}
 	
 	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent event) {
-		if(event.getMessage().equalsIgnoreCase("#dumpitemlist")) {
-			NoItem.getInstance().getLogger().info(NoItem.getLists().getArmors().getConfig().getValues(true).toString());
-		}
+	public void onPlayerDeath(PlayerDeathEvent event) {
+		Handlers.handlePlayerDeath(event);
+	}
+	
+	@EventHandler
+	public void onPlayerRespawn(PlayerRespawnEvent event) {
+		Handlers.handlePlayerSpawn(event);
+	}
+	
+	@EventHandler
+	public void onItemEnchant(EnchantItemEvent event) {
+		Handlers.handleEnchantItem(event);
 	}
 }
