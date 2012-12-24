@@ -1,15 +1,13 @@
 package net.worldoftomorrow.noitem.events;
 
-import net.worldoftomorrow.noitem.NoItem;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -78,5 +76,10 @@ public class Listeners implements Listener {
 	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Handlers.handlePlayerSpawn(event);
+	}
+	
+	@EventHandler
+	public void onItemEnchant(EnchantItemEvent event) {
+		Handlers.handleEnchantItem(event);
 	}
 }

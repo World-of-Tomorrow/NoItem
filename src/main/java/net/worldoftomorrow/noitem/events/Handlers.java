@@ -22,6 +22,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -365,6 +366,7 @@ public final class Handlers {
 		Player p = event.getEntity();
 		if(NoItem.getPermsManager().has(p, Perm.ONDEATH)) {
 			// Save a copy of the drops and map it to the players name
+			// TODO: Improve this to preserve item order and location.
 			Handlers.playerItems.put(p.getName(), new ArrayList<ItemStack>(event.getDrops()));
 			event.getDrops().clear(); // Clear the drops;
 		}
@@ -382,6 +384,18 @@ public final class Handlers {
 		}
 	}
 	// End - PlayerRespawnEvent //
+	
+	// Start - EnchantItemEvent //
+	protected static void handleEnchantItem(EnchantItemEvent event) {
+		Player p = event.getEnchanter();
+		ItemStack item = event.getItem();
+		if(NoItem.getPermsManager().has(p, Perm.ENCHANT, item)) {
+			event.setCancelled(true);
+			Messenger.sendMessage(p, AlertType.ENCHANT, item);
+			Messenger.alertAdmins(p, AlertType.ENCHANT, item);
+		}
+	}
+	// End - EnchantItemEvent //
 	
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {
