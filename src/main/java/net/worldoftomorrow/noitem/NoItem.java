@@ -3,6 +3,7 @@ package net.worldoftomorrow.noitem;
 import net.worldoftomorrow.noitem.events.Listeners;
 import net.worldoftomorrow.noitem.lists.Lists;
 import net.worldoftomorrow.noitem.permissions.PermMan;
+import net.worldoftomorrow.noitem.permissions.VaultHook;
 import net.worldoftomorrow.noitem.util.Updater;
 
 import org.bukkit.plugin.PluginManager;
@@ -25,6 +26,7 @@ public class NoItem extends JavaPlugin {
 		} else if(Config.getBoolean("CheckForUpdates")) {
 			new Updater(this, this.getFile(), Updater.UpdateType.NO_DOWNLOAD, true);
 		}
+		new VaultHook();
 	}
 
 	public static NoItem getInstance() {
