@@ -1,5 +1,7 @@
 package net.worldoftomorrow.noitem.permissions;
 
+import java.util.Map.Entry;
+
 import net.worldoftomorrow.noitem.Config;
 import net.worldoftomorrow.noitem.util.Dbg;
 import net.worldoftomorrow.noitem.util.Messenger;
@@ -57,15 +59,34 @@ public class PermMan {
 	private boolean check(Player p, Permission[] perm) {
 		if(permSetFalse(p, perm[0]) || permSetFalse(p, perm[1])) {
 			return false;
-		} else if(p.hasPermission(perm[0]) || p.hasPermission(perm[1])) {
+		} else if(p.hasPermission(perm[0]) || p.hasPermission(perm[1]) || p.hasPermission(perm[3])) {
 			return true;
 		} else {
-			return p.hasPermission(perm[2]);
+			return checkVault(p, perm);
 		}
 	}
 	
-	private boolean checkVault(Player p, Permission[] perm) {
-		return false;
+	private boolean checkVault(Player p, Permission[] perms) {
+		// If vault is loaded
+		if(VaultHook.loaded) {
+			// Check each permission
+			for(Permission perm : perms) {
+				// If they have the main permission, return true
+				if(VaultHook.permission.has(p, perm.getName()))
+					return true;
+				// If they have any of the children permissions, return true
+				for(Entry<String, Boolean> entry : perm.getChildren().entrySet()) {
+					if(VaultHook.permission.has(p, entry.getKey())) {
+						return true;
+					}
+				}
+			}
+			// They do not have any of the permissions, return false.
+			return false;
+		} else {
+			// There is no vault loaded, return false.
+			return false;
+		}
 	}
 	
 	// Constructs an array of permissions with parents added

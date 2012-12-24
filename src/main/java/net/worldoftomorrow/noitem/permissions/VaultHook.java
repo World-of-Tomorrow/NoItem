@@ -14,10 +14,15 @@ public final class VaultHook {
 	}
 
 	private static boolean setupPermissions() {
-		RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(
-						net.milkbowl.vault.permission.Permission.class);
-		if (permissionProvider != null) {
-			permission = permissionProvider.getProvider();
+		try {
+			RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(
+							net.milkbowl.vault.permission.Permission.class);
+			if (permissionProvider != null) {
+				permission = permissionProvider.getProvider();
+			}
+		} catch (NoClassDefFoundError e) {
+			// Do nothing, vault just isn't loaded.
+			return false;
 		}
 		return (permission != null);
 	}

@@ -34,7 +34,7 @@ Messages:
   Admin: '&e%n &9tried to &c%t %i &9in world %w @ &a%x,%y,%z'
   NoDrop: You are not allowed to drop &4%i.
   NoBreak: You are not allowed to break &4%i.
-  NoEnchant: You are not allowed to use the enchantment &4%i
+  NoEnchant: You are not allowed to enchantment a &4%i
   NoPickup: You are not allowed to pick that up! &4(%i)
   NoCook: You are not allowed to cook &4%i&9.
   NoCraft: You are not allowed to craft &4%i&9.
