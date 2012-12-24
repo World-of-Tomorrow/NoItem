@@ -5,7 +5,7 @@ public class Perm {
 	public static final String CMD_RELOAD = "noitem.command.reload";
 	public static final String CMD_CHECK = "noitem.command.check";
 	public static final String ALLITEMS = "noitem.allitems";
-	public static final String ONDEATH = "noitem.ondeath.";
+	public static final String ONDEATH = "noitem.ondeath.keep";
 
 	public static final String CRAFT = "noitem.nocraft.";
 	public static final String PICKUP = "noitem.nopickup.";

@@ -1,5 +1,10 @@
 package net.worldoftomorrow.noitem.events;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import net.minecraft.server.v1_4_6.RecipesFurnace;
 import net.minecraft.server.v1_4_6.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
@@ -18,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -27,11 +33,14 @@ import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 
-public class Handlers {
+public final class Handlers {
+	
+	private static final Map<String, ArrayList<ItemStack>> playerItems = new HashMap<String, ArrayList<ItemStack>>();
 
 	// Begin - PlayerPickupItemEvent //
 	protected static void handleItemPickup(PlayerPickupItemEvent event) {
@@ -351,6 +360,26 @@ public class Handlers {
 		}
 	}
 	// End - CraftItemEvent //
+	
+	// Start - PlayerDeathEvent //
+	protected static void handlePlayerDeath(PlayerDeathEvent event) {
+		Player p = event.getEntity();
+		if(NoItem.getPermsManager().has(p, Perm.ONDEATH)) {
+			// Save a copy of the drops and map it to the players name
+			Handlers.playerItems.put(p.getName(), new ArrayList<ItemStack>(event.getDrops()));
+			event.getDrops().clear(); // Clear the drops;
+		}
+	}
+	// End - PlayerDeathEvent //
+	
+	// Start - PlayerRespawnEvent //
+	protected static void handlePlayerSpawn(PlayerRespawnEvent event) {
+		Player p = event.getPlayer();
+		if(Handlers.playerItems.containsKey(p.getName())) {
+			p.getInventory().addItem((ItemStack[]) playerItems.get(p.getName()).toArray());
+		}
+	}
+	// End - PlayerRespawnEvent //
 	
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {

@@ -415,9 +415,7 @@ public class Updater {
 			buff = null;
 		} catch (Exception ex) {
 			ex.printStackTrace();
-			plugin.getLogger()
-					.warning(
-							"The auto-updater tried to contact dev.bukkit.org, but was unsuccessful.");
+			plugin.getLogger().warning("The auto-updater tried to contact dev.bukkit.org, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DBO;
 			return null;
 		}
