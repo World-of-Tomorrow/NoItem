@@ -2,7 +2,6 @@ package net.worldoftomorrow.noitem.events;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import net.minecraft.server.v1_4_6.RecipesFurnace;
@@ -376,7 +375,10 @@ public final class Handlers {
 	protected static void handlePlayerSpawn(PlayerRespawnEvent event) {
 		Player p = event.getPlayer();
 		if(Handlers.playerItems.containsKey(p.getName())) {
-			p.getInventory().addItem((ItemStack[]) playerItems.get(p.getName()).toArray());
+			for(ItemStack stack : playerItems.get(p.getName())) {
+				p.getInventory().addItem(stack);
+			}
+			Handlers.playerItems.remove(p.getName());
 		}
 	}
 	// End - PlayerRespawnEvent //
