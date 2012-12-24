@@ -298,7 +298,9 @@ public class Updater {
 			while (e.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) e.nextElement();
 				File destinationFilePath = new File(zipPath, entry.getName());
-				destinationFilePath.getParentFile().mkdirs();
+				if(!destinationFilePath.getParentFile().mkdirs()) {
+					plugin.getLogger().severe("Could not create destination file path directorie(s)!");
+				}
 				if (entry.isDirectory()) {
 					continue;
 				} else {
@@ -315,7 +317,9 @@ public class Updater {
 					bis.close();
 					String name = destinationFilePath.getName();
 					if (name.endsWith(".jar") && pluginFile(name)) {
-						destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name));
+						if(!destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name))) {
+							plugin.getLogger().severe("Could not rename file! Uhh ohh!");
+						}
 					}
 				}
 				entry = null;
@@ -341,26 +345,31 @@ public class Updater {
 							}
 							if (!found) {
 								// Move the new file into the current dir
-								cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()));
+								if(!cFile.renameTo(new File(oFile.getCanonicalFile() + "/" + cFile.getName()))) {
+									plugin.getLogger().severe("Could not rename cFile!");
+								}
 							} else if (!cFile.delete()){
 								// This file already exists, so we don't need it anymore.
-								plugin.getLogger().warning("Could not delete a ");
+								plugin.getLogger().warning("Could not delete a file.");
 							}
 						}
 					}
 				}
-				dFile.delete();
+				if(!dFile.delete()) {
+					plugin.getLogger().severe("Could not delete dFile.");
+				}
 			}
-			new File(zipPath).delete();
-			fSourceZip.delete();
+			if(!new File(zipPath).delete() || !fSourceZip.delete()) {
+				plugin.getLogger().severe("Could not delete file 'zipPath' or 'fSourceZip'");
+			}
 		} catch (IOException ex) {
 			ex.printStackTrace();
-			plugin.getLogger()
-					.warning(
-							"The auto-updater tried to unzip a new update file, but was unsuccessful.");
+			plugin.getLogger().warning("The auto-updater tried to unzip a new update file, but was unsuccessful.");
 			result = Updater.UpdateResult.FAIL_DOWNLOAD;
 		}
-		new File(file).delete();
+		if(!new File(file).delete()) {
+			plugin.getLogger().severe("Could not delete the file 'file'.");
+		}
 	}
 
 	/**
@@ -395,8 +404,7 @@ public class Updater {
 				// Search for the download link
 				if (line.contains("<li class=\"user-action user-action-download\">")) {
 					// Get the raw link
-					download = line.split("<a href=\"")[1]
-							.split("\">Download</a>")[0];
+					download = line.split("<a href=\"")[1].split("\">Download</a>")[0];
 				}
 				// Search for size
 				else if (line.contains("<dt>Size</dt>")) {
@@ -428,9 +436,9 @@ public class Updater {
 	 */
 	private boolean versionCheck(String title) {
 		if (type != UpdateType.NO_VERSION_CHECK) {
-			String version = plugin.getDescription().getVersion();
-			if (title.split(" v").length == 2) {
-				String remoteVersion = title.split(" v")[1].split(" ")[0];
+			String version = plugin.getDescription().getVersion().split("-")[0];
+			if (title.contains("-")) {
+				String remoteVersion = title.split("-")[0].replace("v", "");
 				int remVer = -1, curVer = 0;
 				try {
 					remVer = calVer(remoteVersion);
@@ -438,10 +446,23 @@ public class Updater {
 				} catch (NumberFormatException nfe) {
 					remVer = -1;
 				}
-				if (hasTag(version) || version.equalsIgnoreCase(remoteVersion)
-						|| curVer >= remVer) {
+				if (hasTag(version) || version.equalsIgnoreCase(remoteVersion) || curVer >= remVer) {
 					// We already have the latest version, or this build is
 					// tagged for no-update
+					result = Updater.UpdateResult.NO_UPDATE;
+					return false;
+				}
+			} else if (title.matches("v[0-9]\\.[0-9]\\.[0-9]")) {
+				String remoteVersion = title.replace("v", "");
+				int remVer = -1, curVer = 0;
+				try {
+					remVer = calVer(remoteVersion);
+					curVer = calVer(version);
+				} catch (NumberFormatException e) {
+					remVer = -1;
+				}
+				if (hasTag(version) || version.equalsIgnoreCase(remoteVersion) || curVer >= remVer) {
+					// We already have the latest version, or this build is tagged for no-update
 					result = Updater.UpdateResult.NO_UPDATE;
 					return false;
 				}

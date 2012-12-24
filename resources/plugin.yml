@@ -6,6 +6,7 @@ authors: [nala3]
 
 main: net.worldoftomorrow.noitem.NoItem
 database: false
+softdepend: [Vault]
 
 commands:
     noitem:
