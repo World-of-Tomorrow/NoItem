@@ -60,7 +60,7 @@ public class PermMan {
 		if(p.isOp()) return false;
 		if(permSetFalse(p, perm[0]) || permSetFalse(p, perm[1])) {
 			return false;
-		} else if(p.hasPermission(perm[0]) || p.hasPermission(perm[1]) || p.hasPermission(perm[3])) {
+		} else if(p.hasPermission(perm[0]) || p.hasPermission(perm[1]) || p.hasPermission(perm[2])) {
 			return true;
 		} else {
 			return checkVault(p, perm);
