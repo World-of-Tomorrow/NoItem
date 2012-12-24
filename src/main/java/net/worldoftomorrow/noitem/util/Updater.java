@@ -298,7 +298,9 @@ public class Updater {
 			while (e.hasMoreElements()) {
 				ZipEntry entry = (ZipEntry) e.nextElement();
 				File destinationFilePath = new File(zipPath, entry.getName());
-				destinationFilePath.getParentFile().mkdirs();
+				if(!destinationFilePath.getParentFile().mkdirs()) {
+					plugin.getLogger().severe("Could not create destination file path directorie(s)!");
+				}
 				if (entry.isDirectory()) {
 					continue;
 				} else {
@@ -315,7 +317,9 @@ public class Updater {
 					bis.close();
 					String name = destinationFilePath.getName();
 					if (name.endsWith(".jar") && pluginFile(name)) {
-						destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name));
+						if(!destinationFilePath.renameTo(new File("plugins/" + updateFolder + "/" + name))) {
+							plugin.getLogger().severe("Could not rename file! Uhh ohh!");
+						}
 					}
 				}
 				entry = null;
@@ -349,7 +353,9 @@ public class Updater {
 						}
 					}
 				}
-				dFile.delete();
+				if(!dFile.delete()) {
+					plugin.getLogger().severe("Could not delete dFile.");
+				}
 			}
 			new File(zipPath).delete();
 			fSourceZip.delete();
