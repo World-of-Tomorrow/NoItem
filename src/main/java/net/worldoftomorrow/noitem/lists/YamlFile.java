@@ -27,6 +27,9 @@ public abstract class YamlFile {
 	private YamlConfiguration load() {
 		try {
 			// If the file does not exist, create it. Return null if it fails
+			if(!file.getParentFile().exists() && !file.getParentFile().mkdirs()) {
+				plugin.getLogger().severe("Could not create parent directory.");
+			}
 			if (!file.exists() && !file.createNewFile()) {
 				plugin.getLogger().severe("Could not create config file: " + file.getName());
 				return null;
