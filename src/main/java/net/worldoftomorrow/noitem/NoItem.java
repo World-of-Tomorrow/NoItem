@@ -31,7 +31,9 @@ public class NoItem extends JavaPlugin {
 		}
 		new VaultHook();
 		try {
-			new Metrics(this);
+			if(!new Metrics(this).start()) {
+				this.getLogger().warning("Could not start metrics!");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
