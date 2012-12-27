@@ -57,7 +57,7 @@ public class Tools extends YamlFile {
 	}
 	
 	public boolean isShear(ItemStack item) {
-		return isHoe(item.getTypeId());
+		return isShear(item.getTypeId());
 	}
 	
 	public boolean isShear(int id) {
