@@ -15,19 +15,20 @@ import org.bukkit.inventory.ItemStack;
 public class Messenger {
 	
 	public enum AlertType {
-		CRAFT(Config.getBoolean("Notify.NoCraft"), Config.getString("Messages.NoCraft")),
-		BREW(Config.getBoolean("Notify.NoBrew"), Config.getString("Messages.NoBrew")),
-		WEAR(Config.getBoolean("Notify.NoWear"), Config.getString("Messages.NoWear")),
-		PICK_UP(Config.getBoolean("Notify.NoPickup"), Config.getString("Messages.NoPickup")),
-		DROP(Config.getBoolean("Notify.NoDrop"), Config.getString("Messages.NoDrop")),
-		INTERACT(Config.getBoolean("Notify.NoInteract"), Config.getString("Messages.NoInteract")),
-		HOLD(Config.getBoolean("Notify.NoHold"), Config.getString("Messages.NoHold")),
-		COOK(Config.getBoolean("Notify.NoCook"), Config.getString("Messages.NoCook")),
-		BREAK(Config.getBoolean("Notify.NoBreak"), Config.getString("Messages.NoBreak")),
-		PLACE(Config.getBoolean("Notify.NoPlace"), Config.getString("Messages.NoPlace")),
-		OPEN(Config.getBoolean("Notify.NoOpen"), Config.getString("Messages.NoOpen")),
-		HAVE(Config.getBoolean("Notify.NoHave"), Config.getString("Messages.NoHave")),
-		ENCHANT(Config.getBoolean("NoEnchant"), Config.getString("Messages.NoEnchant"));
+		CRAFT(Config.getBoolean("Notify.Craft"), Config.getString("Messages.Craft")),
+		BREW(Config.getBoolean("Notify.Brew"), Config.getString("Messages.Brew")),
+		WEAR(Config.getBoolean("Notify.Wear"), Config.getString("Messages.Wear")),
+		PICK_UP(Config.getBoolean("Notify.Pickup"), Config.getString("Messages.Pickup")),
+		DROP(Config.getBoolean("Notify.Drop"), Config.getString("Messages.Drop")),
+		INTERACT(Config.getBoolean("Notify.Interact"), Config.getString("Messages.Interact")),
+		HOLD(Config.getBoolean("Notify.Hold"), Config.getString("Messages.Hold")),
+		COOK(Config.getBoolean("Notify.Cook"), Config.getString("Messages.Cook")),
+		BREAK(Config.getBoolean("Notify.Break"), Config.getString("Messages.Break")),
+		PLACE(Config.getBoolean("Notify.Place"), Config.getString("Messages.Place")),
+		OPEN(Config.getBoolean("Notify.Open"), Config.getString("Messages.Open")),
+		HAVE(Config.getBoolean("Notify.Have"), Config.getString("Messages.Have")),
+		ENCHANT(Config.getBoolean("Notify.Enchant"), Config.getString("Messages.Enchant")),
+		USE(Config.getBoolean("Notify.Use"), Config.getString("Messages.Use"));
 		
 		public final boolean notify;
 		public final String message;
@@ -98,6 +99,6 @@ public class Messenger {
 	}
 	
 	public static String getEntityName(Entity e) {
-		return e.getType().getName().toLowerCase().replace("_", "");
+		return e.getType().getName().replace("_", "").toLowerCase();
 	}
 }
