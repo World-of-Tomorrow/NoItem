@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 
 public class Listeners implements Listener {
 	
@@ -38,11 +40,14 @@ public class Listeners implements Listener {
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Handlers.handleInteract(event);
 		Handlers.handlerInteractLR(event);
+		Handlers.handleLRUseInteract(event);
+		Handlers.handleUseInteract(event);
 	}
 	
 	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		Handlers.handleInteractEntity(event);
+		Handlers.handleUseInteractEntity(event);
 	}
 	
 	@EventHandler
@@ -81,5 +86,15 @@ public class Listeners implements Listener {
 	@EventHandler
 	public void onItemEnchant(EnchantItemEvent event) {
 		Handlers.handleEnchantItem(event);
+	}
+	
+	@EventHandler
+	public void onEntityDamageEntity(EntityDamageByEntityEvent event) {
+		Handlers.handlePlayerDamageEntity(event);
+	}
+	
+	@EventHandler
+	public void onPlayerShearEntity(PlayerShearEntityEvent event) {
+		Handlers.handlePlayerShearEntity(event);
 	}
 }

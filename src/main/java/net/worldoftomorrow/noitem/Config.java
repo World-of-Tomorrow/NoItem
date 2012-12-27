@@ -6,7 +6,6 @@ import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Map.Entry;
 
-
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class Config {
@@ -50,6 +49,7 @@ public class Config {
 		o.write(notify.saveToString());
 		o.write(misc.saveToString());
 		o.close();
+		NoItem.getInstance().reloadConfig();
 	}
 	
 	private void setUserValues() {
@@ -59,9 +59,10 @@ public class Config {
 		for(Entry<String, Object> entry : vals.entrySet()) {
 			key = entry.getKey();
 			// Update the individual sections values
-			if(key.startsWith("Messages") && messages.isSet(key)) {
+			// Make sure to add the period, that way the base section does not overwrite the individual options.
+			if(key.startsWith("Messages.") && messages.isSet(key)) {
 				messages.set(key, entry.getValue());
-			} else if (key.startsWith("Notify") && notify.isSet(key)) {
+			} else if (key.startsWith("Notify.") && notify.isSet(key)) {
 				notify.set(key, entry.getValue());
 			} else if(misc.isSet(key)){
 				this.misc.set(key, entry.getValue());
