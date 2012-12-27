@@ -56,7 +56,7 @@ public class Messenger {
 	}
 	
 	private static String parseMsg(Player offender, String msg, Object o) {
-		msg = msg.replace("%n", offender.getDisplayName());
+		msg = msg.replace("%n", offender.getName());
 		msg = msg.replace("%w", offender.getWorld().getName());
 		msg = msg.replace("%x", String.valueOf(offender.getLocation().getBlockX()));
 		msg = msg.replace("%y", String.valueOf(offender.getLocation().getBlockY()));
