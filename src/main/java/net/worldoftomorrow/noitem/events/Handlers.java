@@ -8,7 +8,6 @@ import net.minecraft.server.v1_4_6.RecipesFurnace;
 import net.minecraft.server.v1_4_6.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
 import net.worldoftomorrow.noitem.permissions.Perm;
-import net.worldoftomorrow.noitem.util.Dbg;
 import net.worldoftomorrow.noitem.util.InvUtil;
 import net.worldoftomorrow.noitem.util.Messenger;
 import net.worldoftomorrow.noitem.util.Messenger.AlertType;
@@ -470,7 +469,6 @@ public final class Handlers {
 		ItemStack inHand = p.getItemInHand();
 		// We can skip a tool check here, we already know they must be using shears
 		if(NoItem.getPermsManager().has(p, Perm.USE, inHand) || NoItem.getPermsManager().has(p, Perm.USE_R, inHand)) {
-			Dbg.$("Shear Entity");
 			event.setCancelled(true);
 			Messenger.sendMessage(p, AlertType.USE, inHand);
 			Messenger.alertAdmins(p, AlertType.USE, inHand);
