@@ -8,6 +8,7 @@ import net.minecraft.server.v1_4_6.RecipesFurnace;
 import net.minecraft.server.v1_4_6.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
 import net.worldoftomorrow.noitem.permissions.Perm;
+import net.worldoftomorrow.noitem.util.Dbg;
 import net.worldoftomorrow.noitem.util.InvUtil;
 import net.worldoftomorrow.noitem.util.Messenger;
 import net.worldoftomorrow.noitem.util.Messenger.AlertType;
@@ -35,6 +36,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
+import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -153,7 +155,7 @@ public final class Handlers {
 	protected static void handleLRUseInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
-		if(event.getAction() == Action.RIGHT_CLICK_AIR ||  event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+		if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
 			if(NoItem.getLists().isTool(inHand) && NoItem.getPermsManager().has(p, Perm.USE_R, inHand)) {
 				event.setCancelled(true);
 				Messenger.sendMessage(p, AlertType.USE, inHand);
@@ -172,6 +174,9 @@ public final class Handlers {
 	protected static void handleUseInteract(PlayerInteractEvent event) {
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
+		// If it is an interaction with air, skip any checks for efficiency
+		if(event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_AIR)
+			return;
 		if(NoItem.getLists().isTool(inHand) && NoItem.getPermsManager().has(p, Perm.USE, inHand)) {
 			event.setCancelled(true);
 			Messenger.sendMessage(p, AlertType.USE, inHand);
@@ -193,9 +198,10 @@ public final class Handlers {
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		// Check right click and normal nodes.
+		// Shears are handled separately 
 		if(NoItem.getLists().isTool(inHand)
-				&& (NoItem.getPermsManager().has(p, Perm.USE, inHand)
-						|| NoItem.getPermsManager().has(p, Perm.USE_R, inHand))) {
+				&& !NoItem.getLists().getTools().isShear(inHand)
+				&& (NoItem.getPermsManager().has(p, Perm.USE, inHand))) {
 			event.setCancelled(true);
 			Messenger.sendMessage(p, AlertType.USE, inHand);
 			Messenger.alertAdmins(p, AlertType.USE, inHand);
@@ -457,6 +463,19 @@ public final class Handlers {
 		}
 	}
 	// End - PlayerDamageEntityEvent //
+	
+	// Start PlayerShearEntityEvent //
+	protected static void handlePlayerShearEntity(PlayerShearEntityEvent event) {
+		Player p = event.getPlayer();
+		ItemStack inHand = p.getItemInHand();
+		// We can skip a tool check here, we already know they must be using shears
+		if(NoItem.getPermsManager().has(p, Perm.USE, inHand) || NoItem.getPermsManager().has(p, Perm.USE_R, inHand)) {
+			Dbg.$("Shear Entity");
+			event.setCancelled(true);
+			Messenger.sendMessage(p, AlertType.USE, inHand);
+			Messenger.alertAdmins(p, AlertType.USE, inHand);
+		}
+	}
 	
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {
