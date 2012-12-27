@@ -24,4 +24,7 @@ public class Perm {
 	public static final String OPEN = "noitem.noopen.";
 	public static final String HAVE = "noitem.nohave.";
 	public static final String ENCHANT = "noitem.noenchant.";
+	public static final String USE = "noitem.nouse.";
+	public static final String USE_L = "noitem.nouse.left.";
+	public static final String USE_R = "noitem.nouse.right.";
 }

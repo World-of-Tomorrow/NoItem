@@ -23,6 +23,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.enchantment.EnchantItemEvent;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.CraftItemEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -148,14 +149,56 @@ public final class Handlers {
 			}
 		}
 	}
+	
+	protected static void handleLRUseInteract(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		ItemStack inHand = p.getItemInHand();
+		if(event.getAction() == Action.RIGHT_CLICK_AIR ||  event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+			if(NoItem.getLists().isTool(inHand) && NoItem.getPermsManager().has(p, Perm.USE_R, inHand)) {
+				event.setCancelled(true);
+				Messenger.sendMessage(p, AlertType.USE, inHand);
+				Messenger.alertAdmins(p, AlertType.USE, inHand);
+			}
+		} else if (event.getAction() == Action.LEFT_CLICK_BLOCK) {
+			if(NoItem.getLists().isTool(inHand) && NoItem.getPermsManager().has(p, Perm.USE_L, inHand)) {
+				event.setCancelled(true);
+				Messenger.sendMessage(p, AlertType.USE, inHand);
+				Messenger.alertAdmins(p, AlertType.USE, inHand);
+			}
+		}
+	}
+	
+
+	protected static void handleUseInteract(PlayerInteractEvent event) {
+		Player p = event.getPlayer();
+		ItemStack inHand = p.getItemInHand();
+		if(NoItem.getLists().isTool(inHand) && NoItem.getPermsManager().has(p, Perm.USE, inHand)) {
+			event.setCancelled(true);
+			Messenger.sendMessage(p, AlertType.USE, inHand);
+			Messenger.alertAdmins(p, AlertType.USE, inHand);
+		}
+	}
 
 	protected static void handleInteractEntity(PlayerInteractEntityEvent event) {
 		Player p = event.getPlayer();
 		Entity e = event.getRightClicked();
-		if (NoItem.getPermsManager().has(p, Perm.INTERACT, e)) {
+		if (NoItem.getPermsManager().has(p, Perm.INTERACT, e) || NoItem.getPermsManager().has(p, Perm.INTERACT_R, e)) {
 			event.setCancelled(true);
 			Messenger.sendMessage(p, AlertType.INTERACT, e);
 			Messenger.alertAdmins(p, AlertType.INTERACT, e);
+		}
+	}
+	
+	protected static void handleUseInteractEntity(PlayerInteractEntityEvent event) {
+		Player p = event.getPlayer();
+		ItemStack inHand = p.getItemInHand();
+		// Check right click and normal nodes.
+		if(NoItem.getLists().isTool(inHand)
+				&& (NoItem.getPermsManager().has(p, Perm.USE, inHand)
+						|| NoItem.getPermsManager().has(p, Perm.USE_R, inHand))) {
+			event.setCancelled(true);
+			Messenger.sendMessage(p, AlertType.USE, inHand);
+			Messenger.alertAdmins(p, AlertType.USE, inHand);
 		}
 	}
 	// End - Player'Interact/InteractEntity'Event //
@@ -396,6 +439,24 @@ public final class Handlers {
 		}
 	}
 	// End - EnchantItemEvent //
+	
+	// Start - PlayerDamageEntityEvent //
+	protected static void handlePlayerDamageEntity(EntityDamageByEntityEvent event) {
+		Entity e = event.getDamager();
+		if(e instanceof Player) {
+			Player p = (Player) e;
+			ItemStack inHand = p.getItemInHand();
+			// Check both for both left clicking, and general nodes.
+			if(NoItem.getLists().isTool(inHand)
+					&& (NoItem.getPermsManager().has(p, Perm.USE_L, inHand) 
+							|| NoItem.getPermsManager().has(p, Perm.USE, inHand))) {
+				event.setCancelled(true);
+				Messenger.sendMessage(p, AlertType.USE, inHand);
+				Messenger.alertAdmins(p, AlertType.USE, inHand);
+			}
+		}
+	}
+	// End - PlayerDamageEntityEvent //
 	
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {
