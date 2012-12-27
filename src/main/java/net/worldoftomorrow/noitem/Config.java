@@ -49,6 +49,7 @@ public class Config {
 		o.write(notify.saveToString());
 		o.write(misc.saveToString());
 		o.close();
+		NoItem.getInstance().reloadConfig();
 	}
 	
 	private void setUserValues() {
