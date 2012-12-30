@@ -99,6 +99,6 @@ public class Messenger {
 	}
 	
 	public static String getEntityName(Entity e) {
-		return e.getType().getName().replace("_", "").toLowerCase();
+		return e.getType().name().replace("_", "").toLowerCase();
 	}
 }
