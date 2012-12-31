@@ -10,5 +10,6 @@ softdepend: [Vault]
 
 commands:
     noitem:
-        description: NoItems only command, used to reload the config
-        usage: /noitem [reload]
+        description: Main NoItem command
+        usage: /noitem [reload|check [player]]
+        aliases: [ni]
