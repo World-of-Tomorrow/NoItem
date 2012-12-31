@@ -2,6 +2,7 @@ package net.worldoftomorrow.noitem;
 
 import java.io.IOException;
 
+import net.worldoftomorrow.noitem.commands.CmdNoItem;
 import net.worldoftomorrow.noitem.events.Listeners;
 import net.worldoftomorrow.noitem.lists.Lists;
 import net.worldoftomorrow.noitem.permissions.PermMan;
@@ -22,6 +23,7 @@ public class NoItem extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		setupStatic(this);
+		this.getCommand("noitem").setExecutor(new CmdNoItem());
 		PluginManager pm = getServer().getPluginManager();
 		pm.registerEvents(new Listeners(), this);
 		if(Config.getBoolean("Auto-Download-Updates")) {
