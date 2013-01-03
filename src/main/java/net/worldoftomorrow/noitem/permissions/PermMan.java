@@ -3,7 +3,6 @@ package net.worldoftomorrow.noitem.permissions;
 import java.util.Map.Entry;
 
 import net.worldoftomorrow.noitem.Config;
-import net.worldoftomorrow.noitem.util.Dbg;
 import net.worldoftomorrow.noitem.util.Messenger;
 
 import org.bukkit.block.Block;
@@ -149,7 +148,6 @@ public class PermMan {
 		perms[0] = standard;
 		perms[1] = allData;
 		perms[2] = allFeature;
-		Dbg.$("CONSTRUCT: " + perms[0].getName());
 		return perms;
 	}	
 }
