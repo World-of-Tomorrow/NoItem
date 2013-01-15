@@ -43,6 +43,12 @@ public class PermMan {
 		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
 	}
 	
+	// New special method just for brewing!
+	public boolean has(Player p, int data) {
+		boolean has = check(p, construct(Perm.BREW, data));
+		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
+	}
+	
 	// Checks if a permission is explicitly set to false
 	private boolean permSetFalse(Player p, Permission perm) {
 		return p.isPermissionSet(perm.getName()) && !p.hasPermission(perm.getName()); 
@@ -124,6 +130,10 @@ public class PermMan {
 			// For potion recipes, it should now be noitem.nobrew.ingredient.potiondata
 			id = recipe.getIngId();
 			data = recipe.getData();
+		} else if (o instanceof Integer) {
+			name = o.toString();
+			id = -1;
+			data = -1;
 		} else {
 			throw new UnsupportedOperationException("Unknown object type: " + o.getClass().getSimpleName());
 		}

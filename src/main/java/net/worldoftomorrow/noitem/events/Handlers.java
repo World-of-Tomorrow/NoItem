@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.server.v1_4_6.Item;
 import net.minecraft.server.v1_4_6.RecipesFurnace;
 import net.minecraft.server.v1_4_6.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
@@ -11,6 +12,7 @@ import net.worldoftomorrow.noitem.permissions.Perm;
 import net.worldoftomorrow.noitem.util.InvUtil;
 import net.worldoftomorrow.noitem.util.Messenger;
 import net.worldoftomorrow.noitem.util.Messenger.AlertType;
+import net.worldoftomorrow.noitem.util.NMSMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -19,7 +21,6 @@ import org.bukkit.craftbukkit.v1_4_6.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event.Result;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
@@ -126,7 +127,8 @@ public final class Handlers {
 
 	// Begin - Player'Interact/InteractEntity'Event //
 	protected static void handleInteract(PlayerInteractEvent event) {
-		if (event.isCancelled()) return;
+		// Don't handle physical interacts for now
+		if (event.isCancelled() || event.getAction() == Action.PHYSICAL) return;
 		Player p = event.getPlayer();
 		// If the event is NOT a block place event and was not in air
 		Block clicked = event.getClickedBlock();
@@ -135,9 +137,6 @@ public final class Handlers {
 				event.setCancelled(true);
 				Messenger.sendMessage(p, AlertType.INTERACT, clicked);
 				Messenger.alertAdmins(p, AlertType.INTERACT, clicked);
-				if(event.getAction() == Action.PHYSICAL) {
-					event.setUseInteractedBlock(Result.DENY);
-				}
 			}
 		}
 	}
@@ -267,12 +266,72 @@ public final class Handlers {
 	
 	protected static void handleNoBrewInvClick(InventoryClickEvent event) {
 		if (event.isCancelled()) return;
+		
 		InventoryView view = event.getView();
 		if(view.getType() == InventoryType.BREWING) {
 			ItemStack cursor = event.getCursor();
 			Player p = getPlayerFromEntity(event.getWhoClicked());
 			int slot = event.getRawSlot();
 			ItemStack item;
+			// Ing. Slot
+			if(slot == 3 && cursor.getTypeId() != 0) {
+				int result;
+				for(int i = 0; i < 3; i++) {
+					item = view.getItem(i);
+					result = NMSMethods.getPotionResult(item.getDurability(), cursor);
+					// If the item is air, or the items durability is the same as the results, continue
+					if(item.getTypeId() == 0 || item.getDurability() == result) continue;
+					
+					if(NoItem.getPermsManager().has(p, result)) {
+						event.setCancelled(true);
+						Messenger.sendMessage(p, AlertType.BREW, result);
+						Messenger.alertAdmins(p, AlertType.BREW, result);
+						return; // Be sure to break the loop to avoid sending multiple messages
+					}
+				}
+				// Potion slot
+				// If it is not the ing. slot, the cursor is a potion, and the ingredient slot is not empty
+			} else if (slot < 3 && slot >= 0 && cursor.getTypeId() == Item.POTION.id && view.getItem(3).getTypeId() != 0) {
+				item = view.getItem(3); // ingredient
+				int result = NMSMethods.getPotionResult(cursor.getDurability(), item);
+				if(result == cursor.getDurability()) return;
+				if(item.getTypeId() != 0 && NoItem.getPermsManager().has(p, result)) {
+					event.setCancelled(true);
+					Messenger.sendMessage(p, AlertType.BREW, result);
+					Messenger.alertAdmins(p, AlertType.BREW, result);
+				}
+				// Shift click
+			} else if (slot > 3 && event.isShiftClick()) {
+				item = view.getItem(slot); // Clicked
+				// If the item clicked is a ptoion
+				if(item.getTypeId() == Item.POTION.id) {
+					ItemStack ingredient = view.getItem(3);
+					// If the ingredient is empty, return
+					if(ingredient.getTypeId() == 0) return;
+					
+					int result = NMSMethods.getPotionResult(item.getDurability(), ingredient);
+					if(NoItem.getPermsManager().has(p, result)) {
+						event.setCancelled(true);
+						Messenger.sendMessage(p, AlertType.BREW, result);
+						Messenger.alertAdmins(p, AlertType.BREW, result);
+					}
+					// Else, treat it as an ingredient
+				} else {
+					ItemStack potion;
+					int result;
+					for(int i = 0; i < 3; i++) {
+						potion = view.getItem(i);
+						result = NMSMethods.getPotionResult(potion.getDurability(), item);
+						if(NoItem.getPermsManager().has(p, result)) {
+							event.setCancelled(true);
+							Messenger.sendMessage(p, AlertType.BREW, result);
+							Messenger.alertAdmins(p, AlertType.BREW, result);
+							return;
+						}
+					}
+				}
+			}
+			/*
 			String recipe;
 			// First handle the ingredient slot
 			if(slot == 3 && cursor.getTypeId() != 0) {
@@ -323,6 +382,7 @@ public final class Handlers {
 					}
 				}
 			}
+			*/
 		}
 	}
 	
@@ -504,9 +564,9 @@ public final class Handlers {
 		return Bukkit.getPlayer(ent.getName());
 	}
 	
-	private static String getRecipe(short dataValue, ItemStack ingredient) {
-		return dataValue + ":" + ingredient.getTypeId();
-	}
+	//private static String getRecipe(short dataValue, ItemStack ingredient) {
+	//	return dataValue + ":" + ingredient.getTypeId();
+	//}
 	
 	private static boolean isFuel(ItemStack item) {
 		// Create an NMS item stack
