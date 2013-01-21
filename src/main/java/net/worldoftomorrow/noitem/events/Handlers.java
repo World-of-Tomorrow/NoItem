@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.minecraft.server.v1_4_6.Item;
 import net.minecraft.server.v1_4_6.RecipesFurnace;
 import net.minecraft.server.v1_4_6.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
@@ -11,6 +12,7 @@ import net.worldoftomorrow.noitem.permissions.Perm;
 import net.worldoftomorrow.noitem.util.InvUtil;
 import net.worldoftomorrow.noitem.util.Messenger;
 import net.worldoftomorrow.noitem.util.Messenger.AlertType;
+import net.worldoftomorrow.noitem.util.NMSMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -46,6 +48,7 @@ public final class Handlers {
 
 	// Begin - PlayerPickupItemEvent //
 	protected static void handleItemPickup(PlayerPickupItemEvent event) {
+		if (event.isCancelled()) return;
 		ItemStack item = event.getItem().getItemStack();
 		Player p = event.getPlayer();
 		if (NoItem.getPermsManager().has(p, Perm.PICKUP, item)) {
@@ -57,6 +60,7 @@ public final class Handlers {
 	}
 
 	protected static void handleNoHavePickup(PlayerPickupItemEvent event) {
+		if (event.isCancelled()) return;
 		ItemStack item = event.getItem().getItemStack();
 		Player p = event.getPlayer();
 		if (NoItem.getPermsManager().has(p, Perm.HAVE, item)) {
@@ -68,6 +72,7 @@ public final class Handlers {
 	}
 	
 	protected static void handleNoHoldPickup(PlayerPickupItemEvent event) {
+		if (event.isCancelled()) return;
 		ItemStack item = event.getItem().getItemStack();
 		Player p = event.getPlayer();	
 		PlayerInventory inv = p.getInventory();
@@ -83,6 +88,7 @@ public final class Handlers {
 
 	// Begin - PlayerDropItemEvent //
 	protected static void handleItemDrop(PlayerDropItemEvent event) {
+		if (event.isCancelled()) return;
 		ItemStack drop = event.getItemDrop().getItemStack();
 		Player p = event.getPlayer();
 		if (NoItem.getPermsManager().has(p, Perm.DROP, drop)) {
@@ -121,6 +127,8 @@ public final class Handlers {
 
 	// Begin - Player'Interact/InteractEntity'Event //
 	protected static void handleInteract(PlayerInteractEvent event) {
+		// Don't handle physical interacts for now
+		if (event.isCancelled() || event.getAction() == Action.PHYSICAL) return;
 		Player p = event.getPlayer();
 		// If the event is NOT a block place event and was not in air
 		Block clicked = event.getClickedBlock();
@@ -134,6 +142,7 @@ public final class Handlers {
 	}
 	
 	protected static void handlerInteractLR(PlayerInteractEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		Block clicked = event.getClickedBlock();
 		if(event.getAction() == Action.LEFT_CLICK_BLOCK) {
@@ -152,6 +161,7 @@ public final class Handlers {
 	}
 	
 	protected static void handleLRUseInteract(PlayerInteractEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		if(event.getAction() == Action.RIGHT_CLICK_BLOCK) {
@@ -171,6 +181,7 @@ public final class Handlers {
 	
 
 	protected static void handleUseInteract(PlayerInteractEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		// If it is an interaction with air, skip any checks for efficiency
@@ -184,6 +195,7 @@ public final class Handlers {
 	}
 
 	protected static void handleInteractEntity(PlayerInteractEntityEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		Entity e = event.getRightClicked();
 		if (NoItem.getPermsManager().has(p, Perm.INTERACT, e) || NoItem.getPermsManager().has(p, Perm.INTERACT_R, e)) {
@@ -194,6 +206,7 @@ public final class Handlers {
 	}
 	
 	protected static void handleUseInteractEntity(PlayerInteractEntityEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		// Check right click and normal nodes.
@@ -210,6 +223,7 @@ public final class Handlers {
 	
 	// Begin - BlockBreakEvent //
 	protected static void handleBlockBreak(BlockBreakEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
 		if(NoItem.getPermsManager().has(p, Perm.BREAK, b)) {
@@ -222,6 +236,7 @@ public final class Handlers {
 	
 	// Begin - BlockPlaceEvent //
 	protected static void handleBlockPlace(BlockPlaceEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		Block b = event.getBlock();
 		if(NoItem.getPermsManager().has(p, Perm.PLACE, b)) {
@@ -234,6 +249,7 @@ public final class Handlers {
 	
 	// Begin - InventoryClickEvent //
 	protected static void handleNoHoldInvClick(InventoryClickEvent event) {
+		if (event.isCancelled()) return;
 		ItemStack cursor = event.getCursor();
 		Player p = getPlayerFromEntity(event.getWhoClicked());
 		PlayerInventory inv = p.getInventory();
@@ -249,12 +265,73 @@ public final class Handlers {
 	}
 	
 	protected static void handleNoBrewInvClick(InventoryClickEvent event) {
+		if (event.isCancelled()) return;
+		
 		InventoryView view = event.getView();
 		if(view.getType() == InventoryType.BREWING) {
 			ItemStack cursor = event.getCursor();
 			Player p = getPlayerFromEntity(event.getWhoClicked());
 			int slot = event.getRawSlot();
 			ItemStack item;
+			// Ing. Slot
+			if(slot == 3 && cursor.getTypeId() != 0) {
+				int result;
+				for(int i = 0; i < 3; i++) {
+					item = view.getItem(i);
+					result = NMSMethods.getPotionResult(item.getDurability(), cursor);
+					// If the item is air, or the items durability is the same as the results, continue
+					if(item.getTypeId() == 0 || item.getDurability() == result) continue;
+					
+					if(NoItem.getPermsManager().has(p, result)) {
+						event.setCancelled(true);
+						Messenger.sendMessage(p, AlertType.BREW, result);
+						Messenger.alertAdmins(p, AlertType.BREW, result);
+						return; // Be sure to break the loop to avoid sending multiple messages
+					}
+				}
+				// Potion slot
+				// If it is not the ing. slot, the cursor is a potion, and the ingredient slot is not empty
+			} else if (slot < 3 && slot >= 0 && cursor.getTypeId() == Item.POTION.id && view.getItem(3).getTypeId() != 0) {
+				item = view.getItem(3); // ingredient
+				int result = NMSMethods.getPotionResult(cursor.getDurability(), item);
+				if(result == cursor.getDurability()) return;
+				if(item.getTypeId() != 0 && NoItem.getPermsManager().has(p, result)) {
+					event.setCancelled(true);
+					Messenger.sendMessage(p, AlertType.BREW, result);
+					Messenger.alertAdmins(p, AlertType.BREW, result);
+				}
+				// Shift click
+			} else if (slot > 3 && event.isShiftClick()) {
+				item = view.getItem(slot); // Clicked
+				// If the item clicked is a ptoion
+				if(item.getTypeId() == Item.POTION.id) {
+					ItemStack ingredient = view.getItem(3);
+					// If the ingredient is empty, return
+					if(ingredient.getTypeId() == 0) return;
+					
+					int result = NMSMethods.getPotionResult(item.getDurability(), ingredient);
+					if(NoItem.getPermsManager().has(p, result)) {
+						event.setCancelled(true);
+						Messenger.sendMessage(p, AlertType.BREW, result);
+						Messenger.alertAdmins(p, AlertType.BREW, result);
+					}
+					// Else, treat it as an ingredient
+				} else {
+					ItemStack potion;
+					int result;
+					for(int i = 0; i < 3; i++) {
+						potion = view.getItem(i);
+						result = NMSMethods.getPotionResult(potion.getDurability(), item);
+						if(NoItem.getPermsManager().has(p, result)) {
+							event.setCancelled(true);
+							Messenger.sendMessage(p, AlertType.BREW, result);
+							Messenger.alertAdmins(p, AlertType.BREW, result);
+							return;
+						}
+					}
+				}
+			}
+			/*
 			String recipe;
 			// First handle the ingredient slot
 			if(slot == 3 && cursor.getTypeId() != 0) {
@@ -305,10 +382,12 @@ public final class Handlers {
 					}
 				}
 			}
+			*/
 		}
 	}
 	
 	protected static void handleNoWearInvClick(InventoryClickEvent event) {
+		if (event.isCancelled()) return;
 		InventoryView view = event.getView();
 		SlotType st = event.getSlotType();
 		int slot = event.getRawSlot();
@@ -337,6 +416,7 @@ public final class Handlers {
 	}
 	
 	protected static void handleNoCookInvClick(InventoryClickEvent event) {
+		if (event.isCancelled()) return;
 		InventoryView view = event.getView();
 		int slot = event.getRawSlot();
 		ItemStack fuel = view.getItem(1);
@@ -399,6 +479,7 @@ public final class Handlers {
 	
 	// Start - CraftItemEvent //
 	protected static void handleItemCraft(CraftItemEvent event) {
+		if (event.isCancelled()) return;
 		ItemStack result = event.getCurrentItem();
 		Player p = getPlayerFromEntity(event.getWhoClicked());
 		if(result.getTypeId() != 0 && NoItem.getPermsManager().has(p, Perm.CRAFT, result)) {
@@ -435,6 +516,7 @@ public final class Handlers {
 	
 	// Start - EnchantItemEvent //
 	protected static void handleEnchantItem(EnchantItemEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getEnchanter();
 		ItemStack item = event.getItem();
 		if(NoItem.getPermsManager().has(p, Perm.ENCHANT, item)) {
@@ -447,6 +529,7 @@ public final class Handlers {
 	
 	// Start - PlayerDamageEntityEvent //
 	protected static void handlePlayerDamageEntity(EntityDamageByEntityEvent event) {
+		if (event.isCancelled()) return;
 		Entity e = event.getDamager();
 		if(e instanceof Player) {
 			Player p = (Player) e;
@@ -465,6 +548,7 @@ public final class Handlers {
 	
 	// Start PlayerShearEntityEvent //
 	protected static void handlePlayerShearEntity(PlayerShearEntityEvent event) {
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		ItemStack inHand = p.getItemInHand();
 		// We can skip a tool check here, we already know they must be using shears
@@ -480,9 +564,9 @@ public final class Handlers {
 		return Bukkit.getPlayer(ent.getName());
 	}
 	
-	private static String getRecipe(short dataValue, ItemStack ingredient) {
-		return dataValue + ":" + ingredient.getTypeId();
-	}
+	//private static String getRecipe(short dataValue, ItemStack ingredient) {
+	//	return dataValue + ":" + ingredient.getTypeId();
+	//}
 	
 	private static boolean isFuel(ItemStack item) {
 		// Create an NMS item stack

@@ -6,7 +6,7 @@ import net.worldoftomorrow.noitem.NoItem;
 public class Dbg {
 	public static void $(String msg) {
 		if(Config.getBoolean("Debugging")) {
-			NoItem.getInstance().getLogger().info(msg);
+			NoItem.log().info(msg);
 		}
 	}
 }
