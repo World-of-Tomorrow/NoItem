@@ -35,12 +35,6 @@ public class PermMan {
 		return pawl ? !has : has;
 	}
 	
-	// Special method just for brewing
-	public boolean has(Player p, short data, ItemStack ingredient) {
-		boolean has = check(p, construct(Perm.BREW,  new PotionRecipe(data, ingredient)));
-		return pawl ? !has : has;
-	}
-	
 	// New special method just for brewing!
 	public boolean has(Player p, int data) {
 		boolean has = check(p, construct(Perm.BREW, data));
@@ -114,13 +108,6 @@ public class PermMan {
 			name = Messenger.getEntityName(e);
 			id = -1;
 			data = -1;
-		} else if (o instanceof PotionRecipe) {
-			// This is just for brewing recipes
-			PotionRecipe recipe = (PotionRecipe) o;
-			name = Messenger.getStackName(new ItemStack(recipe.getIngId())); // ingredient name
-			// For potion recipes, it should now be noitem.nobrew.ingredient.potiondata
-			id = recipe.getIngId();
-			data = recipe.getData();
 		} else if (o instanceof Integer) {
 			name = o.toString();
 			id = -1;
