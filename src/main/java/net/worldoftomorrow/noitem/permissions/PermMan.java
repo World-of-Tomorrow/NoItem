@@ -72,6 +72,7 @@ public class PermMan {
 		if(VaultHook.loaded) {
 			// Check each permission
 			for(String perm : perms) {
+				if(perm == null) continue;
 				if(VaultHook.permission.has(p, perm)) return true;
 			}
 			return false; // They don't have the permission
