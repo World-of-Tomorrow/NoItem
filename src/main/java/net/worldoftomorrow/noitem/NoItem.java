@@ -64,8 +64,8 @@ public class NoItem extends JavaPlugin {
 	
 	private static void setupStatic(NoItem instance) {
 		NoItem.instance = instance;
-		NoItem.permsManager = new PermMan();
 		NoItem.config = new Config();
+		NoItem.permsManager = new PermMan();
 		NoItem.lists = new Lists();
 	}
 }
