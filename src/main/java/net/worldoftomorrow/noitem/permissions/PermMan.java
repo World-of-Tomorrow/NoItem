@@ -1,7 +1,5 @@
 package net.worldoftomorrow.noitem.permissions;
 
-import java.util.Map.Entry;
-
 import net.worldoftomorrow.noitem.Config;
 import net.worldoftomorrow.noitem.util.Messenger;
 
@@ -9,11 +7,11 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.permissions.Permission;
 
 public class PermMan {
 	
 	private static final char PS = '.';
+	public boolean pawl = Config.getBoolean("PermsAsWhiteList");
 	
 	// Permission with no variable do not apply to PermsAsWhitelist and
 	// therefore are not checked against it
@@ -24,34 +22,34 @@ public class PermMan {
 	public boolean has(Player p, String perm, ItemStack item) {
 		boolean has = check(p, construct(perm, item));
 		// Is PermsAsWhiteList is true, return the opposite value.
-		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
+		return pawl ? !has : has;
 	}
 	
 	public boolean has(Player p, String perm, Block b) {
 		boolean has = check(p, construct(perm, b));
-		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
+		return pawl ? !has : has;
 	}
 	
 	public boolean has(Player p, String perm, Entity e) {
 		boolean has = check(p, construct(perm, e));
-		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
+		return pawl ? !has : has;
 	}
 	
 	// Special method just for brewing
 	public boolean has(Player p, short data, ItemStack ingredient) {
 		boolean has = check(p, construct(Perm.BREW,  new PotionRecipe(data, ingredient)));
-		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
+		return pawl ? !has : has;
 	}
 	
 	// New special method just for brewing!
 	public boolean has(Player p, int data) {
 		boolean has = check(p, construct(Perm.BREW, data));
-		return Config.getBoolean("PermsAsWhiteList") ? !has : has;
+		return pawl ? !has : has;
 	}
 	
 	// Checks if a permission is explicitly set to false
-	private boolean permSetFalse(Player p, Permission perm) {
-		return p.isPermissionSet(perm.getName()) && !p.hasPermission(perm.getName()); 
+	private boolean permSetFalse(Player p, String perm) {
+		return p.isPermissionSet(perm) && !p.hasPermission(perm); 
 	}
 	
 	/**
@@ -61,42 +59,35 @@ public class PermMan {
 	 * @param perm
 	 * @return
 	 */
-	private boolean check(Player p, Permission[] perm) {
-		if(p.isOp()) return false;
-		if(permSetFalse(p, perm[0]) || permSetFalse(p, perm[1])) {
-			return false;
-		} else if(p.hasPermission(perm[0]) || p.hasPermission(perm[1]) || p.hasPermission(perm[2])) {
-			return true;
-		} else {
-			return checkVault(p, perm);
+	//
+	private boolean check(Player p, String[] perms) {
+		if(p.isOp()) return pawl ? true : false;
+		for(int i = 0; i <= 3; i++) {
+			if(perms[i] == null) continue;
+			if(permSetFalse(p, perms[i])) return false;
 		}
+		for(String perm : perms) {
+			if(perm == null) continue;
+			if(p.hasPermission(perm)) return true;
+		}
+		return checkVault(p, perms);
 	}
 	
-	private boolean checkVault(Player p, Permission[] perms) {
+	private boolean checkVault(Player p, String[] perms) {
 		// If vault is loaded
 		if(VaultHook.loaded) {
 			// Check each permission
-			for(Permission perm : perms) {
-				// If they have the main permission, return true
-				if(VaultHook.permission.has(p, perm.getName()))
-					return true;
-				// If they have any of the children permissions, return true
-				for(Entry<String, Boolean> entry : perm.getChildren().entrySet()) {
-					if(VaultHook.permission.has(p, entry.getKey())) {
-						return true;
-					}
-				}
+			for(String perm : perms) {
+				if(VaultHook.permission.has(p, perm)) return true;
 			}
-			// They do not have any of the permissions, return false.
-			return false;
+			return false; // They don't have the permission
 		} else {
-			// There is no vault loaded, return false.
-			return false;
+			return false; // There is no vault.
 		}
 	}
 	
 	// Constructs an array of permissions with parents added
-	private Permission[] construct(String perm, Object o) {
+	private String[] construct(String perm, Object o) {
 		if(perm.equals(Perm.ADMIN)
 				|| perm.equals(Perm.ALLITEMS)
 				|| perm.equals(Perm.CMD_CHECK)
@@ -137,27 +128,23 @@ public class PermMan {
 		} else {
 			throw new UnsupportedOperationException("Unknown object type: " + o.getClass().getSimpleName());
 		}
-		Permission standard;
-		if(data != -1 && id != -1) {
-			standard = new Permission(perm + name + PS + data);
-			standard.addParent(perm + id + PS + data, true);
+		
+		String[] perms = new String[7];
+		if(id != -1 && data != -1) {
+			perms[0] = perm + name + PS + data; // Standard name
+			perms[1] = perm + id + PS + data; // Standard number
 			if(data == 0) {
-				standard.addParent(perm + id, true);
-				standard.addParent(perm + name, true);
+				perms[2] = perm + id; // ID, no data
+				perms[3] = perm + name; // Name, no data
 			}
+			perms[4] = perm + name + PS + "*"; // Name, all data
+			perms[5] = perm + id + PS + "*"; // ID, all data
+			perms[6] = perm + "*"; // Entire feature
+			
 		} else {
-			standard = new Permission(perm + name);
+			perms[0] = perm + name; // Standard permission 
 		}
-
-		Permission allData = new Permission(perm + name + PS + "*");
-		allData.addParent(perm + id + PS + "*", true);
 		
-		Permission allFeature = new Permission(perm + "*");
-		
-		Permission[] perms = new Permission[3];
-		perms[0] = standard;
-		perms[1] = allData;
-		perms[2] = allFeature;
 		return perms;
 	}	
 }

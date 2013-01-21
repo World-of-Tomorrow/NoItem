@@ -1,6 +1,7 @@
 package net.worldoftomorrow.noitem;
 
 import java.io.IOException;
+import java.util.logging.Logger;
 
 import net.worldoftomorrow.noitem.commands.CmdNoItem;
 import net.worldoftomorrow.noitem.events.Listeners;
@@ -43,6 +44,10 @@ public class NoItem extends JavaPlugin {
 
 	public static NoItem getInstance() {
 		return instance;
+	}
+	
+	public static Logger log() {
+		return NoItem.getInstance().getLogger();
 	}
 	
 	public static PermMan getPermsManager() {

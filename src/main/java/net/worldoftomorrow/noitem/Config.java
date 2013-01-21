@@ -16,13 +16,20 @@ public class Config {
 	private final YamlConfiguration misc;
 	private final NoItem plugin;
 	
+	private static Config instance;
+	
 	public Config() {
 		this.plugin = NoItem.getInstance();
 		this.messages = YamlConfiguration.loadConfiguration(plugin.getResource("messages.yml"));
 		this.notify = YamlConfiguration.loadConfiguration(plugin.getResource("notify.yml"));
 		this.misc = YamlConfiguration.loadConfiguration(plugin.getResource("misc.yml"));
 		this.config = new File(plugin.getDataFolder(), "config.yml");
+		setupStatic(this);
 		this.load();
+	}
+	
+	private static void setupStatic(Config cfg) {
+		instance = cfg;
 	}
 	
 	private void load() {
@@ -80,18 +87,18 @@ public class Config {
 	}
 
 	public static Object getValue(String key) {
-		return NoItem.getInstance().getConfig().get(key);
+		return instance.plugin.getConfig().get(key);
 	}
 
 	public static boolean getBoolean(String key) {
-		return NoItem.getInstance().getConfig().getBoolean(key);
+		return instance.plugin.getConfig().getBoolean(key);
 	}
 
 	public static String getString(String key) {
-		return NoItem.getInstance().getConfig().getString(key);
+		return instance.plugin.getConfig().getString(key);
 	}
 
 	public static Map<String, Object> getValues() {
-		return NoItem.getInstance().getConfig().getValues(true);
+		return instance.plugin.getConfig().getValues(true);
 	}
 }

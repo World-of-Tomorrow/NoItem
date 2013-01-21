@@ -13,6 +13,7 @@ public class Commands {
 			sender.sendMessage(ChatColor.RED + "You are not allowed to run that command.");
 		} else {
 			NoItem.getInstance().reloadConfig();
+			NoItem.getPermsManager().pawl = NoItem.getInstance().getConfig().getBoolean("PermsAsWhiteList");
 			sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
 		}
 	}
