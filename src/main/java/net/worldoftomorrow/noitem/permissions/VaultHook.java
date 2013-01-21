@@ -4,12 +4,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import net.milkbowl.vault.permission.Permission;
+import net.worldoftomorrow.noitem.NoItem;
 
 public final class VaultHook {
 	protected static Permission permission = null;
-	protected static boolean loaded;
+	protected static boolean loaded = false;
 	
 	public VaultHook() {
+
+		if(!NoItem.getInstance().getConfig().getBoolean("CheckVault")) return;
 		setupPermissions();
 	}
 

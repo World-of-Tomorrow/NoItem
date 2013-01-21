@@ -2,6 +2,7 @@ package net.worldoftomorrow.noitem.commands;
 
 import net.worldoftomorrow.noitem.NoItem;
 import net.worldoftomorrow.noitem.permissions.Perm;
+import net.worldoftomorrow.noitem.permissions.VaultHook;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -13,6 +14,8 @@ public class Commands {
 			sender.sendMessage(ChatColor.RED + "You are not allowed to run that command.");
 		} else {
 			NoItem.getInstance().reloadConfig();
+			NoItem.getPermsManager().pawl = NoItem.getInstance().getConfig().getBoolean("PermsAsWhiteList");
+			new VaultHook();
 			sender.sendMessage(ChatColor.AQUA + "Configuration reloaded.");
 		}
 	}

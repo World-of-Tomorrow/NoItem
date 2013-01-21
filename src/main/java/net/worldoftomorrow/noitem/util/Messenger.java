@@ -69,7 +69,9 @@ public class Messenger {
 			msg = msg.replace("%i", Messenger.getEntityName((Entity) o));
 		} else if (o instanceof String) {
 			msg = msg.replace("%i", (String) o);
-		} else {
+		} else if (o instanceof Integer) {
+			msg = msg.replace("%i", o.toString());
+		}else {
 			throw new UnsupportedOperationException("Invalid object given to parseMsg(): " + o.getClass().getSimpleName());
 		}
 		msg = ChatColor.translateAlternateColorCodes('&', msg);
