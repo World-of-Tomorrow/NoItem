@@ -55,7 +55,7 @@ public class PermMan {
 	 */
 	//
 	private boolean check(Player p, String[] perms) {
-		if(p.isOp()) return pawl ? true : false;
+		if(p.isOp() || p.hasPermission("noitem.*")) return pawl ? true : false;
 		for(int i = 0; i <= 3; i++) {
 			if(perms[i] == null) continue;
 			if(permSetFalse(p, perms[i])) return false;
