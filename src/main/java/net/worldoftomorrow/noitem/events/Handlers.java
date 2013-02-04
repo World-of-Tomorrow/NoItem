@@ -127,8 +127,7 @@ public final class Handlers {
 
 	// Begin - Player'Interact/InteractEntity'Event //
 	protected static void handleInteract(PlayerInteractEvent event) {
-		// Don't handle physical interacts for now
-		if (event.isCancelled() || event.getAction() == Action.PHYSICAL) return;
+		if (event.isCancelled()) return;
 		Player p = event.getPlayer();
 		// If the event is NOT a block place event and was not in air
 		Block clicked = event.getClickedBlock();
