@@ -16,6 +16,7 @@ public class PermMan {
 	// Permission with no variable do not apply to PermsAsWhitelist and
 	// therefore are not checked against it
 	public boolean has(Player p, String perm) {
+		if(perm == null) return pawl;
 		return p.hasPermission(perm);
 	}
 	
@@ -43,7 +44,7 @@ public class PermMan {
 	
 	// Checks if a permission is explicitly set to false
 	private boolean permSetFalse(Player p, String perm) {
-		return p.isPermissionSet(perm) && !p.hasPermission(perm); 
+		return p.isPermissionSet(perm) && !p.hasPermission(perm);
 	}
 	
 	/**
@@ -55,7 +56,7 @@ public class PermMan {
 	 */
 	//
 	private boolean check(Player p, String[] perms) {
-		if(p.isOp()) return pawl ? true : false;
+		if(p.isOp() || p.hasPermission("noitem.*")) return pawl;
 		for(int i = 0; i <= 3; i++) {
 			if(perms[i] == null) continue;
 			if(permSetFalse(p, perms[i])) return false;
@@ -72,6 +73,7 @@ public class PermMan {
 		if(VaultHook.loaded) {
 			// Check each permission
 			for(String perm : perms) {
+				if(perm == null) continue;
 				if(VaultHook.permission.has(p, perm)) return true;
 			}
 			return false; // They don't have the permission
