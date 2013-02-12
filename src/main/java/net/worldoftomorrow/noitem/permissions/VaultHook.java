@@ -8,7 +8,7 @@ import net.worldoftomorrow.noitem.NoItem;
 
 public final class VaultHook {
 	protected static Permission permission = null;
-	private static boolean loaded;
+	private final boolean loaded;
 	private static VaultHook instance;
 	
 	public VaultHook() {
@@ -35,6 +35,6 @@ public final class VaultHook {
 	}
 	
 	public static boolean isLoaded() {
-		return loaded;
+		return instance.loaded;
 	}
 }
