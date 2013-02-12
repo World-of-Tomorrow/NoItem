@@ -9,7 +9,7 @@ import net.minecraft.server.v1_4_R1.RecipesFurnace;
 import net.minecraft.server.v1_4_R1.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
 import net.worldoftomorrow.noitem.permissions.Perm;
-import net.worldoftomorrow.noitem.util.InvUtil;
+import net.worldoftomorrow.noitem.util.Util;
 import net.worldoftomorrow.noitem.util.Messenger;
 import net.worldoftomorrow.noitem.util.Messenger.AlertType;
 import net.worldoftomorrow.noitem.util.NMSMethods;
@@ -106,7 +106,7 @@ public final class Handlers {
 		PlayerInventory inv = p.getInventory();
 		ItemStack item = inv.getItem(event.getNewSlot());
 		if (item != null && item.getTypeId() != 0 && NoItem.getPermsManager().has(p, Perm.HOLD, item)) {
-			InvUtil.switchItems(event.getNewSlot(), event.getPreviousSlot(), inv);
+			Util.switchItems(event.getNewSlot(), event.getPreviousSlot(), inv);
 			Messenger.sendMessage(p, AlertType.HOLD, item);
 			Messenger.alertAdmins(p, AlertType.HOLD, item);
 		}
