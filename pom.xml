@@ -4,7 +4,7 @@
 
 	<groupId>net.worldoftomorrow</groupId>
 	<artifactId>NoItem</artifactId>
-	<version>3.0.3-SNAPSHOT</version>
+	<version>3.0.3</version>
 	<packaging>jar</packaging>
 
 	<name>NoItem</name>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.4.7-R0.2-SNAPSHOT</version>
+			<version>1.4.7-R1.0</version>
 		</dependency>
 		<dependency>
 			<artifactId>Vault</artifactId>
