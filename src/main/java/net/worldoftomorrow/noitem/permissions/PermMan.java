@@ -70,7 +70,7 @@ public class PermMan {
 	
 	private boolean checkVault(Player p, String[] perms) {
 		// If vault is loaded
-		if(VaultHook.loaded) {
+		if(VaultHook.isLoaded()) {
 			// Check each permission
 			for(String perm : perms) {
 				if(perm == null) continue;

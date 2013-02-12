@@ -13,6 +13,8 @@ public class CmdNoItem implements CommandExecutor {
 				Commands.reload(sender);
 			} else if(args[0].equalsIgnoreCase("check")) {
 				
+			} else if(args[0].equalsIgnoreCase("debug") && args.length == 2) {
+				Commands.debug(args[1], sender);
 			}
 		} else {
 			Commands.version(sender);

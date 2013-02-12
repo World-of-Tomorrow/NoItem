@@ -50,6 +50,10 @@ public class NoItem extends JavaPlugin {
 		return NoItem.getInstance().getLogger();
 	}
 	
+	public static void log(String msg) {
+		NoItem.getInstance().getLogger().info(msg);
+	}
+	
 	public static PermMan getPermsManager() {
 		return permsManager;
 	}
