@@ -8,25 +8,33 @@ import net.worldoftomorrow.noitem.NoItem;
 
 public final class VaultHook {
 	protected static Permission permission = null;
-	protected static boolean loaded = false;
+	private final boolean loaded;
+	private static VaultHook instance;
 	
 	public VaultHook() {
-
-		if(!NoItem.getInstance().getConfig().getBoolean("CheckVault")) return;
-		setupPermissions();
-	}
-
-	private static void setupPermissions() {
+		setInstance(this);
 		try {
-			RegisteredServiceProvider<Permission> permissionProvider = Bukkit.getServer().getServicesManager().getRegistration(
-							net.milkbowl.vault.permission.Permission.class);
-			if (permissionProvider != null) {
-				permission = permissionProvider.getProvider();
-			}
+			RegisteredServiceProvider<Permission> permissionProvider = 
+					Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
+			if (permissionProvider != null) permission = permissionProvider.getProvider();
+			return;
 		} catch (NoClassDefFoundError e) {
 			// Do nothing, vault just isn't loaded.
-			loaded = false;
+		} finally {
+			loaded = (permission != null);
 		}
-		loaded = (permission != null);
+		if(!NoItem.getInstance().getConfig().getBoolean("CheckVault")) return;
+	}
+	
+	private static void setInstance(VaultHook i) {
+		instance = i;
+	}
+	
+	public static VaultHook getInstance() {
+		return instance;
+	}
+	
+	public static boolean isLoaded() {
+		return instance.loaded;
 	}
 }

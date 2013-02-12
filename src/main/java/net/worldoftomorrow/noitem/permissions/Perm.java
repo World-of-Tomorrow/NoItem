@@ -2,8 +2,10 @@ package net.worldoftomorrow.noitem.permissions;
 
 public class Perm {
 	public static final String ADMIN = "noitem.admin";
-	public static final String CMD_RELOAD = "noitem.command.reload"; //
+	public static final String CMD_RELOAD = "noitem.command.reload";
 	public static final String CMD_CHECK = "noitem.command.check"; //
+	public static final String CMD_DBG_TOGGLE = "noitem.command.debug.toggle";
+	public static final String CMD_DBG_DUMP = "noitem.command.debug.dump";
 	public static final String CMD_VERSION = "noitem.command.version";
 	public static final String ALLITEMS = "noitem.allitems"; //
 	public static final String ONDEATH = "noitem.ondeath.keep";
