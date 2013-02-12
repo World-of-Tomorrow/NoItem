@@ -12,7 +12,7 @@ public final class VaultHook {
 	private static VaultHook instance;
 	
 	public VaultHook() {
-		instance = this;
+		setInstance(this);
 		try {
 			RegisteredServiceProvider<Permission> permissionProvider = 
 					Bukkit.getServer().getServicesManager().getRegistration(net.milkbowl.vault.permission.Permission.class);
@@ -24,6 +24,10 @@ public final class VaultHook {
 			loaded = (permission != null);
 		}
 		if(!NoItem.getInstance().getConfig().getBoolean("CheckVault")) return;
+	}
+	
+	private static void setInstance(VaultHook i) {
+		instance = i;
 	}
 	
 	public static VaultHook getInstance() {

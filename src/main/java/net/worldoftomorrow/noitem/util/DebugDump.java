@@ -26,7 +26,7 @@ public class DebugDump {
 			if (!dump.createNewFile()) {
 				NoItem.log().severe("Could not create debug file!");
 			}
-			PrintWriter out = new PrintWriter(dump);
+			PrintWriter out = new PrintWriter(dump, "UTF-8");
 			out.println("---- NoItem Debug File ----");
 			out.println("Plugin Version: " + instance.getDescription().getVersion());
 			out.println("CraftBukkit Version: " + instance.getServer().getBukkitVersion());
