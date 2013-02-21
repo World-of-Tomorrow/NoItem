@@ -79,7 +79,7 @@ public class Messenger {
 	}
 	
 	/**
-	 * Parse admin message in specific.
+	 * Parse admin message.
 	 * @param offender
 	 * @param type
 	 * @param o
