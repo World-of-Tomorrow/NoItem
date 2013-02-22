@@ -16,6 +16,8 @@ import net.worldoftomorrow.noitem.util.NMSMethods;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_4_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
@@ -35,6 +37,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
@@ -557,6 +560,55 @@ public final class Handlers {
 			Messenger.alertAdmins(p, AlertType.USE, inHand);
 		}
 	}
+	// End PlayerShearEntityEvent //
+	// Start PlayerJoinEvent //
+	protected static void handleArmorCheck(PlayerJoinEvent event) {
+		Player p = event.getPlayer();
+		PlayerInventory inv = p.getInventory();
+		Boolean foundPerm = false;
+		
+		// used to update the player's armor
+    	ItemStack[] playerArmor = inv.getArmorContents();
+    	
+    	// used for items that won't fit in the player's inventory
+    	ArrayList<ItemStack> armorToDrop = new ArrayList<ItemStack>();
+    	
+    	// go through and find out which armor needs to be removed
+    	for(int i = 0; i < playerArmor.length; i++) {
+    		ItemStack armorPiece = playerArmor[i];
+    		if (armorPiece != null && NoItem.getPermsManager().has(p, Perm.WEAR, armorPiece)) {
+    			foundPerm = true;
+    			playerArmor[i] = null;
+    			
+    			// put the armor in the inventory or 
+    			//   add it to our drop list if inventory is full
+    			armorToDrop.addAll((inv.addItem(armorPiece).values()));
+    			
+    			
+    			Messenger.sendMessage(p, AlertType.WEAR, armorPiece);
+    			Messenger.alertAdmins(p, AlertType.WEAR, armorPiece);
+    		}
+    	}
+
+    	// don't bother doing this if everything was all good
+    	if (foundPerm) {
+	    	// update player's armor
+	    	inv.setArmorContents(playerArmor);
+	    	
+	    	// drop the items that were not able to be added to the inventory
+	    	if (armorToDrop.size() > 0) {
+		    	// get location for drops
+	    		Location loc = p.getLocation();
+	    		World world = loc.getWorld();
+		    	
+		    	for(ItemStack item : armorToDrop){
+		    		world.dropItemNaturally(loc, item);
+		    	}
+	    	}
+    	}
+	}
+	
+	// End PlayerJoinEvent //
 	
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {

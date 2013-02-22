@@ -13,11 +13,16 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 
 public class Listeners implements Listener {
+	@EventHandler
+	public void onPlayerJoin(PlayerJoinEvent event) {
+		Handlers.handleArmorCheck(event);
+	}
 	
 	@EventHandler
 	public void onItemPickup(PlayerPickupItemEvent event) {
