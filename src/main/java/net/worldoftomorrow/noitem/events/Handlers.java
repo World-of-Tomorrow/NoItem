@@ -568,44 +568,44 @@ public final class Handlers {
 		Boolean foundPerm = false;
 		
 		// used to update the player's armor
-    	ItemStack[] playerArmor = inv.getArmorContents();
+		ItemStack[] playerArmor = inv.getArmorContents();
     	
     	// used for items that won't fit in the player's inventory
-    	ArrayList<ItemStack> armorToDrop = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> armorToDrop = new ArrayList<ItemStack>();
     	
-    	// go through and find out which armor needs to be removed
-    	for(int i = 0; i < playerArmor.length; i++) {
-    		ItemStack armorPiece = playerArmor[i];
-    		if (armorPiece != null && NoItem.getPermsManager().has(p, Perm.WEAR, armorPiece)) {
-    			foundPerm = true;
-    			playerArmor[i] = null;
+		// go through and find out which armor needs to be removed
+		for(int i = 0; i < playerArmor.length; i++) {
+			ItemStack armorPiece = playerArmor[i];
+			if (armorPiece != null && NoItem.getPermsManager().has(p, Perm.WEAR, armorPiece)) {
+				foundPerm = true;
+				playerArmor[i] = null;
     			
-    			// put the armor in the inventory or 
-    			//   add it to our drop list if inventory is full
-    			armorToDrop.addAll((inv.addItem(armorPiece).values()));
+				// put the armor in the inventory or 
+				//   add it to our drop list if inventory is full
+				armorToDrop.addAll((inv.addItem(armorPiece).values()));
     			
     			
-    			Messenger.sendMessage(p, AlertType.WEAR, armorPiece);
-    			Messenger.alertAdmins(p, AlertType.WEAR, armorPiece);
-    		}
-    	}
+				Messenger.sendMessage(p, AlertType.WEAR, armorPiece);
+				Messenger.alertAdmins(p, AlertType.WEAR, armorPiece);
+			}
+		}
 
-    	// don't bother doing this if everything was all good
-    	if (foundPerm) {
-	    	// update player's armor
-	    	inv.setArmorContents(playerArmor);
+		// don't bother doing this if everything was all good
+		if (foundPerm) {
+			// update player's armor
+			inv.setArmorContents(playerArmor);
 	    	
-	    	// drop the items that were not able to be added to the inventory
-	    	if (armorToDrop.size() > 0) {
-		    	// get location for drops
-	    		Location loc = p.getLocation();
-	    		World world = loc.getWorld();
-		    	
-		    	for(ItemStack item : armorToDrop){
-		    		world.dropItemNaturally(loc, item);
-		    	}
-	    	}
-    	}
+			// drop the items that were not able to be added to the inventory
+			if (armorToDrop.size() > 0) {
+				// get location for drops
+				Location loc = p.getLocation();
+				World world = loc.getWorld();
+				
+				for(ItemStack item : armorToDrop) {
+					world.dropItemNaturally(loc, item);
+				}
+			}
+		}
 	}
 	
 	// End PlayerJoinEvent //
