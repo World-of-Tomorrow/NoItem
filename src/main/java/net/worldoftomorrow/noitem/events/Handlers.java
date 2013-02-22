@@ -570,7 +570,7 @@ public final class Handlers {
 		// used to update the player's armor
 		ItemStack[] playerArmor = inv.getArmorContents();
     	
-    	// used for items that won't fit in the player's inventory
+		// used for items that won't fit in the player's inventory
 		ArrayList<ItemStack> armorToDrop = new ArrayList<ItemStack>();
     	
 		// go through and find out which armor needs to be removed
