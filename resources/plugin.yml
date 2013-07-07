@@ -1,5 +1,5 @@
 name: NoItem
-version: ${project.version}-${BUILD_NUMBER}
+version: ${project.version}
 website: http://dev.bukkit.org/server-mods/noitem/
 description: An advanced item control plugin which also supports custom blocks.
 authors: [nala3]
