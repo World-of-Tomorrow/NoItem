@@ -21,7 +21,6 @@ is great however for Role-Playing servers though. Say you only want miners to be
 - noitem.nouse.&lt;itemID&gt; or noitem.nouse.&lt;itemName&gt;
 - noitem.nohold.&lt;itemID&gt; or noitem.nouse.&lt;itemName&gt;
 - noitem.nowear.&lt;itemID&gt; or noitem.nowear.&lt;itemName&gt;
-- noitem.nocook.&lt;itemID&gt; or noitem.nocook.&lt;itemName&gt;
 
 ## Supported Items Tables ##
 <table>
