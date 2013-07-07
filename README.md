@@ -16,10 +16,19 @@ is great however for Role-Playing servers though. Say you only want miners to be
 - noitem.allitems
 - noitem.admin
 - noitem.nopickup.&lt;itemId&gt;[.dataValue]
+- noitem.nodrop.&lt;itemId&gt;[.dataValue]
+- noitem.nohave.&lt;itemID&gt; or noitem.nohave.&lt;itemName&gt;
+- noitem.nohold.&lt;itemID&gt; or noitem.nohold.&lt;itemName&gt;
 - noitem.nocraft.&lt;itemId&gt;[.dataValue]
-- noitem.nobrew.&lt;potionDV&gt;.&lt;IngredientID&gt;
+- noitem.nocook.&lt;itemId&gt;[.dataValue]
+- noitem.nobrew.&lt;potionDV&gt;
+- noitem.noenchant.&lt;itemID&gt;
+- noitem.nointeract.&lt;itemID&gt;
+- noitem.nointeract.left.&lt;itemID&gt;
+- noitem.nointeract.right.&lt;itemID&gt;
 - noitem.nouse.&lt;itemID&gt; or noitem.nouse.&lt;itemName&gt;
-- noitem.nohold.&lt;itemID&gt; or noitem.nouse.&lt;itemName&gt;
+- noitem.nouse.left.&lt;itemID&gt; or noitem.nouse.left.&lt;itemName&gt;
+- noitem.nouse.right.&lt;itemID&gt; or noitem.nouse.right.&lt;itemName&gt;
 - noitem.nowear.&lt;itemID&gt; or noitem.nowear.&lt;itemName&gt;
 
 ## Supported Items Tables ##
