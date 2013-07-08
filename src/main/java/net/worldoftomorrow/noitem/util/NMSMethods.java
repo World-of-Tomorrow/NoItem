@@ -25,8 +25,6 @@ public class NMSMethods {
 	
 	private static int getBrewResult(int i, ItemStack itemstack) {
 			Item test;
-	return itemstack == null ? i : (Item.byId[itemstack.id].w() ? PotionBrewer.a(i, Item.byId[itemstack.id].v()) : i);
-// Testing compile issue
-//		return i;
+	return itemstack == null ? i : (Item.byId[itemstack.id].u() ? PotionBrewer.a(i, Item.byId[itemstack.id].v()) : i);
     }
 }
