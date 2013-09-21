@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.server.v1_6_R2.Item;
-import net.minecraft.server.v1_6_R2.RecipesFurnace;
-import net.minecraft.server.v1_6_R2.TileEntityFurnace;
+import net.minecraft.server.v1_6_R3.Item;
+import net.minecraft.server.v1_6_R3.RecipesFurnace;
+import net.minecraft.server.v1_6_R3.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
 import net.worldoftomorrow.noitem.permissions.Perm;
 import net.worldoftomorrow.noitem.util.Util;
@@ -17,7 +17,7 @@ import net.worldoftomorrow.noitem.util.NMSMethods;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
-import org.bukkit.craftbukkit.v1_6_R2.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
@@ -569,13 +569,13 @@ public final class Handlers {
 	
 	private static boolean isFuel(ItemStack item) {
 		// Create an NMS item stack
-		net.minecraft.server.v1_6_R2.ItemStack nmss = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_6_R3.ItemStack nmss = CraftItemStack.asNMSCopy(item);
 		// Use the NMS TileEntityFurnace to check if the item being clicked is a fuel
 		return TileEntityFurnace.isFuel(nmss);
 	}
 	
 	private static boolean isCookable(ItemStack item) {
-		net.minecraft.server.v1_6_R2.ItemStack nmss = CraftItemStack.asNMSCopy(item);
+		net.minecraft.server.v1_6_R3.ItemStack nmss = CraftItemStack.asNMSCopy(item);
 		// If the result of that item being cooked is null, it is not cookable
 		return RecipesFurnace.getInstance().getResult(nmss.getItem().id) != null;
 	}

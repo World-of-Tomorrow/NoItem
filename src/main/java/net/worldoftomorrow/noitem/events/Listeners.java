@@ -20,24 +20,24 @@ import org.bukkit.event.player.PlayerShearEntityEvent;
 
 public class Listeners implements Listener {
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onItemPickup(PlayerPickupItemEvent event) {
 		Handlers.handleItemPickup(event);
 		Handlers.handleNoHavePickup(event);
 		Handlers.handleNoHoldPickup(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onItemDrop(PlayerDropItemEvent event) {
 		Handlers.handleItemDrop(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onItemHeld(PlayerItemHeldEvent event) {
 		Handlers.handleItemHeld(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onPlayerInteract(PlayerInteractEvent event) {
 		Handlers.handleInteract(event);
 		Handlers.handlerInteractLR(event);
@@ -45,23 +45,23 @@ public class Listeners implements Listener {
 		Handlers.handleUseInteract(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onPlayerInteractEntity(PlayerInteractEntityEvent event) {
 		Handlers.handleInteractEntity(event);
 		Handlers.handleUseInteractEntity(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onBlockBreak(BlockBreakEvent event) {
 		Handlers.handleBlockBreak(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onBlockPlace(BlockPlaceEvent event) {
 		Handlers.handleBlockPlace(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onInventoryClick(InventoryClickEvent event) {
 		Handlers.handleNoHoldInvClick(event);
 		Handlers.handleNoBrewInvClick(event);
@@ -69,32 +69,32 @@ public class Listeners implements Listener {
 		Handlers.handleNoCookInvClick(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onItemCraft(CraftItemEvent event) {
 		Handlers.handleItemCraft(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent event) {
 		Handlers.handlePlayerDeath(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onPlayerRespawn(PlayerRespawnEvent event) {
 		Handlers.handlePlayerSpawn(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onItemEnchant(EnchantItemEvent event) {
 		Handlers.handleEnchantItem(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onEntityDamageEntity(EntityDamageByEntityEvent event) {
 		Handlers.handlePlayerDamageEntity(event);
 	}
 	
-	@EventHandler(priority = EventPriority.HIGH)
+	@EventHandler
 	public void onPlayerShearEntity(PlayerShearEntityEvent event) {
 		Handlers.handlePlayerShearEntity(event);
 	}
