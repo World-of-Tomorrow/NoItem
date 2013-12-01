@@ -1,10 +1,10 @@
 package net.worldoftomorrow.noitem.util;
 
-import org.bukkit.craftbukkit.v1_6_R3.inventory.CraftItemStack;
+import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 
-import net.minecraft.server.v1_6_R3.Item;
-import net.minecraft.server.v1_6_R3.PotionBrewer;
-import net.minecraft.server.v1_6_R3.ItemStack;
+import net.minecraft.server.v1_7_R1.Item;
+import net.minecraft.server.v1_7_R1.PotionBrewer;
+import net.minecraft.server.v1_7_R1.ItemStack;
 
 public class NMSMethods {
 	
