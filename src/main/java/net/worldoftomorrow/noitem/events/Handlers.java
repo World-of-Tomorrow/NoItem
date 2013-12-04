@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.server.v1_7_R1.Item;
 import net.minecraft.server.v1_7_R1.RecipesFurnace;
 import net.minecraft.server.v1_7_R1.TileEntityFurnace;
 import net.worldoftomorrow.noitem.NoItem;
@@ -17,6 +16,7 @@ import net.worldoftomorrow.noitem.util.NMSMethods;
 import org.bukkit.Bukkit;
 import org.bukkit.Material; //pretty self-explaining
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 import org.bukkit.entity.Entity;
@@ -291,7 +291,7 @@ public final class Handlers {
 				}
 				// Potion slot
 				// If it is not the ing. slot, the cursor is a potion, and the ingredient slot is not empty
-			} else if (slot < 3 && slot >= 0 && cursor.getTypeId() == Item.POTION.id && view.getItem(3).getTypeId() != 0) {
+			} else if (slot < 3 && slot >= 0 && cursor.getType() == Material.POTION && view.getItem(3).getTypeId() != 0) {
 				item = view.getItem(3); // ingredient
 				int result = NMSMethods.getPotionResult(cursor.getDurability(), item);
 				if(result == cursor.getDurability()) return;
@@ -304,7 +304,7 @@ public final class Handlers {
 			} else if (slot > 3 && event.isShiftClick()) {
 				item = view.getItem(slot); // Clicked
 				// If the item clicked is a ptoion
-				if(item.getTypeId() == Item.POTION.id) {
+				if(item.getType() == Material.POTION) {
 					ItemStack ingredient = view.getItem(3);
 					// If the ingredient is empty, return
 					if(ingredient.getType().equals(Material.AIR)) return;
@@ -578,7 +578,7 @@ public final class Handlers {
 	private static boolean isCookable(ItemStack item) {
 		net.minecraft.server.v1_7_R1.ItemStack nmss = CraftItemStack.asNMSCopy(item);
 		// If the result of that item being cooked is null, it is not cookable
-		return RecipesFurnace.getInstance().getResult(nmss.getItem().id) != null;
+		return RecipesFurnace.getInstance().getResult(nmss) != null;
 	}
 	// End - Helper Methods //
 }

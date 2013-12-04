@@ -2,7 +2,6 @@ package net.worldoftomorrow.noitem.util;
 
 import org.bukkit.craftbukkit.v1_7_R1.inventory.CraftItemStack;
 
-import net.minecraft.server.v1_7_R1.Item;
 import net.minecraft.server.v1_7_R1.PotionBrewer;
 import net.minecraft.server.v1_7_R1.ItemStack;
 
@@ -24,7 +23,6 @@ public class NMSMethods {
 	}
 	
 	private static int getBrewResult(int i, ItemStack itemstack) {
-			Item test;
-	return itemstack == null ? i : (Item.byId[itemstack.id].u() ? PotionBrewer.a(i, Item.byId[itemstack.id].v()) : i);
+	    return itemstack == null ? i : itemstack.getItem().u() ? PotionBrewer.a(i, itemstack.getItem().k(itemstack)) : i;
     }
 }
