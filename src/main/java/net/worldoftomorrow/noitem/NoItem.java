@@ -1,5 +1,10 @@
 package net.worldoftomorrow.noitem;
 
+/*
+ * Things To Implement:
+ * 	- "/noitem check" command
+ */
+
 import java.io.IOException;
 import java.util.logging.Logger;
 
