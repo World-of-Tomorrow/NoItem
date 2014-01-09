@@ -5,11 +5,7 @@ and still has a couple more coming. Right now, NoItem can stop players from craf
 smelting, and holding certain items. All of these things can be done via permissions nodes. However it is important to note that this plugin is not
 designed to be a security plugin, it blocks certain items and allows the rest, it does not block all items and allow just a few, there are already many
 other plugins for that. This is great however for Role-Playing servers though. Say you only want miners to be able to use pickaxes, with this plugin that
-and much more is possible.NoItem was originally created just to stop players from crafting certain items, but it has gained many new features since then and
-still has a couple more coming. Right now, NoItem can stop players from crafting certain items, brewing specific potions, picking up items, smelting, and holding
-certain items. All of these things can be done via permissions nodes. However it is important to note that this plugin is not designed to be a security
-plugin, it blocks certain items and allows the rest, it does not block all items and allow just a few, there are already many other plugins for that. This
-is great however for Role-Playing servers though. Say you only want miners to be able to use pickaxes, with this plugin that and much more is possible.</p>
+and much more is possible.</p>
 
 ## Permissions ##
 - noitem.allitems
