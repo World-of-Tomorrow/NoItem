@@ -106,7 +106,7 @@ public final class Handlers {
 		Player p = event.getPlayer();
 		PlayerInventory inv = p.getInventory();
 		ItemStack item = inv.getItem(event.getNewSlot());
-		if (item != null && !item.getType().equals(Material.AIR)  && NoItem.getPermsManager().has(p, Perm.HOLD, item)) {
+		if (!isAir(item)  && NoItem.getPermsManager().has(p, Perm.HOLD, item)) {
 			Util.switchItems(event.getNewSlot(), event.getPreviousSlot(), inv);
 			Messenger.sendMessage(p, AlertType.HOLD, item);
 			Messenger.alertAdmins(p, AlertType.HOLD, item);
@@ -117,7 +117,7 @@ public final class Handlers {
 		Player p = event.getPlayer();
 		PlayerInventory inv = p.getInventory();
 		ItemStack item = inv.getItem(event.getNewSlot());
-		if (!item.getType().equals(Material.AIR)  && NoItem.getPermsManager().has(p, Perm.HAVE, item)) {
+		if (!isAir(item) && NoItem.getPermsManager().has(p, Perm.HAVE, item)) {
 			inv.remove(item);
 			Messenger.sendMessage(p, AlertType.HAVE, item);
 			Messenger.alertAdmins(p, AlertType.HAVE, item);
@@ -253,8 +253,7 @@ public final class Handlers {
 		ItemStack cursor = event.getCursor();
 		Player p = getPlayerFromEntity(event.getWhoClicked());
 		PlayerInventory inv = p.getInventory();
-		if(!cursor.getType().equals(Material.AIR)
-				&& event.getSlotType() == SlotType.QUICKBAR
+		if(!isAir(cursor) && event.getSlotType() == SlotType.QUICKBAR
 				&& event.getSlot() == inv.getHeldItemSlot()) {
 			if(NoItem.getPermsManager().has(p, Perm.HOLD, cursor)) {
 				event.setCancelled(true);
@@ -274,13 +273,13 @@ public final class Handlers {
 			int slot = event.getRawSlot();
 			ItemStack item;
 			// Ing. Slot
-			if(slot == 3 && !cursor.getType().equals(Material.AIR) ) {
+			if(slot == 3 && !isAir(cursor)) {
 				int result;
 				for(int i = 0; i < 3; i++) {
 					item = view.getItem(i);
 					result = NMSMethods.getPotionResult(item.getDurability(), cursor);
 					// If the item is air, or the items durability is the same as the results, continue
-					if(item.getType().equals(Material.AIR) || item.getDurability() == result) continue; //Use le Material enum
+					if(isAir(item) || item.getDurability() == result) continue; //Use le Material enum
 					
 					if(NoItem.getPermsManager().has(p, result)) {
 						event.setCancelled(true);
@@ -295,7 +294,7 @@ public final class Handlers {
 				item = view.getItem(3); // ingredient
 				int result = NMSMethods.getPotionResult(cursor.getDurability(), item);
 				if(result == cursor.getDurability()) return;
-				if(item.getType().equals(Material.AIR) && NoItem.getPermsManager().has(p, result)) {
+				if(isAir(item) && NoItem.getPermsManager().has(p, result)) {
 					event.setCancelled(true);
 					Messenger.sendMessage(p, AlertType.BREW, result);
 					Messenger.alertAdmins(p, AlertType.BREW, result);
@@ -307,7 +306,7 @@ public final class Handlers {
 				if(item.getType() == Material.POTION) {
 					ItemStack ingredient = view.getItem(3);
 					// If the ingredient is empty, return
-					if(ingredient.getType().equals(Material.AIR)) return;
+					if(isAir(ingredient)) return;
 					
 					int result = NMSMethods.getPotionResult(item.getDurability(), ingredient);
 					if(NoItem.getPermsManager().has(p, result)) {
@@ -396,7 +395,7 @@ public final class Handlers {
 			ItemStack current = event.getCurrentItem();
 			Player p = getPlayerFromEntity(event.getWhoClicked());
 			// Handle direct clicking
-			if(st == SlotType.ARMOR && !cursor.getType().equals(Material.AIR) ) {
+			if(st == SlotType.ARMOR && !isAir(cursor)) {
 				if(NoItem.getLists().isArmor(cursor.getTypeId()) && NoItem.getPermsManager().has(p, Perm.WEAR, cursor)) {
 					event.setCancelled(true);
 					Messenger.sendMessage(p, AlertType.WEAR, cursor);
@@ -404,7 +403,7 @@ public final class Handlers {
 					return;
 				}
 			// Handle shift clicking
-			} else if (st != SlotType.ARMOR && !current.getType().equals(Material.AIR)  && event.isShiftClick()) {
+			} else if (st != SlotType.ARMOR && !isAir(current)  && event.isShiftClick()) {
 				if(NoItem.getLists().isArmor(current.getTypeId()) && NoItem.getPermsManager().has(p, Perm.WEAR, current)) {
 					event.setCancelled(true);
 					Messenger.sendMessage(p, AlertType.WEAR, current);
@@ -426,13 +425,13 @@ public final class Handlers {
 			ItemStack cursor = event.getCursor();
 			ItemStack current = event.getCurrentItem();
 			Player p = getPlayerFromEntity(event.getWhoClicked());
-			if(slot == 1 && !cursor.getType().equals(Material.AIR) && !cookable.getType().equals(Material.AIR) && isFuel(cursor)) {
+			if(slot == 1 && !isAir(cursor) && !isAir(cookable) && isFuel(cursor)) {
 				if(NoItem.getPermsManager().has(p, Perm.COOK, cookable)) {
 					event.setCancelled(true);
 					Messenger.sendMessage(p, AlertType.COOK, cookable);
 					Messenger.alertAdmins(p, AlertType.COOK, cookable);
 					// Check if the current item is also a fuel, just because.
-					if(!current.getType().equals(Material.AIR) && isFuel(current)) {
+					if(!isAir(current) && isFuel(current)) {
 						// If the inventory is full
 						if(p.getInventory().firstEmpty() == -1) {
 							// Drop a copy of the item by the player
@@ -448,7 +447,7 @@ public final class Handlers {
 				}
 			// Uncooked Item slot
 			} else if (slot == 0) {
-				if(!fuel.getType().equals(Material.AIR)&& !cursor.getType().equals(Material.AIR) && isCookable(cursor)) {
+				if(!isAir(fuel) && !isAir(cursor) && isCookable(cursor)) {
 					if(NoItem.getPermsManager().has(p, Perm.COOK, cursor)) {
 						event.setCancelled(true);
 						Messenger.sendMessage(p, AlertType.COOK, cursor);
@@ -457,14 +456,14 @@ public final class Handlers {
 				}
 			// Shift clicking anywhere else in the inventory
 			} else if(slot > 3 && st != SlotType.OUTSIDE && event.isShiftClick()) {
-				if(!current.getType().equals(Material.AIR)) {
-					if(!fuel.getType().equals(Material.AIR) && isCookable(current)) {
+				if(!isAir(current)) {
+					if(!isAir(fuel) && isCookable(current)) {
 						if(NoItem.getPermsManager().has(p, Perm.COOK, current)) {
 							event.setCancelled(true);
 							Messenger.sendMessage(p, AlertType.COOK, current);
 							Messenger.alertAdmins(p, AlertType.COOK, current);
 						}
-					} else if (!cookable.getType().equals(Material.AIR)  && isFuel(current)) {
+					} else if (!isAir(cookable)  && isFuel(current)) {
 						if(NoItem.getPermsManager().has(p, Perm.COOK, cookable)) {
 							event.setCancelled(true);
 							Messenger.sendMessage(p, AlertType.COOK, cookable);
@@ -482,7 +481,7 @@ public final class Handlers {
 		if (event.isCancelled()) return;
 		ItemStack result = event.getCurrentItem();
 		Player p = getPlayerFromEntity(event.getWhoClicked());
-		if(!result.getType().equals(Material.AIR)  && NoItem.getPermsManager().has(p, Perm.CRAFT, result)) {
+		if(!isAir(result)  && NoItem.getPermsManager().has(p, Perm.CRAFT, result)) {
 			event.setCancelled(true);
 			Messenger.sendMessage(p, AlertType.CRAFT, result);
 			Messenger.alertAdmins(p, AlertType.CRAFT, result);
@@ -562,6 +561,10 @@ public final class Handlers {
 	// Start - Helper Methods //
 	private static Player getPlayerFromEntity(HumanEntity ent) {
 		return Bukkit.getPlayer(ent.getName());
+	}
+	
+	public static boolean isAir(ItemStack stack) {
+		return stack == null || stack.getType().equals(Material.AIR);
 	}
 	
 	//private static String getRecipe(short dataValue, ItemStack ingredient) {
