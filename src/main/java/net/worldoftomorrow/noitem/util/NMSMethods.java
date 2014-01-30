@@ -23,6 +23,6 @@ public class NMSMethods {
 	}
 	
 	private static int getBrewResult(int i, ItemStack itemstack) {
-	    return itemstack == null ? i : itemstack.getItem().u() ? PotionBrewer.a(i, itemstack.getItem().k(itemstack)) : i;
+		return itemstack == null ? i : (itemstack.getItem().m(itemstack) ? PotionBrewer.a(i, itemstack.getItem().i(itemstack)) : i);
     }
 }
